@@ -5,7 +5,7 @@ use App\Http\Controllers\MagicLinkController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountDeletionController;
 use App\Http\Controllers\FormpageController;
-
+use App\Http\Controllers\JsonSubmissionController;
 use Illuminate\Support\Facades\Cookie;
 
 Route::get('/', function () {
@@ -31,3 +31,6 @@ Route::get('/magic-link/{magicToken}', [MagicLinkController::class, 'authenticat
 Route::get('/home/logout', [FormpageController::class, 'logout']);
 
 Route::get('/home/delete-account', [AccountDeletionController::class, 'deleteAccount']);
+
+Route::post('/home/submit', [JsonSubmissionController::class, 'storeJson'])->name('submit.json');
+Route::get('/home/submit', [JsonSubmissionController::class, 'storeJson'])->name('submit.json');
