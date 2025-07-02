@@ -67,7 +67,7 @@ class MagicLinkController extends Controller
 
         Auth::login($magicToken->user);
 
-        Cookie::queue('user', $magicToken->user, 5);
+        Cookie::queue('user', $magicToken->user, 500);
 
         return redirect('/home');
     }
