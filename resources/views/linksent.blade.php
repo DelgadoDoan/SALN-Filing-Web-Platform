@@ -6,7 +6,7 @@
     <title>SALN Filing Web Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap" rel="stylesheet">
-
+    
     <style>
         * {
             box-sizing: border-box;
@@ -15,6 +15,7 @@
 
         
         body {
+            margin: 0;
             background-color: #f9fafb;
             display: flex;
             flex-direction: column;
@@ -37,6 +38,7 @@
             border-radius: 16px;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
             width: 100%;
+            text-align: center;
             max-width: 500px;
             min-height: 400px;
         }
@@ -49,8 +51,7 @@
         }
 
         .card p {
-            font-size: 1.1rem;
-            color: #6b7280;
+            font-size: 0.9rem;
             margin-bottom: 2rem;
         }
 
@@ -60,6 +61,7 @@
             font-size: 1.05rem;
             border: 1px solid #d1d5db;
             border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
         button.signin {
@@ -90,66 +92,28 @@
             color: #1f2937;
         }
 
-        .divider {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .divider hr {
-            flex: 1;
-            border: none;
-            border-top: 1px solid #d1d5db;
-        }
-
-        .divider span {
-            margin: 0 10px;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
         .error {
             font-family: 'Nunito', sans-serif;
             font-size: 0.9rem;
             color: #ed4337;
             margin-bottom: 1.5rem;
         }
-
+        
         .redirect {
             font-size: 0.9rem;
             color: #6b7280;
             margin-top: 2rem;
             text-align: center;
         }
-
     </style>
     </head>
     <body>
     <h1>SALN Filing Web Platform</h1>
     <div class="card">
-        <h2>Sign Up</h2>
-        <p>Get started by first setting up your account.</p>
-        <form action="{{ route('magic-link.signup') }}" method="POST">
-            @csrf
-            <input value="{{old('name')}}" name="name" id="name" placeholder="Username">
-            <div class="error">{{ $errors->first('name') }}</div>
-            <div class="divider">
-            <hr />
-            <span>and</span>
-            <hr />    
-            </div>
-            <input value="{{old('email')}}" name="email" id="email" placeholder="Email">
-            <div class="error">{{ $errors->first('email') }}</div>
-            <button name="submit" type="submit" class="signin">Sign Up</button>
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-        </form>
-
-        <div class="redirect">Already have an account? <a href="{{ route('login') }}">Sign in here</a></div>
-
+        <h2>You're almost done!</h2>
+        <h5>We sent an email to</h5>
+        <h3>{{ $email }}</h3>
+        <p>Be sure to click the link within <b>30 minutes</b> to complete the verification process.</p>
     </div>
 </body>
 </html>

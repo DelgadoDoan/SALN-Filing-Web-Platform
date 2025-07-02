@@ -13,9 +13,10 @@
             font-family: 'Atkinson Hyperlegible', 'Nunito', sans-serif;
         }
 
+        
         body {
             margin: 0;
-            background-color: #F9FAFB;
+            background-color: #f9fafb;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -24,104 +25,85 @@
         }
 
         h1 {
-            font-family: 'Atkinson Hyperlegible', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 500;
+            font-size: 2.25rem;
+            font-weight: 600;
             color: #1f2937;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
         }
 
         .card {
             background-color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
             width: 100%;
-            max-width: 360px;
+            max-width: 500px;
+            min-height: 400px;
         }
 
         .card h2 {
-            font-family: 'Nunito', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
             color: #1f2937;
         }
 
         .card p {
-            font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: #6b7280;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         input {
             width: 100%;
-            padding: 0.6rem;
-            font-size: 1rem;
+            padding: 0.75rem 1rem;
+            font-size: 1.05rem;
             border: 1px solid #d1d5db;
-            border-radius: 6px;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
         button.signin {
             width: 100%;
-            background-color: #0A66C2;
-            font-family: 'Nunito', sans-serif;
+            background-color: #0a66c2;
             color: white;
-            padding: 0.6rem;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 0.75rem;
+            font-size: 1.05rem;
+            font-weight: 300;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
+        }
+
+        button.signin:hover {
+            background-color: #004eaa;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: #1f2937;
+        }
+
+        .error {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: #ed4337;
             margin-bottom: 1.5rem;
         }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .divider hr {
-            flex: 1;
-            border: none;
-            border-top: 1px solid #d1d5db;
-        }
-
-        .divider span {
-            margin: 0 10px;
-            color: #6b7280;
+        
+        .redirect {
             font-size: 0.9rem;
-        }
-
-        .social-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-
-        .social-button {
-            flex: 1;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            padding: 0.4rem 0;
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .social-button:hover {
-            background-color: #f3f4f6;
-        }
-
-        .social-button img {
-            height: 20px;
-            width: 20px;
+            color: #6b7280;
+            margin-top: 2rem;
+            text-align: center;
         }
     </style>
     </head>
@@ -134,7 +116,7 @@
         <form action="{{ route('magic-link.login') }}" method="POST">
             @csrf
             <input value="{{old('email')}}" name="email" id="email" placeholder="Email" />
-            <div class="alert alert-danger">{{ $errors->first('email') }}</div>
+            <div class="error">{{ $errors->first('email') }}</div>
 
             <button name="submit" type="submit" class="signin">Login</button>
             @if (session('success'))
@@ -143,6 +125,8 @@
                 </div>
             @endif
         </form>
+
+        <div class="redirect">Don't have an account yet? <a href="{{ route('signup') }}">Sign up here</a></div>
 
     </div>
 </body>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use App\Models\User;
 
 class FormpageController extends Controller
 {
@@ -15,7 +16,7 @@ class FormpageController extends Controller
         if (!$cookie) {
             Auth::logout();
 
-            return redirect()->to('login');
+            return redirect('/login');
         }
 
         return view('home');
@@ -26,6 +27,16 @@ class FormpageController extends Controller
 
         Auth::logout();
 
-        return redirect()->to('login');
+        return redirect('/login');
+    }
+
+    public function deleteAccount () {
+        $user = Auth::user();
+
+        $user = User::where('email', $user->email)->delete();
+
+        Cookie::expire('user');
+
+        Auth::logout();
     }
 }

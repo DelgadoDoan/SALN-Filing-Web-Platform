@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MagicLinkController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AccountDeletionController;
 use App\Http\Controllers\FormpageController;
 
 use Illuminate\Support\Facades\Cookie;
@@ -14,11 +13,11 @@ Route::get('/', function () {
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 
 Route::get('/signup', function () {
     return view('signup');
-});
+})->name('signup');
 
 Route::get('/home', [FormpageController::class, 'isLoggedIn']);
 
@@ -30,4 +29,8 @@ Route::get('/magic-link/{magicToken}', [MagicLinkController::class, 'authenticat
 
 Route::get('/home/logout', [FormpageController::class, 'logout']);
 
-Route::get('/home/delete-account', [AccountDeletionController::class, 'deleteAccount']);
+Route::get('/home/delete-account', [FormpageController::class, 'deleteAccount']);
+
+Route::get('/home/delete-account', [FormpageController::class, 'deleteAccount']);
+
+Route::get('/link-sent/{email}', [MagicLinkController::class, 'onSuccess'])->name('linksent');

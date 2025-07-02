@@ -13,6 +13,7 @@ use App\Mail\MagicLinkMail;
 use Illuminate\Support\Str;
 use App\Models\MagicToken;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 
 class MagicLinkController extends Controller
 {
@@ -20,8 +21,6 @@ class MagicLinkController extends Controller
         $validated = $request->validated();
 
         $user = User::where('email', $validated['email'])->first();
-
-        error_log($user);
 
         if (empty($user)) {
             $newUser = User::create([
@@ -35,9 +34,13 @@ class MagicLinkController extends Controller
             ]);
 
             Mail::to($newUser->email)->send(new MagicLinkMail($magicToken));
+
+            $encrypted = Crypt::encryptString($newUser->email);
+
+            return redirect()->route('linksent', ['email' => $encrypted]);
         }
 
-        return redirect()->back()->with('success', 'Link sent! Please check your email.');
+        return redirect()->back();
     }
 
     public function login(LoginRequest $request) {
@@ -52,9 +55,19 @@ class MagicLinkController extends Controller
             ]);
 
             Mail::to($user->email)->send(new MagicLinkMail($magicToken));
+
+            $encrypted = Crypt::encryptString($user->email);
+
+            return redirect()->route('linksent', ['email' => $encrypted]);
         }
 
-        return redirect()->back()->with('success', 'Link sent! Please check your email.');
+        return redirect->back();
+    }
+
+    public function onSuccess(string $encryptedEmail) {
+        $decrypted = Crypt::decryptString($encryptedEmail);
+
+        return view('linksent', ['email' => $decrypted]);
     }
 
     public function authenticate(MagicToken $magicToken) {
@@ -67,7 +80,7 @@ class MagicLinkController extends Controller
 
         Auth::login($magicToken->user);
 
-        Cookie::queue('user', $magicToken->user, 5);
+        Cookie::queue('user', $magicToken->user, 120); // cookie lifetime set to 120 minutes
 
         return redirect('/home');
     }
