@@ -7,6 +7,8 @@ use App\Http\Controllers\FormpageController;
 
 use Illuminate\Support\Facades\Cookie;
 
+Route::post('/submit-saln', [FormpageController::class, 'submit'])->name('saln.submit');
+
 Route::get('/', function () {
     return view('welcome');
 });
