@@ -71,7 +71,8 @@ class MagicLinkController extends Controller
     }
 
     public function authenticate(MagicToken $magicToken) {
-        if ($magicToken->created_at <= Carbon::now()->subMinutes(5) || !is_null($magicToken->used_at))
+        // if link is not clicked within 30 min or already used
+        if ($magicToken->created_at <= Carbon::now()->subMinutes(30) || !is_null($magicToken->used_at))
             abort(403);
 
         $magicToken->update([
