@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use App\Http\Requests\FormDataRequest;
 use App\Models\User;
 
 class FormpageController extends Controller
@@ -38,5 +39,9 @@ class FormpageController extends Controller
         Cookie::expire('user');
 
         Auth::logout();
+    }
+
+    public function saveToDatabase(FormDataRequest $request) {
+        $validated = $request->validated();
     }
 }
