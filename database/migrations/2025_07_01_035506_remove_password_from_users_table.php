@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->string('password');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('password')->default('');
         });
     }
 };

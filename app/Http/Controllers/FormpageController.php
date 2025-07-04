@@ -11,6 +11,13 @@ use App\Models\User;
 class FormpageController extends Controller
 {
     public function isLoggedIn(Request $request) {
+        // check if user is logged in
+        if (!Auth::check()) {
+            Cookie::expire('user');
+            
+            return redirect('/login');
+        }
+
         // check if cookie exists        
         $cookie = $request->cookie('user');
         
