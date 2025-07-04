@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -88,11 +89,12 @@
             display: flex;
             gap: 10px;
         }
-        .rowone{
+
+        .rowone {
             width: 50%;
         }
 
-        .row > div {
+        .row>div {
             flex: 1;
         }
 
@@ -125,6 +127,7 @@
             color: #555;
             text-align: right;
         }
+
         .assets-table-wrapper {
             overflow-x: auto;
         }
@@ -177,6 +180,7 @@
             margin-top: 10px;
             width: 32.5%
         }
+
         .subtotal-row2 {
             display: flex;
             justify-content: flex-end;
@@ -187,6 +191,7 @@
             width: 100%;
             white-space: nowrap;
         }
+
         .asset-totals {
             display: flex;
             flex-direction: column;
@@ -195,6 +200,7 @@
             margin-left: auto;
             margin-top: -52px;
         }
+
         .asset-controls {
             display: flex;
             justify-content: space-between;
@@ -202,6 +208,7 @@
             margin-top: 10px;
             gap: 20px;
         }
+
         .asset-controls2 {
             display: flex;
             flex-direction: column;
@@ -215,485 +222,635 @@
             display: flex;
             align-items: center;
         }
-
     </style>
-    </head>
-    <body>
+</head>
+
+<body>
     <div class="form-container">
         <div class="small">
-        Revised as of January 2015<br>
-        Per CSC Resolution NO. 1500088<br>
-        Promulgated on January 23, 2015
+            Revised as of January 2015<br>
+            Per CSC Resolution NO. 1500088<br>
+            Promulgated on January 23, 2015
         </div>
 
         <h2>Sworn Statement of Assets, Liabilities and Net Worth</h2>
 
         <div class="form-section asof-group">
-        <label class="asof-label" for="date">As of</label>
-        <div class="date-wrapper">
-            <input type="date" id="date" name="date">
-            <small>(Required by R.A. 6713)</small>
-        </div>
+            <label class="asof-label" for="date">As of</label>
+            <div class="date-wrapper">
+                <input type="date" id="date" name="date">
+                <small>(Required by R.A. 6713)</small>
+            </div>
         </div>
 
 
         <div class="note">
-            <em>Note:</em> Husband and wife who are both public officials and employees may file the required statements jointly or separately.
+            <em>Note:</em> Husband and wife who are both public officials and employees may file the required statements
+            jointly or separately.
         </div>
 
         <div class="checkbox-group">
             <label><input type="checkbox" name="filing" value="joint" onclick="checkOnly(this)"> Joint Filing</label>
-            <label><input type="checkbox" name="filing" value="separate" onclick="checkOnly(this)"> Separate Filing</label>
-            <label><input type="checkbox" name="filing" value="na" onclick="checkOnly(this)"> Not Applicable</label>
+            <label><input type="checkbox" name="filing" value="separate" onclick="checkOnly(this)"> Separate
+                Filing</label>
+            <label><input type="checkbox" name="filing" value="na" onclick="checkOnly(this)"> Not
+                Applicable</label>
         </div>
 
 
         <!-- Declarant Section -->
         <div class="form-section">
-        <h3>Declarant Information</h3>
-        <div class="row">
-            <div>
-                <label>Declarant - Family Name</label>
-                <input type="text">
+            <h3>Declarant Information</h3>
+            <div class="row">
+                <div>
+                    <label>Declarant - Family Name</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>First Name</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>M.I.</label>
+                    <input type="text">
+                </div>
             </div>
-            <div>
-                <label>First Name</label>
-                <input type="text">
+            <h3>Home Address</h3>
+            <div class="row">
+                <div>
+                    <label for="houseNumber">House Number</label>
+                    <input type="text" id="houseNumber" name="houseNumber">
+                </div>
+                <div>
+                    <label for="houseStreet">Street</label>
+                    <input type="text" id="houseStreet" name="houseStreet">
+                </div>
             </div>
-            <div>
-                <label>M.I.</label>
-                <input type="text">
+            <div class="row">
+                <div>
+                    <label for="subdivision">Subdivision</label>
+                    <input type="text" id="subdivision" name="subdivision">
+                </div>
+                <div>
+                    <label for="barangay">Barangay</label>
+                    <input type="text" id="barangay" name="barangay">
+                </div>
             </div>
-        </div>
-        <h3>Home Address</h3>
-        <div class="row">
-            <div>
-                <label for="houseNumber">House Number</label>
-                <input type="text" id="houseNumber" name="houseNumber">
-            </div>
-            <div>
-                <label for="houseStreet">Street</label>
-                <input type="text" id="houseStreet" name="houseStreet">
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <label for="subdivision">Subdivision</label>
-                <input type="text" id="subdivision" name="subdivision">
-            </div>
-            <div>
-                <label for="barangay">Barangay</label>
-                <input type="text" id="barangay" name="barangay">
-            </div>
-        </div>
 
-        <div class="row">
-            <div>
-                <label for="city">City/Municipality</label>
-                <input type="text" id="city" name="city">
+            <div class="row">
+                <div>
+                    <label for="city">City/Municipality</label>
+                    <input type="text" id="city" name="city">
+                </div>
+                <div>
+                    <label for="region">Region</label>
+                    <input type="text" id="region" name="region">
+                </div>
             </div>
-            <div>
-                <label for="region">Region</label>
-                <input type="text" id="region" name="region">
+            <div class="rowone">
+                <div>
+                    <label for="zip">Zip Code</label>
+                    <input type="text" id="zip" name="zip">
+                </div>
             </div>
-        </div>
-        <div class="rowone">
-            <div>
-                <label for="zip">Zip Code</label>
-                <input type="text" id="zip" name="zip">
+            <h3>Office Address</h3>
+            <div class="row">
+                <div>
+                    <label>Agency/Office</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>Street</label>
+                    <input type="text" id="houseStreet" name="houseStreet">
+                </div>
             </div>
-        </div>
-        <h3>Office Address</h3>
-        <div class="row">
-            <div>
-                <label>Agency/Office</label>
-                <input type="text">
+            <div class="row">
+                <div>
+                    <label for="city">City/Municipality</label>
+                    <input type="text" id="city" name="city">
+                </div>
+                <div>
+                    <label for="region">Region</label>
+                    <input type="text" id="region" name="region">
+                </div>
             </div>
-            <div>
-                <label>Street</label>
-                <input type="text" id="houseStreet" name="houseStreet">
+            <div class="rowone">
+                <div>
+                    <label for="zip">Zip Code</label>
+                    <input type="text" id="zip" name="zip">
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div>
-                <label for="city">City/Municipality</label>
-                <input type="text" id="city" name="city">
-            </div>
-            <div>
-                <label for="region">Region</label>
-                <input type="text" id="region" name="region">
-            </div>
-        </div>
-        <div class="rowone">
-            <div>
-                <label for="zip">Zip Code</label>
-                <input type="text" id="zip" name="zip">
-            </div>
-        </div>
         </div>
 
         <!-- Spouse Section -->
         <div class="form-section">
-        <h3>Spouse Information</h3>
-        <div class="row">
-            <div>
-            <label>Spouse - Family Name</label>
-            <input type="text">
-            </div>
-            <div>
-            <label>First Name</label>
-            <input type="text">
-            </div>
-            <div>
-            <label>M.I.</label>
-            <input type="text">
-            </div>
-        </div>
-        <div class="left-button">
-            <button type="button">Add Rows</button>
-        </div>
-
-        <h3>Home Address</h3>
-        <div class="row">
-            <div>
-                <label for="houseNumber">House Number</label>
-                <input type="text" id="houseNumber" name="houseNumber">
-            </div>
-            <div>
-                <label for="houseStreet">Street</label>
-                <input type="text" id="houseStreet" name="houseStreet">
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <label for="subdivision">Subdivision</label>
-                <input type="text" id="subdivision" name="subdivision">
-            </div>
-            <div>
-                <label for="barangay">Barangay</label>
-                <input type="text" id="barangay" name="barangay">
-            </div>
-        </div>
-
-        <div class="row">
-            <div>
-                <label for="city">City/Municipality</label>
-                <input type="text" id="city" name="city">
-            </div>
-            <div>
-                <label for="region">Region</label>
-                <input type="text" id="region" name="region">
-            </div>
-        </div>
-        <div class="rowone">
-            <div>
-                <label for="zip">Zip Code</label>
-                <input type="text" id="zip" name="zip">
-            </div>
-        </div>
-        <h3>Office Address</h3>
-        <div class="row">
-            <div>
-                <label>Agency/Office</label>
-                <input type="text">
-            </div>
-            <div>
-                <label>Street</label>
-                <input type="text" id="houseStreet" name="houseStreet">
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <label for="city">City/Municipality</label>
-                <input type="text" id="city" name="city">
-            </div>
-            <div>
-                <label for="region">Region</label>
-                <input type="text" id="region" name="region">
-            </div>
-        </div>
-        <div class="rowone">
-            <div>
-                <label for="zip">Zip Code</label>
-                <input type="text" id="zip" name="zip">
-            </div>
-        </div>
-        <!-- Assets Section -->
-        <div class="form-section">
-            <h2>Assets, Liabilities and Net Worth</h2>
-            <h3>Assets</h3>
-            <h4 style="font-weight:normal;">Real Properties</h4>
-            <div class="assets-table-wrapper">
-                <table class="assets-table">
-                    <thead>
-                        <tr>
-                            <th colspan="1">Description</th>
-                            <th colspan="1">Kind</th>
-                            <th rowspan="2">Exact Location</th>
-                            <th colspan="1">Assessed Value</th>
-                            <th colspan="1">Current Fair Market Value</th>
-                            <th colspan="2">Acquisition</th>
-                            <th rowspan="2">Acquisition Cost</th>
-                        </tr>
-                        <tr>
-                            <th><small>(e.g. lot, house and lot, condominium, and improvements)</small></th>
-                            <th><small>(e.g., residential, commercial, industrial, agricultural and mixed used)</small></th>
-                            <th colspan="2"><small>(As found in the Tax Declaration of Real Property)</small></th>
-                            <th>Year</th>
-                            <th>Mode</th>
-                        </tr>
-                    </thead>
-                    <tbody id="assets-body">
-                        <tr>
-                            <td><input type="text" name="desc[]"></td>
-                            <td><input type="text" name="kind[]"></td>
-                            <td><input type="text" name="location[]"></td>
-                            <td><input type="text" name="assessed[]"></td>
-                            <td><input type="text" name="marketValue[]"></td>
-                            <td><input type="text" name="acqYear[]"></td>
-                            <td><input type="text" name="acqMode[]"></td>
-                            <td><input type="text" name="acqCost[]"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="button">Add Rows</button>
-                <div class="asset-controls2">
-                <div class="subtotal-row">
-                    <label for="subtotal">Subtotal: </label>
-                    <input type="text" id="subtotal" readonly>
+            <h3>Spouse Information</h3>
+            <div class="row" id="spouseRow">
+                <div id="spouse-family-name">
+                    <label>Spouse - Family Name</label>
+                    <input type="text">
                 </div>
+                <div id="spouse-first-name">
+                    <label>First Name</label>
+                    <input type="text">
+                </div>
+                <div id="spouse-m-i">
+                    <label>M.I.</label>
+                    <input type="text">
                 </div>
             </div>
-        </div>
+            <div class="left-button">
+                <button type="button" onclick="addSpouseRow(this)">Add Rows</button>
+            </div>
 
-        <div class="form-section">
-            <h4 style="font-weight:normal;">Personal</h4>
-            <div class="assets-table-wrapper">
-                <table class="assets-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="1">Description</th>
-                            <th rowspan="1">Year Acquired</th>
-                            <th rowspan="1">Acquisition Cost/Amount</th>
-
-                        </tr>
-                    </thead>
-                    <tbody id="assets-body">
-                        <tr>
-                            <td><input type="text" name="description[]"></td>
-                            <td><input type="text" name="yearAcquired[]"></td>
-                            <td><input type="text" name="acquisitionCost[]"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="left-button">
-                    <button type="button">Add Rows</button>
+            <h3>Home Address</h3>
+            <div class="row">
+                <div>
+                    <label for="houseNumber">House Number</label>
+                    <input type="text" id="houseNumber" name="houseNumber">
                 </div>
-                <div class="asset-controls">
-                <div class ="asset-totals">
-                    <div class="subtotal-row2">
-                        <label for="subtotal">Subtotal: </label>
-                        <input type="text" id="subtotal" readonly>
+                <div>
+                    <label for="houseStreet">Street</label>
+                    <input type="text" id="houseStreet" name="houseStreet">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="subdivision">Subdivision</label>
+                    <input type="text" id="subdivision" name="subdivision">
+                </div>
+                <div>
+                    <label for="barangay">Barangay</label>
+                    <input type="text" id="barangay" name="barangay">
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="city">City/Municipality</label>
+                    <input type="text" id="city" name="city">
+                </div>
+                <div>
+                    <label for="region">Region</label>
+                    <input type="text" id="region" name="region">
+                </div>
+            </div>
+            <div class="rowone">
+                <div>
+                    <label for="zip">Zip Code</label>
+                    <input type="text" id="zip" name="zip">
+                </div>
+            </div>
+            <h3>Office Address</h3>
+            <div class="row">
+                <div>
+                    <label>Agency/Office</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>Street</label>
+                    <input type="text" id="houseStreet" name="houseStreet">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="city">City/Municipality</label>
+                    <input type="text" id="city" name="city">
+                </div>
+                <div>
+                    <label for="region">Region</label>
+                    <input type="text" id="region" name="region">
+                </div>
+            </div>
+            <div class="rowone">
+                <div>
+                    <label for="zip">Zip Code</label>
+                    <input type="text" id="zip" name="zip">
+                </div>
+            </div>
+            <!-- Assets Section -->
+            <div class="form-section">
+                <h2>Assets, Liabilities and Net Worth</h2>
+                <h3>Assets</h3>
+                <h4 style="font-weight:normal;">Real Properties</h4>
+                <div class="assets-table-wrapper">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th colspan="1">Description</th>
+                                <th colspan="1">Kind</th>
+                                <th rowspan="2">Exact Location</th>
+                                <th colspan="1">Assessed Value</th>
+                                <th colspan="1">Current Fair Market Value</th>
+                                <th colspan="2">Acquisition</th>
+                                <th rowspan="2">Acquisition Cost</th>
+                            </tr>
+                            <tr>
+                                <th><small>(e.g. lot, house and lot, condominium, and improvements)</small></th>
+                                <th><small>(e.g., residential, commercial, industrial, agricultural and mixed
+                                        used)</small></th>
+                                <th colspan="2"><small>(As found in the Tax Declaration of Real Property)</small>
+                                </th>
+                                <th>Year</th>
+                                <th>Mode</th>
+                            </tr>
+                        </thead>
+                        <tbody id="real-property-table-body">
+                            <tr>
+                                <td><input type="text" name="desc[]"></td>
+                                <td><input type="text" name="kind[]"></td>
+                                <td><input type="text" name="location[]"></td>
+                                <td><input type="text" name="assessed[]"></td>
+                                <td><input type="text" name="marketValue[]"></td>
+                                <td><input type="text" name="acqYear[]"></td>
+                                <td><input type="text" name="acqMode[]"></td>
+                                <td><input type="text" name="acqCost[]"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="addRealProperty()">Add Rows</button>
+                    <div class="asset-controls2">
+                        <div class="subtotal-row">
+                            <label for="subtotal">Subtotal: </label>
+                            <input type="text" id="subtotal" readonly>
+                        </div>
                     </div>
-                    <div class="subtotal-row2">
-                        <label for="totalAssets">Total Assets: </label>
-                        <input type="text" id="totalAssets" readonly>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-        </div>
-        <div class="form-section">
-            <h4 style="font-weight:normal;">Liabilities</h4>
-            <div class="assets-table-wrapper">
-                <table class="assets-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="1">Nature</th>
-                            <th rowspan="1">Name of Creditors</th>
-                            <th rowspan="1">Outstanding Balance</th>
-
-                        </tr>
-                    </thead>
-                    <tbody id="assets-body">
-                        <tr>
-                            <td><input type="text" name="nature[]"></td>
-                            <td><input type="text" name="nameCreditor[]"></td>
-                            <td><input type="text" name="OutstandingBalance[]"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="left-button">
-                    <button type="button">Add Rows</button>
-                </div>
-                <div class="asset-controls">
-                <div class ="asset-totals">
-                    <div class="subtotal-row2">
-                        <label for="subtotal">Subtotal: </label>
-                        <input type="text" id="subtotal" readonly>
-                    </div>
-                    <div class="subtotal-row2">
-                        <label for="totalAssets">Networth: </label>
-                        <input type="text" id="totalAssets" readonly>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-        </div>
-
-        <div class="form-section">
-        <h3 style="text-align: center;">Business Interests and Financial Connections</h3>
-        <div class="note">
-            (of Declarant/Declarant’s Spouse/Unmarried Children Below 
-            Eighteen (18) years of Age Living in Declarant’s Household)
-        </div>
-        <div class="checkbox-group">
-            <label>
-            <input type="checkbox" name="noBusinessInterest" />
-            I/We do not have any business interest or financial connection
-            </label>
-
-        </div>
-        <div class="assets-table-wrapper">
-                <table class="assets-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="1">Name of Entity/Business Enterprise</th>
-                            <th rowspan="1">Business Address</th>
-                            <th rowspan="1">Nature of Business Interest and/or Financial Connection</th>
-                            <th rowspan="1">Date of Acquisition of Interest or Connection</th>
-                        </tr>
-                    </thead>
-                    <tbody id="assets-body">
-                        <tr>
-                            <td><input type="text" name="nameBusiness[]"></td>
-                            <td><input type="text" name="addressBusiness[]"></td>
-                            <td><input type="text" name="natureBusiness[]"></td>
-                            <td><input type="text" name="dateInterest[]"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="left-button">
-                    <button type="button">Add Rows</button>
                 </div>
             </div>
 
             <div class="form-section">
-        <h3 style="text-align: center;">Relatives in the Government Service</h3>
-        <div class="note">
-            (Within the Fourth Degree of Consanguinity or Affinity, 
-            Include also Bilas, Balae, and Inso)
-        </div>
-        <div class="checkbox-group">
-            <label>
-            <input type="checkbox" name="noBusinessInterest" />
-            I/We do not have any relative/s in the government service
-            </label>
+                <h4 style="font-weight:normal;">Personal Properties</h4>
+                <div class="assets-table-wrapper">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="1">Description</th>
+                                <th rowspan="1">Year Acquired</th>
+                                <th rowspan="1">Acquisition Cost/Amount</th>
 
-        </div>
-        <div class="assets-table-wrapper">
-                <table class="assets-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="1">Name of Relative</th>
-                            <th rowspan="1">Relationship</th>
-                            <th rowspan="1">Position</th>
-                            <th rowspan="1">Name of Agency/Office and Adress</th>
-                        </tr>
-                    </thead>
-                    <tbody id="assets-body">
-                        <tr>
-                            <td><input type="text" name="nameRelative[]"></td>
-                            <td><input type="text" name="relationship[]"></td>
-                            <td><input type="text" name="position[]"></td>
-                            <td><input type="text" name="nameAgency[]"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="left-button">
-                    <button type="button">Add Rows</button>
+                            </tr>
+                        </thead>
+                        <tbody id="personal-property-table-body">
+                            <tr>
+                                <td><input type="text" name="description[]"></td>
+                                <td><input type="text" name="yearAcquired[]"></td>
+                                <td><input type="text" name="acquisitionCost[]"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="left-button">
+                        <button type="button" onclick="addPersonalProperty()">Add Rows</button>
+                    </div>
+                    <div class="asset-controls">
+                        <div class ="asset-totals">
+                            <div class="subtotal-row2">
+                                <label for="subtotal">Subtotal: </label>
+                                <input type="text" id="subtotal" readonly>
+                            </div>
+                            <div class="subtotal-row2">
+                                <label for="totalAssets">Total Assets: </label>
+                                <input type="text" id="totalAssets" readonly>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        <div class="form-section">
-        <p style="text-align: justify;">
-            I hereby certify that these are true and correct statements of my assets, liabilities, net worth,
-            business interests and financial connections, including those of my spouse and unmarried children below
-            eighteen (18) years of age living in my household, and that to the best of my knowledge, the above-enumerated
-            are names of my relatives in the government within the fourth civil degree of consanguinity or affinity.
-        </p>
-        <p style="text-align: justify;">
-            I hereby authorize the Ombudsman or his/her duly authorized representative to obtain and
-            secure from all appropriate government agencies, including the Bureau of Internal Revenue such
-            documents that may show my assets, liabilities, net worth, business interests and financial connections,
-            to include those of my spouse and unmarried children below 18 years of age living with me in my
-            household covering previous years to include the year I first assumed office in government.
-        </p>
+            <div class="form-section">
+                <h4 style="font-weight:normal;">Liabilities</h4>
+                <div class="assets-table-wrapper">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="1">Nature</th>
+                                <th rowspan="1">Name of Creditors</th>
+                                <th rowspan="1">Outstanding Balance</th>
 
-        <div class="rowone" style="margin: 20px 0;">
-            <label for="certDate">Date:</label>
-            <input type="date" id="certDate" name="certDate">
-        </div>
+                            </tr>
+                        </thead>
+                        <tbody id="liability-table-body">
+                            <tr>
+                                <td><input type="text" name="nature[]"></td>
+                                <td><input type="text" name="nameCreditor[]"></td>
+                                <td><input type="text" name="OutstandingBalance[]"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="left-button">
+                        <button type="button" onclick="addLiability()">Add Rows</button>
+                    </div>
+                    <div class="asset-controls">
+                        <div class ="asset-totals">
+                            <div class="subtotal-row2">
+                                <label for="subtotal">Subtotal: </label>
+                                <input type="text" id="subtotal" readonly>
+                            </div>
+                            <div class="subtotal-row2">
+                                <label for="totalAssets">Networth: </label>
+                                <input type="text" id="totalAssets" readonly>
+                            </div>
+                        </div>
 
-        <div class="row" style="margin-top: 30px;">
-            <div style="flex: 1; text-align: center;">
-                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                <label>Signature of Declarant</label>
-                <div>
-                    <label>Government Issued ID</label>
-                    <input type="text" name="govIDDeclarant">
-                </div>
-                <div>
-                    <label>ID No.:</label>
-                    <input type="text" name="idNoDeclarant">
-                </div>
-                <div>
-                    <label>Date Issued:</label>
-                    <input type="date" name="idDateDeclarant">
-                </div>
-            </div>
-
-            <div style="flex: 1; text-align: center;">
-                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                <label>Signature of Co-Declarant/Spouse</label>
-                <div>
-                    <label>Government Issued ID</label>
-                    <input type="text" name="govIDSpouse">
-                </div>
-                <div>
-                    <label>ID No.:</label>
-                    <input type="text" name="idNoSpouse">
-                </div>
-                <div>
-                    <label>Date Issued:</label>
-                    <input type="date" name="idDateSpouse">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <p style="margin-top: 30px;">
-            <strong>SUBSCRIBED AND SWORN</strong> to before me this ______ day of ____________, affiant exhibiting to me the
-            above-stated government issued identification card.
-        </p>
+            <div class="form-section">
+                <h3 style="text-align: center;">Business Interests and Financial Connections</h3>
+                <div class="note">
+                    (of Declarant/Declarant’s Spouse/Unmarried Children Below
+                    Eighteen (18) years of Age Living in Declarant’s Household)
+                </div>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" name="noBusinessInterest" />
+                        I/We do not have any business interest or financial connection
+                    </label>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <div style="border-top: 1px solid #000; width: 300px; margin: 0 auto 8px;"></div>
-            <label>Person Administering Oath</label>
-        </div>
-    </div>
+                </div>
+                <div class="assets-table-wrapper">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="1">Name of Entity/Business Enterprise</th>
+                                <th rowspan="1">Business Address</th>
+                                <th rowspan="1">Nature of Business Interest and/or Financial Connection</th>
+                                <th rowspan="1">Date of Acquisition of Interest or Connection</th>
+                            </tr>
+                        </thead>
+                        <tbody id="business-table-body">
+                            <tr>
+                                <td><input type="text" name="nameBusiness[]"></td>
+                                <td><input type="text" name="addressBusiness[]"></td>
+                                <td><input type="text" name="natureBusiness[]"></td>
+                                <td><input type="text" name="dateInterest[]"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="left-button">
+                        <button type="button" onclick="addBusiness()">Add Rows</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 style="text-align: center;">Relatives in the Government Service</h3>
+                    <div class="note">
+                        (Within the Fourth Degree of Consanguinity or Affinity,
+                        Include also Bilas, Balae, and Inso)
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" name="noBusinessInterest" />
+                            I/We do not have any relative/s in the government service
+                        </label>
+
+                    </div>
+                    <div class="assets-table-wrapper">
+                        <table class="assets-table">
+                            <thead>
+                                <tr>
+                                    <th rowspan="1">Name of Relative</th>
+                                    <th rowspan="1">Relationship</th>
+                                    <th rowspan="1">Position</th>
+                                    <th rowspan="1">Name of Agency/Office and Adress</th>
+                                </tr>
+                            </thead>
+                            <tbody id="relatives-table-body">
+                                <tr>
+                                    <td><input type="text" name="nameRelative[]"></td>
+                                    <td><input type="text" name="relationship[]"></td>
+                                    <td><input type="text" name="position[]"></td>
+                                    <td><input type="text" name="nameAgency[]"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="left-button">
+                            <button type="button" onclick="addRelative()">Add Rows</button>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <p style="text-align: justify;">
+                            I hereby certify that these are true and correct statements of my assets, liabilities, net
+                            worth,
+                            business interests and financial connections, including those of my spouse and unmarried
+                            children below
+                            eighteen (18) years of age living in my household, and that to the best of my knowledge, the
+                            above-enumerated
+                            are names of my relatives in the government within the fourth civil degree of consanguinity
+                            or affinity.
+                        </p>
+                        <p style="text-align: justify;">
+                            I hereby authorize the Ombudsman or his/her duly authorized representative to obtain and
+                            secure from all appropriate government agencies, including the Bureau of Internal Revenue
+                            such
+                            documents that may show my assets, liabilities, net worth, business interests and financial
+                            connections,
+                            to include those of my spouse and unmarried children below 18 years of age living with me in
+                            my
+                            household covering previous years to include the year I first assumed office in government.
+                        </p>
+
+                        <div class="rowone" style="margin: 20px 0;">
+                            <label for="certDate">Date:</label>
+                            <input type="date" id="certDate" name="certDate">
+                        </div>
+
+                        <div class="row" style="margin-top: 30px;">
+                            <div style="flex: 1; text-align: center;">
+                                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
+                                <label>Signature of Declarant</label>
+                                <div>
+                                    <label>Government Issued ID</label>
+                                    <input type="text" name="govIDDeclarant">
+                                </div>
+                                <div>
+                                    <label>ID No.:</label>
+                                    <input type="text" name="idNoDeclarant">
+                                </div>
+                                <div>
+                                    <label>Date Issued:</label>
+                                    <input type="date" name="idDateDeclarant">
+                                </div>
+                            </div>
+
+                            <div style="flex: 1; text-align: center;">
+                                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
+                                <label>Signature of Co-Declarant/Spouse</label>
+                                <div>
+                                    <label>Government Issued ID</label>
+                                    <input type="text" name="govIDSpouse">
+                                </div>
+                                <div>
+                                    <label>ID No.:</label>
+                                    <input type="text" name="idNoSpouse">
+                                </div>
+                                <div>
+                                    <label>Date Issued:</label>
+                                    <input type="date" name="idDateSpouse">
+                                </div>
+                            </div>
+                        </div>
+
+                        <p style="margin-top: 30px;">
+                            <strong>SUBSCRIBED AND SWORN</strong> to before me this ______ day of ____________, affiant
+                            exhibiting to me the
+                            above-stated government issued identification card.
+                        </p>
+
+                        <div style="text-align: center; margin-top: 40px;">
+                            <div style="border-top: 1px solid #000; width: 300px; margin: 0 auto 8px;"></div>
+                            <label>Person Administering Oath</label>
+                        </div>
+                    </div>
 
 
-        </div>
-    </div>
-    <script>
-    function checkOnly(clickedCheckbox) {
-        const checkboxes = document.querySelectorAll('input[name="filing"]');
-        checkboxes.forEach(box => {
-        if (box !== clickedCheckbox) box.checked = false;
-        });
-    }
-    </script>
+                </div>
+            </div>
+            <script>
+                function checkOnly(clickedCheckbox) {
+                    const checkboxes = document.querySelectorAll('input[name="filing"]');
+                    checkboxes.forEach(box => {
+                        if (box !== clickedCheckbox) box.checked = false;
+                    });
+                }
+
+                function addSpouseRow() {
+                    const spouseFamilyName = document.querySelector('#spouse-family-name');
+                    const spouseFirstName = document.querySelector('#spouse-first-name');
+                    const spouseMI = document.querySelector('#spouse-m-i');
+
+                    const input1 = document.createElement('input');
+                    input1.type = 'text';
+                    spouseFamilyName.appendChild(input1);
+
+                    const input2 = document.createElement('input');
+                    input2.type = 'text';
+                    spouseFirstName.appendChild(input2);
+
+                    const input3 = document.createElement('input');
+                    input3.type = 'text';
+                    spouseMI.appendChild(input3);
+                }
+
+                function addRealProperty() {
+                    const tbody = document.querySelector('#real-property-table-body');
+
+                    const tr = document.createElement('tr');
+                    const inputNames = [
+                        'desc[]',
+                        'kind[]',
+                        'location[]',
+                        'assessed[]',
+                        'marketValue[]',
+                        'acqYear[]',
+                        'acqMode[]',
+                        'acqCost[]'
+                    ];
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = name;
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    });
+
+                    tbody.appendChild(tr);
+                }
+
+                function addPersonalProperty(){
+                    const tbody = document.querySelector("#personal-property-table-body");
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'description[]',
+                        'yearAcquired[]',
+                        'acquisitionCost[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = name;
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+
+                    tbody.appendChild(tr);
+
+                }
+
+                function addLiability(){
+                    const tbody = document.querySelector("#liability-table-body");
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'nature[]',
+                        'nameCreditor[]',
+                        'OutstandingBalance[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = name;
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+
+                    tbody.appendChild(tr);
+                }
+
+                function addBusiness(){
+                    const tbody = document.querySelector('#business-table-body');
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'nameBusiness[]',
+                        'addressBusiness[]',
+                        'natureBusiness[]',
+                        'dateInterest[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.name = name;
+                        input.type = 'text';
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+                    tbody.append(tr);
+
+                }
+
+                function addRelative(){
+                    const tbody = document.querySelector('#relatives-table-body');
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'nameRelative[]',
+                        'relationship[]',
+                        'position[]',
+                        'nameAgency[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.name = name;
+                        input.type = 'text';
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+                    tbody.append(tr);
+
+                }
+            </script>
 
 </body>
+
 </html>
