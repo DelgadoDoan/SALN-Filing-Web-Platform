@@ -83,4 +83,33 @@ class SALN extends Model
         'no_relatives_in_government' => 'boolean',
         'is_completed' => 'boolean',
     ];
+    public function unmarriedChildren()
+    {
+        return $this->hasMany(UnmarriedChild::class);
+    }
+    public function spouses()
+    {
+        return $this->hasMany(Spouse::class);
+    }
+    public function realProperties()
+    {
+        return $this->hasMany(RealProperty::class);
+    }
+    public function personalProperties()
+    {
+        return $this->hasMany(PersonalProperty::class);
+    }
+    public function liabilities()
+    {
+        return $this->hasMany(Liability::class);
+    }
+    public function businessInterests()
+    {
+        return $this->hasMany(BusinessInterest::class);
+    }
+    public function relativesInGovernment()
+    {
+        return $this->hasMany(RelativeInGovernment::class);
+    }
+
 }

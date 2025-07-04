@@ -249,8 +249,6 @@
             <label><input type="radio" name="filing_type" value="na"> Not Applicable</label>
         </div>
 
-
-
         <!-- Declarant Section -->
         <div class="form-section">
         <h3>Declarant Information</h3>
@@ -336,91 +334,117 @@
         </div>
         </div>
 
-        <!-- Spouse Section -->
-        <div class="form-section">
         <h3>Spouse Information</h3>
-        <div class="row">
-            <div>
-                <label for="spouse_family_name">Spouse - Family Name</label>
-                <input type="text" id="spouse_family_name" name="spouse_family_name">
-            </div>
-            <div>
-                <label for="spouse_first_name">First Name</label>
-                <input type="text" id="spouse_first_name" name="spouse_first_name">
-            </div>
-            <div>
-                <label for="spouse_mi">M.I.</label>
-                <input type="text" id="spouse_mi" name="spouse_mi">
-            </div>
-        </div>
-        <!-- Spouse Home Address -->
-        <h3>Home Address</h3>
-        <div class="row">
-            <div>
-                <label for="spouse_house_number">House Number</label>
-                <input type="text" id="spouse_house_number" name="spouse_house_number">
-            </div>
-            <div>
-                <label for="spouse_house_street">Street</label>
-                <input type="text" id="spouse_house_street" name="spouse_house_street">
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <label for="spouse_house_subdivision">Subdivision</label>
-                <input type="text" id="spouse_house_subdivision" name="spouse_house_subdivision">
-            </div>
-            <div>
-                <label for="spouse_house_barangay">Barangay</label>
-                <input type="text" id="spouse_house_barangay" name="spouse_house_barangay">
+        <div id="spouseRepeater">
+            <div class="spouse-block">
+                <div class="row">
+                    <div>
+                        <label>Family Name</label>
+                        <input type="text" name="spouse_family_name[]">
+                    </div>
+                    <div>
+                        <label>First Name</label>
+                        <input type="text" name="spouse_first_name[]">
+                    </div>
+                    <div>
+                        <label>M.I.</label>
+                        <input type="text" name="spouse_mi[]">
+                    </div>
+                </div>
+
+                <h4>Home Address</h4>
+                <div class="row">
+                    <div>
+                        <label>House Number</label>
+                        <input type="text" name="spouse_house_number[]">
+                    </div>
+                    <div>
+                        <label>Street</label>
+                        <input type="text" name="spouse_house_street[]">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>Subdivision</label>
+                        <input type="text" name="spouse_house_subdivision[]">
+                    </div>
+                    <div>
+                        <label>Barangay</label>
+                        <input type="text" name="spouse_house_barangay[]">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>City/Municipality</label>
+                        <input type="text" name="spouse_house_city[]">
+                    </div>
+                    <div>
+                        <label>Region</label>
+                        <input type="text" name="spouse_house_region[]">
+                    </div>
+                </div>
+                <div class="rowone">
+                    <div>
+                        <label>Zip Code</label>
+                        <input type="text" name="spouse_house_zip[]">
+                    </div>
+                </div>
+
+                <h4>Office Address</h4>
+                <div class="row">
+                    <div>
+                        <label>Agency/Office</label>
+                        <input type="text" name="spouse_office_name[]">
+                    </div>
+                    <div>
+                        <label>Street</label>
+                        <input type="text" name="spouse_office_street[]">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>City/Municipality</label>
+                        <input type="text" name="spouse_office_city[]">
+                    </div>
+                    <div>
+                        <label>Region</label>
+                        <input type="text" name="spouse_office_region[]">
+                    </div>
+                </div>
+                <div class="rowone">
+                    <div>
+                        <label>Zip Code</label>
+                        <input type="text" name="spouse_office_zip[]">
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div>
-                <label for="spouse_house_city">City/Municipality</label>
-                <input type="text" id="spouse_house_city" name="spouse_house_city">
-            </div>
-            <div>
-                <label for="spouse_house_region">Region</label>
-                <input type="text" id="spouse_house_region" name="spouse_house_region">
+        <!-- Add Row Button -->
+        <div class="left-button">
+            <button type="button" onclick="addSpouseBlock()">Add Spouse</button>
+        </div>
+
+
+        <h3>Unmarried Children</h3>
+        <div id="children_fields">
+            <div class="row child-entry">
+                <div>
+                    <label for="children_name[]">Name</label>
+                    <input type="text" name="children_name[]">
+                </div>
+                <div>
+                    <label for="children_dob[]">Date of Birth</label>
+                    <input type="date" name="children_dob[]">
+                </div>
             </div>
         </div>
-        <div class="rowone">
-            <div>
-                <label for="spouse_house_zip">Zip Code</label>
-                <input type="text" id="spouse_house_zip" name="spouse_house_zip">
-            </div>
+
+        <div class="left-button">
+            <button type="button" onclick="addChildRow()">Add Row</button>
         </div>
-        <!-- Spouse Office Address -->
-        <h3>Office Address</h3>
-        <div class="row">
-            <div>
-                <label for="spouse_office_name">Agency/Office</label>
-                <input type="text" id="spouse_office_name" name="spouse_office_name">
-            </div>
-            <div>
-                <label for="spouse_office_street">Street</label>
-                <input type="text" id="spouse_office_street" name="spouse_office_street">
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <label for="spouse_office_city">City/Municipality</label>
-                <input type="text" id="spouse_office_city" name="spouse_office_city">
-            </div>
-            <div>
-                <label for="spouse_office_region">Region</label>
-                <input type="text" id="spouse_office_region" name="spouse_office_region">
-            </div>
-        </div>
-        <div class="rowone">
-            <div>
-                <label for="spouse_office_zip">Zip Code</label>
-                <input type="text" id="spouse_office_zip" name="spouse_office_zip">
-            </div>
-        </div>
-        
+
+
         <!-- Assets Section -->
         <div class="form-section">
             <h2>Assets, Liabilities and Net Worth</h2>
@@ -459,7 +483,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <button type="button">Add Rows</button>
+                <button type="button" onclick="addRealProperty()">Add Rows</button>
                 <div class="asset-controls2">
                 <div class="subtotal-row">
                     <label for="subtotal">Subtotal: </label>
@@ -470,7 +494,7 @@
         </div>
 
         <div class="form-section">
-            <h4 style="font-weight:normal;">Personal</h4>
+            <h4 style="font-weight:normal;">Personal Properties</h4>
             <div class="assets-table-wrapper">
                 <table class="assets-table">
                     <thead>
@@ -490,7 +514,7 @@
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button">Add Rows</button>
+                    <button type="button" onclick="addPersonalProperty()">Add Rows</button>
                 </div>
                 <div class="asset-controls">
                 <div class ="asset-totals">
@@ -528,7 +552,7 @@
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button">Add Rows</button>
+                    <button type="button" onclick="addLiability()">Add Rows</button>
                 </div>
                 <div class="asset-controls">
                 <div class ="asset-totals">
@@ -579,7 +603,7 @@
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button">Add Rows</button>
+                    <button type="button" onclick="addBusiness()">Add Rows</button>
                 </div>
             </div>
 
@@ -616,7 +640,7 @@
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button">Add Rows</button>
+                    <button type="button" onclick="addRelative()">Add Rows</button>
                 </div>
             </div>
         <div class="form-section">
@@ -691,5 +715,152 @@
         <button type="submit">Save SALN</button>
     </form>
 
+    <script>
+                function addSpouseBlock() {
+                    const container = document.getElementById('spouseRepeater');
+                    const original = container.querySelector('.spouse-block');
+                    const clone = original.cloneNode(true);
+
+                    // Optional: clear input values
+                    clone.querySelectorAll('input').forEach(input => input.value = '');
+
+                    container.appendChild(clone);
+                }
+
+                function addRealProperty() {
+                    const tbody = document.querySelector('#assetsReal');
+
+                    const tr = document.createElement('tr');
+                    const inputNames = [
+                        'desc[]',
+                        'kind[]',
+                        'location[]',
+                        'assessed[]',
+                        'marketValue[]',
+                        'acqYear[]',
+                        'acqMode[]',
+                        'acqCost[]'
+                    ];
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = name;
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    });
+
+                    tbody.appendChild(tr);
+                }
+
+                function addPersonalProperty(){
+                    const tbody = document.querySelector("#assetsPersonal");
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'description[]',
+                        'yearAcquired[]',
+                        'acquisitionCost[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = name;
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+
+                    tbody.appendChild(tr);
+
+                }
+
+                function addLiability(){
+                    const tbody = document.querySelector("#liabilitiesBody");
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'nature[]',
+                        'nameCreditor[]',
+                        'OutstandingBalance[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = name;
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+
+                    tbody.appendChild(tr);
+                }
+
+                function addBusiness(){
+                    const tbody = document.querySelector('#businessBody');
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'nameBusiness[]',
+                        'addressBusiness[]',
+                        'natureBusiness[]',
+                        'dateInterest[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.name = name;
+                        input.type = 'text';
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+                    tbody.append(tr);
+
+                }
+
+                function addRelative(){
+                    const tbody = document.querySelector('#relativesBody');
+                    const tr = document.createElement('tr');
+
+                    const inputNames = [
+                        'nameRelative[]',
+                        'relationship[]',
+                        'position[]',
+                        'nameAgency[]'
+                    ]
+
+                    inputNames.forEach(name => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.name = name;
+                        input.type = 'text';
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    })
+                    tbody.append(tr);
+                    }
+                    function addChildRow() {
+                        const container = document.getElementById('children_fields');
+
+                        const newRow = document.createElement('div');
+                        newRow.classList.add('row', 'child-entry');
+                        newRow.innerHTML = `
+                            <div>
+                                <label>Name</label>
+                                <input type="text" name="children_name[]">
+                            </div>
+                            <div>
+                                <label>Date of Birth</label>
+                                <input type="date" name="children_dob[]">
+                            </div>
+                        `;
+
+                        container.appendChild(newRow);
+                    }
+            </script>
 </body>
 </html>

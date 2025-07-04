@@ -40,34 +40,6 @@ return new class extends Migration
             $table->string('declarant_office_region')->nullable();
             $table->string('declarant_office_zip')->nullable();
             
-            // Spouse information
-            $table->string('spouse_family_name')->nullable();
-            $table->string('spouse_first_name')->nullable();
-            $table->string('spouse_mi')->nullable();
-            
-            // Spouse home address
-            $table->string('spouse_house_number')->nullable();
-            $table->string('spouse_house_street')->nullable();
-            $table->string('spouse_house_subdivision')->nullable();
-            $table->string('spouse_house_barangay')->nullable();
-            $table->string('spouse_house_city')->nullable();
-            $table->string('spouse_house_region')->nullable();
-            $table->string('spouse_house_zip')->nullable();
-            
-            // Spouse office address
-            $table->string('spouse_office_name')->nullable();
-            $table->string('spouse_office_street')->nullable();
-            $table->string('spouse_office_city')->nullable();
-            $table->string('spouse_office_region')->nullable();
-            $table->string('spouse_office_zip')->nullable();
-            
-            // Assets, liabilities, and other data (stored as JSON)
-            $table->json('real_properties')->nullable();
-            $table->json('personal_assets')->nullable();
-            $table->json('liabilities')->nullable();
-            $table->json('business_interests')->nullable();
-            $table->json('relatives_in_government')->nullable();
-            
             // Totals
             $table->decimal('subtotal_real', 15, 2)->nullable();
             $table->decimal('subtotal_personal', 15, 2)->nullable();

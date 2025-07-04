@@ -6,9 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\User;
-
-use App\Models\SALN; // You’ll need to create this model
-
+use App\Models\UnmarriedChild;
+use App\Models\SALN;
+use App\Models\Spouse;
+use App\Models\RealProperty;
+use App\Models\PersonalProperty;
+use App\Models\Liability;
+use App\Models\BusinessInterest;
+use App\Models\RelativeInGovernment;
 class FormpageController extends Controller
 {
     public function isLoggedIn(Request $request) {
@@ -77,35 +82,6 @@ class FormpageController extends Controller
     $saln->declarant_office_region = $request->input('declarant_office_region');
     $saln->declarant_office_zip = $request->input('declarant_office_zip');
 
-    // --- Spouse Info ---
-    $saln->spouse_family_name = $request->input('spouse_family_name');
-    $saln->spouse_first_name = $request->input('spouse_first_name');
-    $saln->spouse_mi = $request->input('spouse_mi');
-
-    
-    // Spouse Home Address
-    $saln->spouse_house_number = $request->input('spouse_house_number');
-    $saln->spouse_house_street = $request->input('spouse_house_street');
-    $saln->spouse_house_subdivision = $request->input('spouse_house_subdivision');
-    $saln->spouse_house_barangay = $request->input('spouse_house_barangay');
-    $saln->spouse_house_city = $request->input('spouse_house_city');
-    $saln->spouse_house_region = $request->input('spouse_house_region');
-    $saln->spouse_house_zip = $request->input('spouse_house_zip');
-
-    // Spouse Office Address
-    $saln->spouse_office_name = $request->input('spouse_office_name');
-    $saln->spouse_office_street = $request->input('spouse_office_street');
-    $saln->spouse_office_city = $request->input('spouse_office_city');
-    $saln->spouse_office_region = $request->input('spouse_office_region');
-    $saln->spouse_office_zip = $request->input('spouse_office_zip');
-
-    // --- Assets and Liabilities (JSON arrays) ---
-    $saln->real_properties = json_encode($request->only(['desc', 'kind', 'location', 'assessed', 'marketValue', 'acqYear', 'acqMode', 'acqCost']));
-    $saln->personal_assets = json_encode($request->only(['description', 'yearAcquired', 'acquisitionCost']));
-    $saln->liabilities = json_encode($request->only(['nature', 'nameCreditor', 'OutstandingBalance']));
-    $saln->business_interests = json_encode($request->only(['nameBusiness', 'addressBusiness', 'natureBusiness', 'dateInterest']));
-    $saln->relatives_in_government = json_encode($request->only(['nameRelative', 'relationship', 'position', 'nameAgency']));
-
     // --- Totals ---
     $saln->subtotal_real = $request->input('subtotalReal');
     $saln->subtotal_personal = $request->input('subtotalPersonal');
@@ -128,6 +104,83 @@ class FormpageController extends Controller
 
     // --- Save to DB ---
     $saln->save();
+    foreach ($request->children_name as $index => $name) {
+        UnmarriedChild::create([
+            'saln_id' => $saln->id,
+            'name' => $name,
+            'date_of_birth' => $request->children_dob[$index],
+        ]);
+    }
+    foreach ($request->spouse_family_name as $i => $family_name) {
+        Spouse::create([
+            'saln_id' => $saln->id,
+            'family_name' => $family_name,
+            'first_name' => $request->spouse_first_name[$i],
+            'mi' => $request->spouse_mi[$i],
+            'house_number' => $request->spouse_house_number[$i],
+            'house_street' => $request->spouse_house_street[$i],
+            'house_subdivision' => $request->spouse_house_subdivision[$i],
+            'house_barangay' => $request->spouse_house_barangay[$i],
+            'house_city' => $request->spouse_house_city[$i],
+            'house_region' => $request->spouse_house_region[$i],
+            'house_zip' => $request->spouse_house_zip[$i],
+            'office_name' => $request->spouse_office_name[$i],
+            'office_street' => $request->spouse_office_street[$i],
+            'office_city' => $request->spouse_office_city[$i],
+            'office_region' => $request->spouse_office_region[$i],
+            'office_zip' => $request->spouse_office_zip[$i],
+        ]);
+    }
+    if ($request->has('desc')) {
+        foreach ($request->desc as $i => $desc) {
+            RealProperty::create([
+                'saln_id' => $saln->id,
+                'description' => $desc,
+                'kind' => $request->kind[$i] ?? null,
+                'location' => $request->location[$i] ?? null,
+                'assessed_value' => $request->assessed[$i] ?? null,
+                'market_value' => $request->marketValue[$i] ?? null,
+                'acquisition_year' => $request->acqYear[$i] ?? null,
+                'acquisition_mode' => $request->acqMode[$i] ?? null,
+                'acquisition_cost' => $request->acqCost[$i] ?? null,
+            ]);
+        }
+    }
+    foreach ($request->description as $index => $desc) {
+        PersonalProperty::create([
+            'saln_id' => $saln->id,
+            'description' => $desc,
+            'year_acquired' => $request->yearAcquired[$index] ?? null,
+            'acquisition_cost' => $request->acquisitionCost[$index] ?? null,
+        ]);
+    }
+    foreach ($request->nature as $index => $nature) {
+        Liability::create([
+            'saln_id' => $saln->id,
+            'nature' => $nature,
+            'name_creditor' => $request->nameCreditor[$index] ?? null,
+            'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
+        ]);
+    }
+    foreach ($request->nameBusiness as $index => $name) {
+        BusinessInterest::create([
+            'saln_id' => $saln->id,
+            'name_business' => $name,
+            'address_business' => $request->addressBusiness[$index] ?? null,
+            'nature_business' => $request->natureBusiness[$index] ?? null,
+            'date_interest' => $request->dateInterest[$index] ?? null,
+        ]);
+    }
+    foreach ($request->nameRelative as $index => $name) {
+        RelativeInGovernment::create([
+            'saln_id' => $saln->id,
+            'name_relative' => $name,
+            'relationship' => $request->relationship[$index] ?? null,
+            'position' => $request->position[$index] ?? null,
+            'name_agency' => $request->nameAgency[$index] ?? null,
+        ]);
+    }
+
 
     return redirect()->back()->with('success', 'SALN Form submitted successfully!');
     }
