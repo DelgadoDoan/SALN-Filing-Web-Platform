@@ -24,6 +24,7 @@
             max-width: 800px;
             margin: 0 auto;
             border: 1px solid #ddd;
+            margin-top: 50px;
         }
 
         h2 {
@@ -227,10 +228,83 @@
             color: #4bb543;
             margin-bottom: 1.5rem;
         }
+        .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background:rgb(255, 255, 255);
+        color: #fff;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: top 0.3s ease-in-out; /* Add this line */
+        }
+
+        /* Container to center content and limit width */
+        .navbar-container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        justify-content: space-between;
+        }
+
+        /* Brand styling */
+        .navbar-brand {
+        font-weight: bold;
+        font-size: 1.25rem;
+        color: #1F2937;
+        }
+
+        /* Links row */
+        .navbar-links {
+        list-style: none;
+        display: flex;
+        gap: 24px;
+        }
+
+        /* Link styling */
+        .navbar-links a {
+        text-decoration: none;
+        color: #1F2937;
+        font-size: 1rem;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background 0.2s;
+        }
+
+        .navbar-links a:hover {
+        background: rgba(255,255,255,0.15);
+        }
+
 
     </style>
     </head>
     <body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">SALN Portal</div>
+            <ul class="navbar-links">
+                <li>
+                    <a href="/home/logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+                <li>
+                    <a href="/home/delete-account" onclick="return confirm('Are you sure you want to delete your account?')">
+                        <i class="fas fa-user-slash"></i> Delete Account
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
     <form action="{{ route('saln.save') }}" method="POST">
         @csrf
         
@@ -736,151 +810,153 @@
     </form>
 
     <script>
-                function addSpouseBlock() {
-                    const container = document.getElementById('spouseRepeater');
-                    const original = container.querySelector('.spouse-block');
-                    const clone = original.cloneNode(true);
+    function addSpouseBlock() {
+        const container = document.getElementById('spouseRepeater');
+        const original = container.querySelector('.spouse-block');
+        const clone = original.cloneNode(true);
 
-                    // Optional: clear input values
-                    clone.querySelectorAll('input').forEach(input => input.value = '');
+                   
+        clone.querySelectorAll('input').forEach(input => input.value = '');
 
-                    container.appendChild(clone);
+        container.appendChild(clone);
+        }
+
+        function addRealProperty() {
+            const tbody = document.querySelector('#assetsReal');
+
+            const tr = document.createElement('tr');
+            const inputNames = [
+                'desc[]',
+                'kind[]',
+                'location[]',
+                'assessed[]',
+                'marketValue[]',
+                'acqYear[]',
+                'acqMode[]',
+                'acqCost[]'
+            ];
+
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = name;
+                td.appendChild(input);
+                tr.appendChild(td);
+                });
+            tbody.appendChild(tr);
+            }
+
+        function addPersonalProperty(){
+            const tbody = document.querySelector("#assetsPersonal");
+            const tr = document.createElement('tr');
+
+            const inputNames = [
+                'description[]',
+                'yearAcquired[]',
+                'acquisitionCost[]'
+            ]
+
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = name;
+                td.appendChild(input);
+                tr.appendChild(td);
+            })
+                tbody.appendChild(tr);
+            }
+
+        function addLiability(){
+            const tbody = document.querySelector("#liabilitiesBody");
+            const tr = document.createElement('tr');
+            const inputNames = [
+                'nature[]',
+                'nameCreditor[]',
+                'OutstandingBalance[]'
+            ]
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = name;
+                td.appendChild(input);
+                tr.appendChild(td);
+            })
+                tbody.appendChild(tr);
+            }
+
+        function addBusiness(){
+            const tbody = document.querySelector('#businessBody');
+            const tr = document.createElement('tr');
+            const inputNames = [
+                'nameBusiness[]',
+                'addressBusiness[]',
+                'natureBusiness[]',
+                'dateInterest[]'
+            ]
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.name = name;
+                input.type = 'text';
+                td.appendChild(input);
+                tr.appendChild(td);
+            })
+            tbody.append(tr);
+            }
+
+        function addRelative(){
+            const tbody = document.querySelector('#relativesBody');
+            const tr = document.createElement('tr');
+            const inputNames = [
+                'nameRelative[]',
+                'relationship[]',
+                'position[]',
+                'nameAgency[]'
+            ]
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.name = name;
+                input.type = 'text';
+                td.appendChild(input);
+                tr.appendChild(td);
+            })
+                tbody.append(tr);
+            }
+            function addChildRow() {
+                const container = document.getElementById('children_fields');
+                const newRow = document.createElement('div');
+                newRow.classList.add('row', 'child-entry');
+                newRow.innerHTML = `
+                    <div>
+                        <label>Name</label>
+                        <input type="text" name="children_name[]">
+                    </div>
+                    <div>
+                        <label>Date of Birth</label>
+                        <input type="date" name="children_dob[]">
+                    </div>
+                `;
+                container.appendChild(newRow);
+            }
+            let lastScrollTop = 0;
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function () {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop) {
+                    // Scrolling down — hide navbar
+                    navbar.style.top = '-60px';
+                } else {
+                    // Scrolling up — show navbar
+                    navbar.style.top = '0';
                 }
 
-                function addRealProperty() {
-                    const tbody = document.querySelector('#assetsReal');
-
-                    const tr = document.createElement('tr');
-                    const inputNames = [
-                        'desc[]',
-                        'kind[]',
-                        'location[]',
-                        'assessed[]',
-                        'marketValue[]',
-                        'acqYear[]',
-                        'acqMode[]',
-                        'acqCost[]'
-                    ];
-
-                    inputNames.forEach(name => {
-                        const td = document.createElement('td');
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.name = name;
-                        td.appendChild(input);
-                        tr.appendChild(td);
-                    });
-
-                    tbody.appendChild(tr);
-                }
-
-                function addPersonalProperty(){
-                    const tbody = document.querySelector("#assetsPersonal");
-                    const tr = document.createElement('tr');
-
-                    const inputNames = [
-                        'description[]',
-                        'yearAcquired[]',
-                        'acquisitionCost[]'
-                    ]
-
-                    inputNames.forEach(name => {
-                        const td = document.createElement('td');
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.name = name;
-                        td.appendChild(input);
-                        tr.appendChild(td);
-                    })
-
-                    tbody.appendChild(tr);
-
-                }
-
-                function addLiability(){
-                    const tbody = document.querySelector("#liabilitiesBody");
-                    const tr = document.createElement('tr');
-
-                    const inputNames = [
-                        'nature[]',
-                        'nameCreditor[]',
-                        'OutstandingBalance[]'
-                    ]
-
-                    inputNames.forEach(name => {
-                        const td = document.createElement('td');
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.name = name;
-                        td.appendChild(input);
-                        tr.appendChild(td);
-                    })
-
-                    tbody.appendChild(tr);
-                }
-
-                function addBusiness(){
-                    const tbody = document.querySelector('#businessBody');
-                    const tr = document.createElement('tr');
-
-                    const inputNames = [
-                        'nameBusiness[]',
-                        'addressBusiness[]',
-                        'natureBusiness[]',
-                        'dateInterest[]'
-                    ]
-
-                    inputNames.forEach(name => {
-                        const td = document.createElement('td');
-                        const input = document.createElement('input');
-                        input.name = name;
-                        input.type = 'text';
-                        td.appendChild(input);
-                        tr.appendChild(td);
-                    })
-                    tbody.append(tr);
-
-                }
-
-                function addRelative(){
-                    const tbody = document.querySelector('#relativesBody');
-                    const tr = document.createElement('tr');
-
-                    const inputNames = [
-                        'nameRelative[]',
-                        'relationship[]',
-                        'position[]',
-                        'nameAgency[]'
-                    ]
-
-                    inputNames.forEach(name => {
-                        const td = document.createElement('td');
-                        const input = document.createElement('input');
-                        input.name = name;
-                        input.type = 'text';
-                        td.appendChild(input);
-                        tr.appendChild(td);
-                    })
-                    tbody.append(tr);
-                    }
-                    function addChildRow() {
-                        const container = document.getElementById('children_fields');
-
-                        const newRow = document.createElement('div');
-                        newRow.classList.add('row', 'child-entry');
-                        newRow.innerHTML = `
-                            <div>
-                                <label>Name</label>
-                                <input type="text" name="children_name[]">
-                            </div>
-                            <div>
-                                <label>Date of Birth</label>
-                                <input type="date" name="children_dob[]">
-                            </div>
-                        `;
-
-                        container.appendChild(newRow);
-                    }
-            </script>
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            });
+</script>
 </body>
 </html>
