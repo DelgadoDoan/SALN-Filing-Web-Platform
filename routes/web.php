@@ -8,7 +8,7 @@ use App\Http\Controllers\FormpageController;
 use Illuminate\Support\Facades\Cookie;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/home');
 });
 
 Route::get('/login', function () {
@@ -18,8 +18,6 @@ Route::get('/login', function () {
 Route::get('/signup', function () {
     return view('signup');
 })->name('signup');
-
-Route::get('/home', [FormpageController::class, 'isLoggedIn']);
 
 Route::post('/login/magic-link', [MagicLinkController::class, 'login'])->name('magic-link.login');
 
@@ -31,6 +29,10 @@ Route::get('/home/logout', [FormpageController::class, 'logout']);
 
 Route::get('/home/delete-account', [FormpageController::class, 'deleteAccount']);
 
-Route::get('/home/delete-account', [FormpageController::class, 'deleteAccount']);
-
 Route::get('/link-sent/{email}', [MagicLinkController::class, 'onSuccess'])->name('linksent');
+
+Route::post('/save-saln', [FormpageController::class, 'saveToDatabase'])->name('saln.save');
+
+Route::middleware(['prevent-back'])->group(function() {
+    Route::get('/home', [FormpageController::class, 'isLoggedIn']);
+});
