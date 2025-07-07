@@ -119,11 +119,11 @@
             <div class="error">{{ $errors->first('email') }}</div>
 
             <button name="submit" type="submit" class="signin">Login</button>
-            <!-- @if (session('error'))
+            @if (session('error'))
                 <div class="error">
                     {{ session('error') }}
                 </div>
-            @endif -->
+            @endif
         </form>
 
         <div class="redirect">Don't have an account yet? <a href="{{ route('signup') }}">Sign up here</a></div>

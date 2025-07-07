@@ -113,7 +113,7 @@
         <h2>You're almost done!</h2>
         <h5>We sent an email to</h5>
         <h3>{{ $email }}</h3>
-        <p>Be sure to click the link within <b>30 minutes</b> to complete the verification process.</p>
+        <p>Be sure to click the link within <b>30 minutes</b> to complete your login.</p>
     </div>
 </body>
 </html>

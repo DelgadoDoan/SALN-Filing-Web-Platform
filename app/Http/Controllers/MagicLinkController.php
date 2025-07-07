@@ -49,6 +49,19 @@ class MagicLinkController extends Controller
         $user = User::where('email', $validated['email'])->first();
 
         if (!empty($user)) {
+            // prevent login spam
+            $recentToken = MagicToken::where('created_at', '>=', Carbon::now()->subMinutes(5))
+                ->where('user_id', '=', $user->id)
+                ->whereNull('used_at')
+                ->first();
+            
+            if (!empty($recentToken)) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Too many login attempts. Please try again in 5 minutes.')
+                    ->withInput();
+            }
+
             $magicToken = MagicToken::create([
                 'user_id' => $user->id,
                 'token' => Str::uuid()->toString(),
@@ -61,7 +74,7 @@ class MagicLinkController extends Controller
             return redirect()->route('linksent', ['email' => $encrypted]);
         }
 
-        return redirect->back();
+        return redirect()->back();
     }
 
     public function onSuccess(string $encryptedEmail) {

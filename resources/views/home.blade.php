@@ -292,13 +292,16 @@
             <ul class="navbar-links">
                 <li>
                     <a href="/home/logout">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        Logout
                     </a>
                 </li>
                 <li>
                     <a href="/home/delete-account" onclick="return confirm('Are you sure you want to delete your account?')">
-                        <i class="fas fa-user-slash"></i> Delete Account
+                        Delete Account
                     </a>
+                </li>
+                <li>
+                    <a>{{ Auth::user()->name }}</a>
                 </li>
             </ul>
         </div>
