@@ -55,6 +55,8 @@ class FormpageController extends Controller
         Cookie::expire('user');
 
         Auth::logout();
+
+        return redirect('/login');
     }
 
     public function saveToDatabase(Request $request) {
