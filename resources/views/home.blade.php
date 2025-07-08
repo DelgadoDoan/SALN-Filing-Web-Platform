@@ -381,9 +381,15 @@
             </div>
 
             <div class="checkbox-group">
-                <label><input type="radio" name="filing_type" value="joint"> Joint Filing</label>
-                <label><input type="radio" name="filing_type" value="separate"> Separate Filing</label>
-                <label><input type="radio" name="filing_type" value="na"> Not Applicable</label>
+                <label><input type="radio" name="filing_type" value="joint"
+                        {{ strtolower($prefillData['filingType'] ?? '') === 'joint filing' ? 'checked' : '' }}> Joint
+                    Filing</label>
+                <label><input type="radio" name="filing_type" value="separate"
+                        {{ strtolower($prefillData['filingType'] ?? '') === 'separate filing' ? 'checked' : '' }}>
+                    Separate Filing</label>
+                <label><input type="radio" name="filing_type" value="na"
+                        {{ strtolower($prefillData['filingType'] ?? '') === 'not applicable' ? 'checked' : '' }}> Not
+                    Applicable</label>
             </div>
 
             <!-- Declarant Section -->
@@ -705,21 +711,47 @@
                             </tr>
                         </thead>
                         <tbody id="assetsReal">
-                            <tr>
-                                <td><input type="text" name="desc[]"></td>
-                                <td><input type="text" name="kind[]"></td>
-                                <td><input type="text" name="location[]"></td>
-                                <td><input type="text" name="assessed[]"></td>
-                                <td><input type="text" name="marketValue[]"></td>
-                                <td><input type="text" name="acqYear[]"></td>
-                                <td><input type="text" name="acqMode[]"></td>
-                                <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"></td>
-                                <td>
-                                    <button type="button" class="btn btn-remove"
-                                        onclick="removeRealPropertyRow(this)">Delete</button>
-                                </td>
-                                </td>
-                            </tr>
+                            @forelse ($prefillData['declarant']['assets']['realProperties'] ?? [] as $assetReal)
+                                <tr>
+                                    <td><input type="text" name="desc[]"
+                                            value="{{ $assetReal['description'] ?? '' }}"></td>
+                                    <td><input type="text" name="kind[]" value="{{ $assetReal['kind'] ?? '' }}">
+                                    </td>
+                                    <td><input type="text" name="location[]"
+                                            value="{{ $assetReal['exactLocation'] ?? '' }}"></td>
+                                    <td><input type="text" name="assessed[]"
+                                            value="{{ $assetReal['assessedValue'] ?? '' }}"></td>
+                                    <td><input type="text" name="marketValue[]"
+                                            value="{{ $assetReal['currentFairMarketValue'] ?? '' }}"></td>
+                                    <td><input type="text" name="acqYear[]"
+                                            value="{{ $assetReal['acquisitionYear'] ?? '' }}"></td>
+                                    <td><input type="text" name="acqMode[]"
+                                            value="{{ $assetReal['acquisitionMode'] ?? '' }}"></td>
+                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"
+                                            value="{{ $assetReal['acquisitionCost'] ?? '' }}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeRealPropertyRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td><input type="text" name="desc[]"></td>
+                                    <td><input type="text" name="kind[]"></td>
+                                    <td><input type="text" name="location[]"></td>
+                                    <td><input type="text" name="assessed[]"></td>
+                                    <td><input type="text" name="marketValue[]"></td>
+                                    <td><input type="text" name="acqYear[]"></td>
+                                    <td><input type="text" name="acqMode[]"></td>
+                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeRealPropertyRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforelse
+
                         </tbody>
                     </table>
                     <button type="button" onclick="addRealProperty()">Add Another Entry</button>
@@ -745,16 +777,33 @@
                             </tr>
                         </thead>
                         <tbody id="assetsPersonal">
-                            <tr>
-                                <td><input type="text" name="description[]"></td>
-                                <td><input type="text" name="yearAcquired[]"></td>
-                                <td><input type="text" name="acquisitionCost[]"
-                                        oninput="calculatePersonalSubtotal()"></td>
-                                <td>
-                                    <button type="button" class="btn btn-remove"
-                                        onclick="removePersonalPropertyRow(this)">Delete</button>
-                                </td>
-                            </tr>
+                            @forelse ($prefillData['declarant']['assets']['personalProperties'] ?? [] as $assetPersonal)
+                                <tr>
+                                    <td><input type="text" name="description[]"
+                                            value="{{ $assetPersonal['description'] ?? '' }}"></td>
+                                    <td><input type="text" name="yearAcquired[]"
+                                            value="{{ $assetPersonal['yearAcquired'] ?? '' }}"></td>
+                                    <td><input type="text" name="acquisitionCost[]"
+                                            oninput="calculatePersonalSubtotal()"
+                                            value="{{ $assetPersonal['acquisitionCost'] ?? '' }}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removePersonalPropertyRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td><input type="text" name="description[]"></td>
+                                    <td><input type="text" name="yearAcquired[]"></td>
+                                    <td><input type="text" name="acquisitionCost[]"
+                                            oninput="calculatePersonalSubtotal()"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removePersonalPropertyRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforelse
+
                         </tbody>
                     </table>
                     <div class="left-button">
@@ -789,16 +838,33 @@
                             </tr>
                         </thead>
                         <tbody id="liabilitiesBody">
-                            <tr>
-                                <td><input type="text" name="nature[]"></td>
-                                <td><input type="text" name="nameCreditor[]"></td>
-                                <td><input type="text" name="OutstandingBalance[]"
-                                        oninput="calculateLiabilitiesSubtotal()"></td>
-                                <td>
-                                    <button type="button" class="btn btn-remove"
-                                        onclick="removeLiabilitiesRow(this)">Delete</button>
-                                </td>
-                            </tr>
+                            @forelse ($prefillData['declarant']['liabilities'] ?? [] as $liability)
+                                <tr>
+                                    <td><input type="text" name="nature[]"
+                                            value="{{ $liability['nature'] ?? '' }}"></td>
+                                    <td><input type="text" name="nameCreditor[]"
+                                            value="{{ $liability['nameOfCreditor'] ?? '' }}"></td>
+                                    <td><input type="text" name="OutstandingBalance[]"
+                                            value="{{ $liability['outstandingBalance'] ?? '' }}"
+                                            oninput="calculateLiabilitiesSubtotal()"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeLiabilitiesRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td><input type="text" name="nature[]"></td>
+                                    <td><input type="text" name="nameCreditor[]"></td>
+                                    <td><input type="text" name="OutstandingBalance[]"
+                                            oninput="calculateLiabilitiesSubtotal()"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeLiabilitiesRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforelse
+
                         </tbody>
                     </table>
                     <div class="left-button">
@@ -828,7 +894,8 @@
                 </div>
                 <div class="checkbox-group">
                     <label>
-                        <input type="checkbox" name="noBusinessInterest" />
+                        <input type="checkbox" name="noBusinessInterest"
+                            {{ $prefillData['declarant']['hasBusinessInterests'] ?? false ? 'checked' : '' }} />
                         I/We do not have any business interest or financial connection
                     </label>
 
@@ -846,10 +913,10 @@
                         </thead>
                         <tbody id="businessBody">
                             <tr>
-                                <td><input type="text" name="nameBusiness[]"></td>
-                                <td><input type="text" name="addressBusiness[]"></td>
-                                <td><input type="text" name="natureBusiness[]"></td>
-                                <td><input type="text" name="dateInterest[]"></td>
+                                <td><input type="text" name="nameBusiness[]" class="business-input"></td>
+                                <td><input type="text" name="addressBusiness[]" class="business-input"></td>
+                                <td><input type="text" name="natureBusiness[]" class="business-input"></td>
+                                <td><input type="text" name="dateInterest[]" class="business-input"></td>
                                 <td>
                                     <button type="button" class="btn btn-remove"
                                         onclick="removeBusinessRow(this)">Delete</button>
@@ -858,7 +925,7 @@
                         </tbody>
                     </table>
                     <div class="left-button">
-                        <button type="button" onclick="addBusiness()">Add Another Entry</button>
+                        <button type="button" onclick="addBusiness()" id="addBusinessBtn">Add Another Entry</button>
                     </div>
                 </div>
 
@@ -870,7 +937,8 @@
                     </div>
                     <div class="checkbox-group">
                         <label>
-                            <input type="checkbox" name="noBusinessInterest" />
+                            <input type="checkbox" name="noRelativesGovernment"
+                                {{ $prefillData['declarant']['hasRelativesInGovermentService'] ?? false ? 'checked' : '' }} />
                             I/We do not have any relative/s in the government service
                         </label>
 
@@ -933,15 +1001,18 @@
                                 <label>Signature of Declarant</label>
                                 <div>
                                     <label>Government Issued ID</label>
-                                    <input type="text" name="govIDDeclarant">
+                                    <input type="text" name="govIDDeclarant"
+                                        value="{{ old('govIDDeclarant', $prefillData['declarant']['governmentIssuedId']['type'] ?? '') }}">
                                 </div>
                                 <div>
                                     <label>ID No.:</label>
-                                    <input type="text" name="idNoDeclarant">
+                                    <input type="text" name="idNoDeclarant"
+                                        value="{{ old('idNoDeclarant', $prefillData['declarant']['governmentIssuedId']['idNumber'] ?? '') }}">
                                 </div>
                                 <div>
                                     <label>Date Issued:</label>
-                                    <input type="date" name="idDateDeclarant">
+                                    <input type="date" name="idDateDeclarant"
+                                        value="{{ old('idDateDeclarant', $prefillData['declarant']['governmentIssuedId']['dateIssued'] ?? '') }}">
                                 </div>
                             </div>
 
@@ -950,15 +1021,18 @@
                                 <label>Signature of Co-Declarant/Spouse</label>
                                 <div>
                                     <label>Government Issued ID</label>
-                                    <input type="text" name="govIDSpouse">
+                                    <input type="text" name="govIDSpouse"
+                                        value="{{ old('govIDSpouse', $prefillData['declarant']['spouses'][0]['governmentIssuedId']['type'] ?? '') }}">
                                 </div>
                                 <div>
                                     <label>ID No.:</label>
-                                    <input type="text" name="idNoSpouse">
+                                    <input type="text" name="idNoSpouse"
+                                        value="{{ old('idNoSpouse', $prefillData['declarant']['spouses'][0]['governmentIssuedId']['idNumber'] ?? '') }}">
                                 </div>
                                 <div>
                                     <label>Date Issued:</label>
-                                    <input type="date" name="idDateSpouse">
+                                    <input type="date" name="idDateSpouse"
+                                        value="{{ old('idDateSpouse', $prefillData['declarant']['spouses'][0]['governmentIssuedId']['dateIssued'] ?? '') }}">
                                 </div>
                             </div>
                         </div>
@@ -1429,7 +1503,17 @@
                     calculateAge(input);
                 }
             });
+
+            calculatePersonalSubtotal();
+            calculateRealSubtotal();
+            calculateLiabilitiesSubtotal();
+            calculateTotalAssets();
+
+            document.querySelectorAll('input[name="acquisitionCost[]"]').forEach(input => {
+                input.addEventListener('input', calculatePersonalSubtotal);
+            });
         });
+
     </script>
 </body>
 
