@@ -935,7 +935,6 @@
             } else {
                 alert("At least one row is required.");
             }
-            button.closest('tr').remove();
             calculateRealSubtotal();
         }
         function calculateRealSubtotal() {
@@ -1002,7 +1001,6 @@
             } else {
                 alert("At least one row is required.");
             }
-            button.closest('tr').remove();
             calculatePersonalSubtotal();
         }
         function calculatePersonalSubtotal() {
@@ -1084,7 +1082,6 @@
             } else {
                 alert("At least one row is required.");
             }
-            button.closest('tr').remove();
             calculateLiabilitiesSubtotal();
         }
         function calculateLiabilitiesSubtotal() {
