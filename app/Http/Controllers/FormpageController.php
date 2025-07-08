@@ -111,7 +111,7 @@ class FormpageController extends Controller
 
         // --- Save to DB ---
         $saln->save();
-        foreach ($request->children_name as $index => $name) {
+        foreach ($request->input('children_name',[]) as $index => $name) {
             UnmarriedChild::create([
                 'saln_id' => $saln->id,
                 'name' => $name,
