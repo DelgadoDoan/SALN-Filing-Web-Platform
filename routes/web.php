@@ -7,6 +7,10 @@ use App\Http\Controllers\FormpageController;
 
 use Illuminate\Support\Facades\Cookie;
 
+if (App::environment('staging')) {
+    URL::forceScheme('https');
+}
+
 Route::get('/', function () {
     return redirect('/home');
 });
