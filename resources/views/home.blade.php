@@ -792,11 +792,6 @@
             household covering previous years to include the year I first assumed office in government.
         </p>
 
-        <div class="rowone" style="margin: 20px 0;">
-            <label for="certDate">Date:</label>
-            <input type="date" id="certDate" name="certDate">
-        </div>
-
         <div class="row" style="margin-top: 30px;">
             <div style="flex: 1; text-align: center;">
                 <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
