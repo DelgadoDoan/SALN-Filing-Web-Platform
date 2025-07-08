@@ -40,3 +40,5 @@ Route::post('/save-saln', [FormpageController::class, 'saveToDatabase'])->name('
 Route::middleware(['prevent-back'])->group(function() {
     Route::get('/home', [FormpageController::class, 'isLoggedIn']);
 });
+
+Route::post('/home/import-json', [FormpageController::class, 'importJson']);
