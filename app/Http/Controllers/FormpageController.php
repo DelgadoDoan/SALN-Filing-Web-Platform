@@ -36,7 +36,9 @@ class FormpageController extends Controller
             return redirect('/login');
         }
 
-        return view('home');
+        $prefillData = session('prefill'); // this pulls the uploaded data
+
+        return view('home', compact('prefillData'));
     }
 
     public function logout() {
@@ -190,5 +192,25 @@ class FormpageController extends Controller
 
 
         return redirect()->back()->with('success', 'SALN Form submitted successfully!');
+    }
+
+    public function importJson(Request $request)
+    {
+        $request->validate([
+            'json_file' => 'required|file|mimes:json',
+        ]);
+
+        $path = $request->file('json_file')->store('uploads');
+        $fullPath = storage_path("app/private/{$path}");
+
+        if (!file_exists($fullPath)) {
+            dd("File not found at: $fullPath");
+
+        }
+
+        $json = file_get_contents($fullPath);
+        $data = json_decode($json, true);
+
+        return redirect('/home')->with('prefill', $data);
     }
 }
