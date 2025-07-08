@@ -167,7 +167,26 @@
             font-size: 14px;
             cursor: pointer;
             margin-top: 10px;
+            width: 150px; /* or whatever width looks right */
+            text-align: center;
         }
+        .button-remove {
+            background-color: red;
+        }
+        .btn-remove {
+            background-color: #ED2100;
+            color: white;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            width: 60px;
+            margin-top: -50px;
+            display: block;
+            margin: 0 auto;
+        }
+
 
         .subtotal-row {
             display: flex;
@@ -210,6 +229,10 @@
             align-items: flex-end;
             margin-left: auto;
             margin-top: -42px;
+        }
+        .assets-table td {
+            text-align: center;
+            vertical-align: middle;
         }
 
         .left-button {
@@ -431,9 +454,9 @@
         </div>
         </div>
 
-        <h3>Spouse Information</h3>
         <div id="spouseRepeater">
-            <div class="spouse-block">
+                <div class="spouse-block">
+                    <h4 class ="spouse-header">Spouse 1 Information</h4>
                 <div class="row">
                     <div>
                         <label>Family Name</label>
@@ -514,6 +537,9 @@
                         <input type="text" name="spouse_office_zip[]">
                     </div>
                 </div>
+                    <div class="spouse-actions">
+                        <button type="button" class="button-remove remove-spouse" onclick="removeSpouseBlock(this)">Remove Spouse</button>
+                    </div>
             </div>
         </div>
 
@@ -522,25 +548,16 @@
             <button type="button" onclick="addSpouseBlock()">Add Spouse</button>
         </div>
 
-
         <h3>Unmarried Children</h3>
-        <div id="children_fields">
-            <div class="row child-entry">
-                <div>
-                    <label for="children_name[]">Name</label>
-                    <input type="text" name="children_name[]">
-                </div>
-                <div>
-                    <label for="children_dob[]">Date of Birth</label>
-                    <input type="date" name="children_dob[]">
-                </div>
-            </div>
-        </div>
+
+        <div id="children_fields"></div>
 
         <div class="left-button">
-            <button type="button" onclick="addChildRow()">Add Row</button>
+            <button type="button" style="font-size: 13px;" onclick="addChildRow()">Add Unmarried Child</button>
         </div>
-
+        <div class="left-button">
+            <button type="button" style="font-size: 13px;" class="button-remove" onclick="removeLastChildRow()">Remove Unmarried Child</button>
+        </div>
 
         <!-- Assets Section -->
         <div class="form-section">
@@ -558,6 +575,7 @@
                             <th colspan="1">Current Fair Market Value</th>
                             <th colspan="2">Acquisition</th>
                             <th rowspan="2">Acquisition Cost</th>
+                            <th rowspan="2"></th>
                         </tr>
                         <tr>
                             <th><small>(e.g. lot, house and lot, condominium, and improvements)</small></th>
@@ -576,11 +594,15 @@
                             <td><input type="text" name="marketValue[]"></td>
                             <td><input type="text" name="acqYear[]"></td>
                             <td><input type="text" name="acqMode[]"></td>
-                            <td><input type="text" name="acqCost[]"></td>
+                            <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"></td>
+                            <td>
+                                <button type="button" class="btn btn-remove" onclick="removeRealPropertyRow(this)">Delete</button>
+                            </td>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" onclick="addRealProperty()">Add Rows</button>
+                <button type="button" onclick="addRealProperty()">Add Another Entry</button>
                 <div class="asset-controls2">
                 <div class="subtotal-row">
                     <label for="subtotal">Subtotal: </label>
@@ -599,19 +621,22 @@
                             <th rowspan="1">Description</th>
                             <th rowspan="1">Year Acquired</th>
                             <th rowspan="1">Acquisition Cost/Amount</th>
-
+                            <th rowspan="1"></th>
                         </tr>
                     </thead>
                     <tbody id="assetsPersonal">
                         <tr>
                             <td><input type="text" name="description[]"></td>
                             <td><input type="text" name="yearAcquired[]"></td>
-                            <td><input type="text" name="acquisitionCost[]"></td>
+                            <td><input type="text" name="acquisitionCost[]" oninput="calculatePersonalSubtotal()"></td>
+                            <td>
+                                <button type="button" class="btn btn-remove" onclick="removePersonalPropertyRow(this)">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button" onclick="addPersonalProperty()">Add Rows</button>
+                    <button type="button" onclick="addPersonalProperty()">Add Another Entry</button>
                 </div>
                 <div class="asset-controls">
                 <div class ="asset-totals">
@@ -637,6 +662,7 @@
                             <th rowspan="1">Nature</th>
                             <th rowspan="1">Name of Creditors</th>
                             <th rowspan="1">Outstanding Balance</th>
+                            <th rowspan="1"></th>
 
                         </tr>
                     </thead>
@@ -644,12 +670,15 @@
                         <tr>
                             <td><input type="text" name="nature[]"></td>
                             <td><input type="text" name="nameCreditor[]"></td>
-                            <td><input type="text" name="OutstandingBalance[]"></td>
+                            <td><input type="text" name="OutstandingBalance[]" oninput="calculateLiabilitiesSubtotal()"></td>
+                            <td>
+                                <button type="button" class="btn btn-remove" onclick="removeLiabilitiesRow(this)">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button" onclick="addLiability()">Add Rows</button>
+                    <button type="button" onclick="addLiability()">Add Another Entry</button>
                 </div>
                 <div class="asset-controls">
                 <div class ="asset-totals">
@@ -659,7 +688,7 @@
                     </div>
                     <div class="subtotal-row2">
                         <label for="totalAssets">Networth: </label>
-                        <input type="text" id="totalAssets" readonly>
+                        <input type="text" id="netWorth" readonly>
                     </div>
                 </div>
                 
@@ -688,6 +717,7 @@
                             <th rowspan="1">Business Address</th>
                             <th rowspan="1">Nature of Business Interest and/or Financial Connection</th>
                             <th rowspan="1">Date of Acquisition of Interest or Connection</th>
+                            <th rowspan="1"></th>
                         </tr>
                     </thead>
                     <tbody id="businessBody">
@@ -696,11 +726,14 @@
                             <td><input type="text" name="addressBusiness[]"></td>
                             <td><input type="text" name="natureBusiness[]"></td>
                             <td><input type="text" name="dateInterest[]"></td>
+                            <td>
+                                <button type="button" class="btn btn-remove" onclick="removeBusinessRow(this)">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button" onclick="addBusiness()">Add Rows</button>
+                    <button type="button" onclick="addBusiness()">Add Another Entry</button>
                 </div>
             </div>
 
@@ -725,6 +758,7 @@
                             <th rowspan="1">Relationship</th>
                             <th rowspan="1">Position</th>
                             <th rowspan="1">Name of Agency/Office and Adress</th>
+                            <th rowspan="1"></th>
                         </tr>
                     </thead>
                     <tbody id="relativesBody">
@@ -733,11 +767,14 @@
                             <td><input type="text" name="relationship[]"></td>
                             <td><input type="text" name="position[]"></td>
                             <td><input type="text" name="nameAgency[]"></td>
+                            <td>
+                                <button type="button" class="btn btn-remove" onclick="removeRelativeRow(this)">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="left-button">
-                    <button type="button" onclick="addRelative()">Add Rows</button>
+                    <button type="button" onclick="addRelative()">Add Another Entry</button>
                 </div>
             </div>
         <div class="form-section">
@@ -813,7 +850,7 @@
     </form>
 
     <script>
-    function addSpouseBlock() {
+        function addSpouseBlock() {
         const container = document.getElementById('spouseRepeater');
         const original = container.querySelector('.spouse-block');
         const clone = original.cloneNode(true);
@@ -822,6 +859,26 @@
         clone.querySelectorAll('input').forEach(input => input.value = '');
 
         container.appendChild(clone);
+        container.querySelectorAll('.spouse-header').forEach((el, idx) => {
+            el.textContent = `Spouse ${idx + 1} Information`;
+        });
+        }
+
+        function removeSpouseBlock(button) {
+            const container = document.getElementById('spouseRepeater');
+            const blocks = container.querySelectorAll('.spouse-block');
+
+            if (blocks.length > 1) {
+                // Remove the clicked spouse block
+                button.closest('.spouse-block').remove();
+
+                // Renumber the remaining headers
+                container.querySelectorAll('.spouse-header').forEach((el, idx) => {
+                    el.textContent = `Spouse ${idx + 1} Information`;
+                });
+            } else {
+                alert("At least one spouse block is required.");
+            }
         }
 
         function addRealProperty() {
@@ -844,11 +901,60 @@
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.name = name;
+                if (name === 'acqCost[]') {
+                    input.addEventListener('input', calculateRealSubtotal);
+                }
                 td.appendChild(input);
                 tr.appendChild(td);
                 });
             tbody.appendChild(tr);
+            
+
+            // Add delete button
+            const tdDelete = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'btn btn-remove'; // Add your styles here
+            deleteBtn.onclick = function () {
+                const totalRows = tbody.querySelectorAll('tr').length;
+                if (totalRows > 1) {
+                    tr.remove();
+                } else {
+                    alert("At least one row is required.");
+                }
+            };
+            tdDelete.appendChild(deleteBtn);
+            tr.appendChild(tdDelete);
+        }
+
+        function removeRealPropertyRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('assetsReal');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
             }
+            button.closest('tr').remove();
+            calculateRealSubtotal();
+        }
+        function calculateRealSubtotal() {
+            let total = 0;
+            const inputs = document.querySelectorAll('input[name="acqCost[]"]');
+
+            inputs.forEach(input => {
+                const value = parseFloat(input.value.replace(/,/g, ''));
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+
+            document.getElementById('subtotalReal').value = total.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            calculateTotalAssets();
+        }
 
         function addPersonalProperty(){
             const tbody = document.querySelector("#assetsPersonal");
@@ -865,11 +971,73 @@
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.name = name;
+                if (name === 'acquisitionCost[]') {
+                    input.addEventListener('input', calculatePersonalSubtotal);
+                }
                 td.appendChild(input);
                 tr.appendChild(td);
             })
                 tbody.appendChild(tr);
+                // Add delete button
+                const tdDelete = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'btn btn-remove'; // Add your styles here
+                deleteBtn.onclick = function () {
+                    const totalRows = tbody.querySelectorAll('tr').length;
+                    if (totalRows > 1) {
+                        tr.remove();
+                    } else {
+                        alert("At least one row is required.");
+                    }
+                };
+                tdDelete.appendChild(deleteBtn);
+                tr.appendChild(tdDelete);
             }
+        function removePersonalPropertyRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('assetsPersonal');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
+            button.closest('tr').remove();
+            calculatePersonalSubtotal();
+        }
+        function calculatePersonalSubtotal() {
+            let total = 0;
+            const inputs = document.querySelectorAll('input[name="acquisitionCost[]"]');
+
+            inputs.forEach(input => {
+                const value = parseFloat(input.value.replace(/,/g, ''));
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+
+            document.getElementById('subtotalPersonal').value = total.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            calculateTotalAssets();
+        }
+        function calculateTotalAssets() {
+            const real = parseFloat(document.getElementById('subtotalReal').value.replace(/,/g, '')) || 0;
+            const personal = parseFloat(document.getElementById('subtotalPersonal').value.replace(/,/g, '')) || 0;
+
+            const total = real + personal;
+
+            document.getElementById('totalAssets').value = total.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            calculateNetWorth();
+            
+        }
 
         function addLiability(){
             const tbody = document.querySelector("#liabilitiesBody");
@@ -884,12 +1052,69 @@
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.name = name;
+                if (name === 'OutstandingBalance[]') {
+                    input.addEventListener('input', calculateLiabilitiesSubtotal);
+                }
                 td.appendChild(input);
                 tr.appendChild(td);
             })
                 tbody.appendChild(tr);
+                // Add delete button
+                const tdDelete = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'btn btn-remove'; // Add your styles here
+                deleteBtn.onclick = function () {
+                    const totalRows = tbody.querySelectorAll('tr').length;
+                    if (totalRows > 1) {
+                        tr.remove();
+                    } else {
+                        alert("At least one row is required.");
+                    }
+                };
+                tdDelete.appendChild(deleteBtn);
+                tr.appendChild(tdDelete);
             }
 
+        function removeLiabilitiesRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('liabilitiesBody');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
+            button.closest('tr').remove();
+            calculateLiabilitiesSubtotal();
+        }
+        function calculateLiabilitiesSubtotal() {
+            let total = 0;
+            const inputs = document.querySelectorAll('input[name="OutstandingBalance[]"]');
+
+            inputs.forEach(input => {
+                const value = parseFloat(input.value.replace(/,/g, ''));
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+
+            document.getElementById('subtotalLiabilities').value = total.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            calculateNetWorth();
+        }
+        function calculateNetWorth() {
+            const assets = parseFloat(document.getElementById('totalAssets').value.replace(/,/g, '')) || 0;
+            const liabilities = parseFloat(document.getElementById('subtotalLiabilities').value.replace(/,/g, '')) || 0;
+
+            const netWorth = assets - liabilities;
+
+            document.getElementById('netWorth').value = netWorth.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }    
         function addBusiness(){
             const tbody = document.querySelector('#businessBody');
             const tr = document.createElement('tr');
@@ -908,8 +1133,34 @@
                 tr.appendChild(td);
             })
             tbody.append(tr);
+            // Add delete button
+                const tdDelete = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'btn btn-remove'; // Add your styles here
+                deleteBtn.onclick = function () {
+                    const totalRows = tbody.querySelectorAll('tr').length;
+                    if (totalRows > 1) {
+                        tr.remove();
+                    } else {
+                        alert("At least one row is required.");
+                    }
+                };
+                tdDelete.appendChild(deleteBtn);
+                tr.appendChild(tdDelete); 
             }
+        function removeBusinessRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('businessBody');
+            const totalRows = tbody.querySelectorAll('tr').length;
 
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
+        }    
         function addRelative(){
             const tbody = document.querySelector('#relativesBody');
             const tr = document.createElement('tr');
@@ -928,10 +1179,37 @@
                 tr.appendChild(td);
             })
                 tbody.append(tr);
+                // Add delete button
+                const tdDelete = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'btn btn-remove'; // Add your styles here
+                deleteBtn.onclick = function () {
+                    const totalRows = tbody.querySelectorAll('tr').length;
+                    if (totalRows > 1) {
+                        tr.remove();
+                    } else {
+                        alert("At least one row is required.");
+                    }
+                };
+                tdDelete.appendChild(deleteBtn);
+                tr.appendChild(tdDelete); 
             }
-            function addChildRow() {
-                const container = document.getElementById('children_fields');
-                const newRow = document.createElement('div');
+        function removeRelativeRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('relativesBody');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
+        }  
+        function addChildRow() {
+            const container = document.getElementById('children_fields');
+            const newRow = document.createElement('div');
                 newRow.classList.add('row', 'child-entry');
                 newRow.innerHTML = `
                     <div>
@@ -940,14 +1218,45 @@
                     </div>
                     <div>
                         <label>Date of Birth</label>
-                        <input type="date" name="children_dob[]">
+                        <input type="date" name="children_dob[]" onchange="calculateAge(this)">
+                    </div>
+                    <div>
+                        <label>Age</label>
+                        <input type="text" name="children_age[]" readonly>
                     </div>
                 `;
                 container.appendChild(newRow);
+        }
+        function removeLastChildRow() {
+            const container = document.getElementById('children_fields');
+            const allRows = container.querySelectorAll('.child-entry');
+
+            if (allRows.length > 0) {
+                container.removeChild(allRows[allRows.length - 1]);
+            } else {
+                alert("There are no child entries to remove.");
             }
-            let lastScrollTop = 0;
-            const navbar = document.querySelector('.navbar');
-            window.addEventListener('scroll', function () {
+        }
+        function calculateAge(dobInput) {
+            const dob = new Date(dobInput.value);
+            const today = new Date();
+
+            if (isNaN(dob)) return;
+
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+
+            const ageInput = dobInput.closest('.child-entry').querySelector('input[name="children_age[]"]');
+            ageInput.value = age;
+        }
+
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function () {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
                 if (scrollTop > lastScrollTop) {
