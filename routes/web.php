@@ -27,7 +27,7 @@ Route::post('/login/magic-link', [MagicLinkController::class, 'login'])->name('m
 
 Route::post('/signup/magic-link', [MagicLinkController::class, 'signup'])->name('magic-link.signup');
 
-Route::get('/magic-link/{magicToken}', [MagicLinkController::class, 'authenticate'])->name('magic-link.authenticate');
+Route::get('/magic-link/{magicToken}/{randomStr}', [MagicLinkController::class, 'authenticate'])->name('magic-link.authenticate');
 
 Route::get('/home/logout', [FormpageController::class, 'logout']);
 

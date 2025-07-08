@@ -33,7 +33,9 @@ class MagicLinkController extends Controller
                 'token' => Str::uuid()->toString(),
             ]);
 
-            Mail::to($newUser->email)->send(new MagicLinkMail($magicToken));
+            $randomStr = Str::random(30);
+
+            Mail::to($newUser->email)->send(new MagicLinkMail($magicToken, $randomStr));
 
             $encrypted = Crypt::encryptString($newUser->email);
 
@@ -67,7 +69,9 @@ class MagicLinkController extends Controller
                 'token' => Str::uuid()->toString(),
             ]);
 
-            Mail::to($user->email)->send(new MagicLinkMail($magicToken));
+            $randomStr = Str::random(30);
+
+            Mail::to($user->email)->send(new MagicLinkMail($magicToken, $randomStr));
 
             $encrypted = Crypt::encryptString($user->email);
 

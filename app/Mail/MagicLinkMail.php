@@ -16,13 +16,15 @@ class MagicLinkMail extends Mailable
     use Queueable, SerializesModels;
 
     public MagicToken $magicToken;
+    public string $randomStr;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(MagicToken $magicToken)
+    public function __construct(MagicToken $magicToken, string $randomStr)
     {
         $this->magicToken = $magicToken;
+        $this->randomStr = $randomStr;
     }
 
     /**
