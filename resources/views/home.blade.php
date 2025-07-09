@@ -319,6 +319,12 @@
         .navbar-links a:hover {
             background: rgba(255, 255, 255, 0.15);
         }
+
+        .disabled-wrapper {
+            pointer-events: none;
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -894,13 +900,14 @@
                 </div>
                 <div class="checkbox-group">
                     <label>
-                        <input type="checkbox" name="noBusinessInterest"
+                        <input type="checkbox" name="noBusinessInterest" id="noBusinessInterest"
+                            onchange="toggleBusinessForm()"
                             {{ $prefillData['declarant']['hasBusinessInterests'] ?? false ? 'checked' : '' }} />
                         I/We do not have any business interest or financial connection
                     </label>
 
                 </div>
-                <div class="assets-table-wrapper">
+                <div class="assets-table-wrapper" id="business-form">
                     <table class="assets-table">
                         <thead>
                             <tr>
@@ -912,6 +919,24 @@
                             </tr>
                         </thead>
                         <tbody id="businessBody">
+                             @if (!($prefillData['declarant']['hasBusinessInterests'] ?? false)&& !empty($prefillData['declarant']['businessInterestsAndFinancialConnections'] ?? []))
+                             @foreach ($prefillData['declarant']['businessInterestsAndFinancialConnections'] as $business)
+                            <tr>
+                                <td><input type="text" name="nameBusiness[]" class="business-input"
+                                    value="{{$business['nameOfEntity'] ?? ''}}"></td>
+                                <td><input type="text" name="addressBusiness[]" class="business-input"
+                                    value="{{$business['businessAddress'] ?? ''}}"></td>
+                                <td><input type="text" name="natureBusiness[]" class="business-input"
+                                    value="{{$business['natureOfInterestOrConnection'] ?? ''}}"></td>
+                                <td><input type="text" name="dateInterest[]" class="business-input"
+                                    value="{{$business['dateOfAcquisition'] ?? ''}}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-remove"
+                                        onclick="removeBusinessRow(this)">Delete</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @else
                             <tr>
                                 <td><input type="text" name="nameBusiness[]" class="business-input"></td>
                                 <td><input type="text" name="addressBusiness[]" class="business-input"></td>
@@ -922,6 +947,7 @@
                                         onclick="removeBusinessRow(this)">Delete</button>
                                 </td>
                             </tr>
+                            @endif
                         </tbody>
                     </table>
                     <div class="left-button">
@@ -937,13 +963,14 @@
                     </div>
                     <div class="checkbox-group">
                         <label>
-                            <input type="checkbox" name="noRelativesGovernment"
+                            <input type="checkbox" name="noRelativesGovernment" id="noRelativesGovernment"
+                                onchange="toggleRelativesForm()"
                                 {{ $prefillData['declarant']['hasRelativesInGovermentService'] ?? false ? 'checked' : '' }} />
                             I/We do not have any relative/s in the government service
                         </label>
 
                     </div>
-                    <div class="assets-table-wrapper">
+                    <div class="assets-table-wrapper" id="relatives-government-form">
                         <table class="assets-table">
                             <thead>
                                 <tr>
@@ -955,16 +982,35 @@
                                 </tr>
                             </thead>
                             <tbody id="relativesBody">
-                                <tr>
-                                    <td><input type="text" name="nameRelative[]"></td>
-                                    <td><input type="text" name="relationship[]"></td>
-                                    <td><input type="text" name="position[]"></td>
-                                    <td><input type="text" name="nameAgency[]"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-remove"
-                                            onclick="removeRelativeRow(this)">Delete</button>
-                                    </td>
-                                </tr>
+                                @if (!($prefillData['declarant']['hasRelativesInGovermentService'] ?? false)&& !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
+                                    @foreach ($prefillData['declarant']['relativesInGovernmentService'] as $relative)
+                                        <tr>
+                                            <td><input type="text" name="nameRelative[]"
+                                                    value="{{ trim("{$relative['firstName']} {$relative['middleInitial']}. {$relative['familyName']}") ?? '' }}"></td>
+                                            <td><input type="text" name="relationship[]"
+                                                    value="{{ $relative['relationship'] ?? '' }}"></td>
+                                            <td><input type="text" name="position[]"
+                                                    value="{{ $relative['position'] ?? '' }}"></td>
+                                            <td><input type="text" name="nameAgency[]"
+                                                    value="{{ $relative['agencyOfficeAndAddress'] ?? '' }}"></td>
+                                            <td>
+                                                <button type="button" class="btn btn-remove"
+                                                    onclick="removeRelativeRow(this)">Delete</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td><input type="text" name="nameRelative[]"></td>
+                                        <td><input type="text" name="relationship[]"></td>
+                                        <td><input type="text" name="position[]"></td>
+                                        <td><input type="text" name="nameAgency[]"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-remove"
+                                                onclick="removeRelativeRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                         <div class="left-button">
@@ -1482,6 +1528,40 @@
             ageInput.value = age;
         }
 
+        function toggleBusinessForm() {
+            const checkbox = document.querySelector("#noBusinessInterest");
+            const businessForm = document.querySelector("#business-form");
+            const isDisabled = checkbox.checked;
+
+            const elements = businessForm.querySelectorAll('input, button')
+            elements.forEach(elem => {
+                elem.disabled = isDisabled;
+            })
+
+            if (isDisabled) {
+                businessForm.classList.add('disabled-wrapper');
+            } else {
+                businessForm.classList.remove('disabled-wrapper');
+            }
+        }
+
+        function toggleRelativesForm() {
+            const checkbox = document.querySelector("#noRelativesGovernment");
+            const relativesGovernmentForm = document.querySelector("#relatives-government-form");
+            const isDisabled = checkbox.checked;
+
+            const elements = relativesGovernmentForm.querySelectorAll('input, button')
+            elements.forEach(elem => {
+                elem.disabled = isDisabled;
+            })
+
+            if (isDisabled) {
+                relativesGovernmentForm.classList.add('disabled-wrapper');
+            } else {
+                relativesGovernmentForm.classList.remove('disabled-wrapper');
+            }
+        }
+
         let lastScrollTop = 0;
         const navbar = document.querySelector('.navbar');
         window.addEventListener('scroll', function() {
@@ -1508,12 +1588,13 @@
             calculateRealSubtotal();
             calculateLiabilitiesSubtotal();
             calculateTotalAssets();
+            toggleRelativesForm();
+            toggleBusinessForm();
 
             document.querySelectorAll('input[name="acquisitionCost[]"]').forEach(input => {
                 input.addEventListener('input', calculatePersonalSubtotal);
             });
         });
-
     </script>
 </body>
 
