@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
@@ -17,6 +16,22 @@ use Illuminate\Support\Facades\Crypt;
 
 class MagicLinkController extends Controller
 {
+    public function showSignup() {
+        if (Auth::check()) {
+            return redirect('/home');
+        }
+
+        return view('signup');
+    }
+
+    public function showLogin() {
+        if (Auth::check()) {
+            return redirect('/home');
+        }
+
+        return view('login');
+    }
+
     public function signup(SignupRequest $request) {
         $validated = $request->validated();
 
@@ -97,8 +112,6 @@ class MagicLinkController extends Controller
         ]);
 
         Auth::login($magicToken->user);
-
-        Cookie::queue('user', $magicToken->user, 120); // cookie lifetime set to 120 minutes
 
         return redirect('/home');
     }

@@ -11,17 +11,11 @@ if (App::environment('staging')) {
     URL::forceScheme('https');
 }
 
-Route::get('/', function () {
-    return redirect('/home');
-});
+Route::get('/', [FormpageController::class, 'isLoggedIn']);
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+Route::get('/signup', [MagicLinkController::class, 'showSignup'])->name('signup');
 
-Route::get('/signup', function () {
-    return view('signup');
-})->name('signup');
+Route::get('/login', [MagicLinkController::class, 'showLogin'])->name('login');
 
 Route::post('/login/magic-link', [MagicLinkController::class, 'login'])->name('magic-link.login');
 

@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Carbon;
 use App\Http\Requests\FormDataRequest;
+use App\Models\MagicToken;
 use App\Models\User;
 use App\Models\BusinessInterest;
 use App\Models\Liability;
@@ -21,16 +22,18 @@ class FormpageController extends Controller
 {
     public function isLoggedIn(Request $request) {
         // check if user is logged in
-        if (!Auth::check()) {
-            Cookie::expire('user');
-            
+        if (!Auth::check()) {            
             return redirect('/login');
         }
 
-        // check if cookie exists        
-        $cookie = $request->cookie('user');
-        
-        if (!$cookie) {
+        // check if token is expired        
+        $expiredToken = MagicToken::where('user_id', Auth::id())
+            ->where('created_at', '<=', Carbon::now()->subMinutes(5)) // if token is already 120 minutes old
+            ->first();
+
+        if ($expiredToken) {
+            $expiredToken->delete();
+
             Auth::logout();
 
             return redirect('/login');
@@ -40,7 +43,9 @@ class FormpageController extends Controller
     }
 
     public function logout() {
-        Cookie::expire('user');
+        $token = MagicToken::where('user_id', Auth::id())
+            ->first()
+            ->delete();
 
         Auth::logout();
 
@@ -48,11 +53,13 @@ class FormpageController extends Controller
     }
 
     public function deleteAccount () {
+        $token = MagicToken::where('user_id', Auth::id())
+            ->first()
+            ->delete();
+
         $user = Auth::user();
 
         $user = User::where('email', $user->email)->delete();
-
-        Cookie::expire('user');
 
         Auth::logout();
 
