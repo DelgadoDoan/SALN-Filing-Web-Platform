@@ -85,11 +85,11 @@ class SALN extends Model
     ];
     public function unmarriedChildren()
     {
-        return $this->hasMany(UnmarriedChild::class);
+        return $this->hasMany(UnmarriedChild::class, 'saln_id');
     }
     public function spouses()
     {
-        return $this->hasMany(Spouse::class);
+        return $this->hasMany(Spouse::class, 'saln_id');
     }
     public function realProperties()
     {

@@ -304,6 +304,20 @@
         .navbar-links a:hover {
         background: rgba(255,255,255,0.15);
         }
+        .child-entry {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap; /* optional: wrap on small screens */
+        }
+
+        .child-field {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 150px;
+        }
 
 
     </style>
@@ -364,10 +378,23 @@
         </div>
 
         <div class="checkbox-group">
-            <label><input type="radio" name="filing_type" value="joint"> Joint Filing</label>
-            <label><input type="radio" name="filing_type" value="separate"> Separate Filing</label>
-            <label><input type="radio" name="filing_type" value="na"> Not Applicable</label>
+            <label>
+                <input type="radio" name="filing_type" value="joint"
+                    {{ old('filing_type', $saln->filing_type ?? '') === 'joint' ? 'checked' : '' }}>
+                Joint Filing
+            </label>
+            <label>
+                <input type="radio" name="filing_type" value="separate"
+                    {{ old('filing_type', $saln->filing_type ?? '') === 'separate' ? 'checked' : '' }}>
+                Separate Filing
+            </label>
+            <label>
+                <input type="radio" name="filing_type" value="na"
+                    {{ old('filing_type', $saln->filing_type ?? '') === 'na' ? 'checked' : '' }}>
+                Not Applicable
+            </label>
         </div>
+
 
         <!-- Declarant Section -->
         <div class="form-section">
@@ -375,15 +402,15 @@
         <div class="row">
             <div>
                 <label for="declarant_family_name">Family Name</label>
-                <input type="text" id="declarant_family_name" name="declarant_family_name">
+                <input type="text" name="declarant_family_name" value="{{ old('declarant_family_name', $saln->declarant_family_name ?? '') }}">
             </div>
             <div>
                 <label for="declarant_first_name">First Name</label>
-                <input type="text" id="declarant_first_name" name="declarant_first_name">
+                <input type="text" name="declarant_first_name" value="{{ old('declarant_first_name', $saln->declarant_first_name ?? '') }}">
             </div>
             <div>
                 <label for="declarant_mi">M.I.</label>
-                <input type="text" id="declarant_mi" name="declarant_mi">
+                <input type="text" name="declarant_mi" value="{{ old('declarant_mi', $saln->declarant_mi ?? '') }}">
             </div>
         </div>
         <!-- DECLARANT HOME ADRESS -->
@@ -391,37 +418,37 @@
         <div class="row">
             <div>
                 <label for="declarant_house_number">House Number</label>
-                <input type="text" id="declarant_house_number" name="declarant_house_number">
+                <input type="text" name="declarant_house_number" value="{{ old('declarant_house_number', $saln->declarant_house_number ?? '') }}">
             </div>
             <div>
                 <label for="declarant_house_street">Street</label>
-                <input type="text" id="declarant_house_street" name="declarant_house_street">
+                <input type="text" name="declarant_house_street" value="{{ old('declarant_house_street', $saln->declarant_house_street ?? '') }}">
             </div>
         </div>
         <div class="row">
             <div>
                 <label for="declarant_house_subdivision">Subdivision</label>
-                <input type="text" id="declarant_house_subdivision" name="declarant_house_subdivision">
+                <input type="text" name="declarant_house_subdivision" value="{{ old('declarant_house_subdivision', $saln->declarant_house_subdivision ?? '') }}">
             </div>
             <div>
                 <label for="declarant_house_barangay">Barangay</label>
-                <input type="text" id="declarant_house_barangay" name="declarant_house_barangay">
+                <input type="text" name="declarant_house_barangay" value="{{ old('declarant_house_barangay', $saln->declarant_house_barangay ?? '') }}">
             </div>
         </div>
         <div class="row">
             <div>
                 <label for="declarant_house_city">City/Municipality</label>
-                <input type="text" id="declarant_house_city" name="declarant_house_city">
+                <input type="text" name="declarant_house_city" value="{{ old('declarant_house_city', $saln->declarant_house_city ?? '') }}">
             </div>
             <div>
                 <label for="declarant_house_region">Region</label>
-                <input type="text" id="declarant_house_region" name="declarant_house_region">
+                <input type="text" name="declarant_house_region" value="{{ old('declarant_house_region', $saln->declarant_house_region ?? '') }}">
             </div>
         </div>
         <div class="rowone">
             <div>
                 <label for="declarant_house_zip">Zip Code</label>
-                <input type="text" id="declarant_house_zip" name="declarant_house_zip">
+                <input type="text" name="declarant_house_zip" value="{{ old('declarant_house_zip', $saln->declarant_house_zip ?? '') }}">
             </div>
         </div>
         <!-- DECLARANT OFFICE ADDRESS -->
@@ -429,46 +456,91 @@
         <div class="row">
             <div>
                 <label for="declarant_office_name">Agency/Office</label>
-                <input type="text" id="declarant_office_name" name="declarant_office_name">
+                <input type="text" name="declarant_office_name" value="{{ old('declarant_office_name', $saln->declarant_office_name ?? '') }}">
             </div>
             <div>
                 <label for="declarant_office_street">Street</label>
-                <input type="text" id="declarant_office_street" name="declarant_office_street">
+                <input type="text" name="declarant_office_street" value="{{ old('declarant_office_street', $saln->declarant_office_street ?? '') }}">
             </div>
         </div>
         <div class="row">
             <div>
                 <label for="declarant_office_city">City/Municipality</label>
-                <input type="text" id="declarant_office_city" name="declarant_office_city">
+                <input type="text" name="declarant_office_city" value="{{ old('declarant_office_city', $saln->declarant_office_city ?? '') }}">
             </div>
             <div>
                 <label for="declarant_office_region">Region</label>
-                <input type="text" id="declarant_office_region" name="declarant_office_region">
+                <input type="text" name="declarant_office_region" value="{{ old('declarant_office_region', $saln->declarant_office_region ?? '') }}">
             </div>
         </div>
         <div class="rowone">
             <div>
                 <label for="declarant_office_zip">Zip Code</label>
-                <input type="text" id="declarant_office_zip" name="declarant_office_zip">
+                <input type="text" name="declarant_office_zip" value="{{ old('declarant_office_zip', $saln->declarant_office_zip ?? '') }}">
             </div>
         </div>
         </div>
 
+
+        @php
+            $spouses = collect(old('spouse_first_name', $saln->spouses ?? []))->map(function ($_, $i) use ($saln) {
+                return [
+                    'family_name' => old('spouse_family_name')[$i] ?? ($saln->spouses[$i]->family_name ?? ''),
+                    'first_name' => old('spouse_first_name')[$i] ?? ($saln->spouses[$i]->first_name ?? ''),
+                    'mi' => old('spouse_mi')[$i] ?? ($saln->spouses[$i]->mi ?? ''),
+                    'house_number' => old('spouse_house_number')[$i] ?? ($saln->spouses[$i]->house_number ?? ''),
+                    'house_street' => old('spouse_house_street')[$i] ?? ($saln->spouses[$i]->house_street ?? ''),
+                    'house_subdivision' => old('spouse_house_subdivision')[$i] ?? ($saln->spouses[$i]->house_subdivision ?? ''),
+                    'house_barangay' => old('spouse_house_barangay')[$i] ?? ($saln->spouses[$i]->house_barangay ?? ''),
+                    'house_city' => old('spouse_house_city')[$i] ?? ($saln->spouses[$i]->house_city ?? ''),
+                    'house_region' => old('spouse_house_region')[$i] ?? ($saln->spouses[$i]->house_region ?? ''),
+                    'house_zip' => old('spouse_house_zip')[$i] ?? ($saln->spouses[$i]->house_zip ?? ''),
+                    'office_name' => old('spouse_office_name')[$i] ?? ($saln->spouses[$i]->office_name ?? ''),
+                    'office_street' => old('spouse_office_street')[$i] ?? ($saln->spouses[$i]->office_street ?? ''),
+                    'office_city' => old('spouse_office_city')[$i] ?? ($saln->spouses[$i]->office_city ?? ''),
+                    'office_region' => old('spouse_office_region')[$i] ?? ($saln->spouses[$i]->office_region ?? ''),
+                    'office_zip' => old('spouse_office_zip')[$i] ?? ($saln->spouses[$i]->office_zip ?? ''),
+                ];
+            });
+
+            // If empty, start with one empty spouse input
+            if ($spouses->isEmpty()) {
+                $spouses->push([
+                    'family_name' => '',
+                    'first_name' => '',
+                    'mi' => '',
+                    'house_number' => '',
+                    'house_street' => '',
+                    'house_subdivision' => '',
+                    'house_barangay' => '',
+                    'house_city' => '',
+                    'house_region' => '',
+                    'house_zip' => '',
+                    'office_name' => '',
+                    'office_street' => '',
+                    'office_city' => '',
+                    'office_region' => '',
+                    'office_zip' => '',
+                ]);
+            }
+        @endphp
+
         <div id="spouseRepeater">
-                <div class="spouse-block">
-                    <h4 class ="spouse-header">Spouse 1 Information</h4>
+            @foreach ($spouses as $index => $spouse)
+            <div class="spouse-block">
+                <h4 class="spouse-header">Spouse {{ $index + 1 }} Information</h4>
                 <div class="row">
                     <div>
                         <label>Family Name</label>
-                        <input type="text" name="spouse_family_name[]">
+                        <input type="text" name="spouse_family_name[]" value="{{ $spouse['family_name'] }}">
                     </div>
                     <div>
                         <label>First Name</label>
-                        <input type="text" name="spouse_first_name[]">
+                        <input type="text" name="spouse_first_name[]" value="{{ $spouse['first_name'] }}">
                     </div>
                     <div>
                         <label>M.I.</label>
-                        <input type="text" name="spouse_mi[]">
+                        <input type="text" name="spouse_mi[]" value="{{ $spouse['mi'] }}">
                     </div>
                 </div>
 
@@ -476,37 +548,37 @@
                 <div class="row">
                     <div>
                         <label>House Number</label>
-                        <input type="text" name="spouse_house_number[]">
+                        <input type="text" name="spouse_house_number[]" value="{{ $spouse['house_number'] }}">
                     </div>
                     <div>
                         <label>Street</label>
-                        <input type="text" name="spouse_house_street[]">
+                        <input type="text" name="spouse_house_street[]" value="{{ $spouse['house_street'] }}">
                     </div>
                 </div>
                 <div class="row">
                     <div>
                         <label>Subdivision</label>
-                        <input type="text" name="spouse_house_subdivision[]">
+                        <input type="text" name="spouse_house_subdivision[]" value="{{ $spouse['house_subdivision'] }}">
                     </div>
                     <div>
                         <label>Barangay</label>
-                        <input type="text" name="spouse_house_barangay[]">
+                        <input type="text" name="spouse_house_barangay[]" value="{{ $spouse['house_barangay'] }}">
                     </div>
                 </div>
                 <div class="row">
                     <div>
                         <label>City/Municipality</label>
-                        <input type="text" name="spouse_house_city[]">
+                        <input type="text" name="spouse_house_city[]" value="{{ $spouse['house_city'] }}">
                     </div>
                     <div>
                         <label>Region</label>
-                        <input type="text" name="spouse_house_region[]">
+                        <input type="text" name="spouse_house_region[]" value="{{ $spouse['house_region'] }}">
                     </div>
                 </div>
                 <div class="rowone">
                     <div>
                         <label>Zip Code</label>
-                        <input type="text" name="spouse_house_zip[]">
+                        <input type="text" name="spouse_house_zip[]" value="{{ $spouse['house_zip'] }}">
                     </div>
                 </div>
 
@@ -514,33 +586,35 @@
                 <div class="row">
                     <div>
                         <label>Agency/Office</label>
-                        <input type="text" name="spouse_office_name[]">
+                        <input type="text" name="spouse_office_name[]" value="{{ $spouse['office_name'] }}">
                     </div>
                     <div>
                         <label>Street</label>
-                        <input type="text" name="spouse_office_street[]">
+                        <input type="text" name="spouse_office_street[]" value="{{ $spouse['office_street'] }}">
                     </div>
                 </div>
                 <div class="row">
                     <div>
                         <label>City/Municipality</label>
-                        <input type="text" name="spouse_office_city[]">
+                        <input type="text" name="spouse_office_city[]" value="{{ $spouse['office_city'] }}">
                     </div>
                     <div>
                         <label>Region</label>
-                        <input type="text" name="spouse_office_region[]">
+                        <input type="text" name="spouse_office_region[]" value="{{ $spouse['office_region'] }}">
                     </div>
                 </div>
                 <div class="rowone">
                     <div>
                         <label>Zip Code</label>
-                        <input type="text" name="spouse_office_zip[]">
+                        <input type="text" name="spouse_office_zip[]" value="{{ $spouse['office_zip'] }}">
                     </div>
                 </div>
-                    <div class="spouse-actions">
-                        <button type="button" class="button-remove remove-spouse" onclick="removeSpouseBlock(this)">Remove Spouse</button>
-                    </div>
+
+                <div class="spouse-actions">
+                    <button type="button" class="button-remove remove-spouse" onclick="removeSpouseBlock(this)">Remove Spouse</button>
+                </div>
             </div>
+            @endforeach
         </div>
 
         <!-- Add Row Button -->
@@ -550,7 +624,36 @@
 
         <h3>Unmarried Children</h3>
 
-        <div id="children_fields"></div>
+        @php
+            $children = collect(old('children_name', $saln->unmarriedChildren ?? []))->map(function ($_, $i) use ($saln) {
+                return [
+                    'name' => old('children_name')[$i] ?? ($saln->unmarriedChildren[$i]->name ?? ''),
+                    'dob' => old('children_dob')[$i] ?? ($saln->unmarriedChildren[$i]->date_of_birth ?? ''),
+                ];
+            });
+        @endphp
+
+
+        <div id="children_fields">
+            @foreach ($children as $i => $child)
+                <div class="child-entry">
+                    <div class="child-field">
+                        <label>Child Name</label>
+                        <input type="text" name="children_name[]" value="{{ $child['name'] }}">
+                    </div>
+                    <div class="child-field">
+                        <label>Date of Birth</label>
+                        <input type="date" name="children_dob[]" value="{{ $child['dob'] }}" onchange="calculateAge(this)">
+                    </div>
+                    <div class="child-field">
+                        <label>Age</label>
+                        <input type="text" name="children_age[]" readonly>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+
 
         <div class="left-button">
             <button type="button" style="font-size: 13px;" onclick="addChildRow()">Add Unmarried Child</button>
@@ -1226,11 +1329,26 @@
             const allRows = container.querySelectorAll('.child-entry');
 
             if (allRows.length > 0) {
-                container.removeChild(allRows[allRows.length - 1]);
+                const lastRow = allRows[allRows.length - 1];
+
+                // If the last row has an ID (means it's from DB), store it in a hidden field for deletion
+                const idInput = lastRow.querySelector('input[name="children_id[]"]');
+                if (idInput && idInput.value) {
+                    const deleteInput = document.createElement('input');
+                    deleteInput.type = 'hidden';
+                    deleteInput.name = 'children_deleted_ids[]';
+                    deleteInput.value = idInput.value;
+                    container.appendChild(deleteInput);
+                }
+
+                // Remove the last row
+                lastRow.remove();
             } else {
                 alert("There are no child entries to remove.");
             }
         }
+
+
         function calculateAge(dobInput) {
             const dob = new Date(dobInput.value);
             const today = new Date();
@@ -1247,8 +1365,11 @@
             const ageInput = dobInput.closest('.child-entry').querySelector('input[name="children_age[]"]');
             ageInput.value = age;
         }
-
-        let lastScrollTop = 0;
+        document.addEventListener('DOMContentLoaded', function () {
+            const dobInputs = document.querySelectorAll('input[name="children_dob[]"]');
+            dobInputs.forEach(calculateAge);
+        });
+                let lastScrollTop = 0;
         const navbar = document.querySelector('.navbar');
         window.addEventListener('scroll', function () {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
