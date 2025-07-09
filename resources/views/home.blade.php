@@ -521,6 +521,51 @@
                             </div>
                         </div>
 
+                        <h4>Home Address</h4>
+                        <div class="row">
+                            <div>
+                                <label>House Number</label>
+                                <input type="text" name="spouse_house_number[]"
+                                value="{{ $spouse['houseAddress']['houseNo'] ?? '' }}">
+                            </div>
+                            <div>
+                                <label>Street</label>
+                                <input type="text" name="spouse_house_street[]"
+                                value="{{ $spouse['houseAddress']['houseStreet'] ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <label>Subdivision</label>
+                                <input type="text" name="spouse_house_subdivision[]"
+                                value="{{ $spouse['houseAddress']['houseSubdivision'] ?? '' }}">
+                            </div>
+                            <div>
+                                <label>Barangay</label>
+                                <input type="text" name="spouse_house_barangay[]"
+                                value="{{ $spouse['houseAddress']['houseBarangay'] ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <label>City/Municipality</label>
+                                <input type="text" name="spouse_house_city[]"
+                                value="{{ $spouse['houseAddress']['houseCity'] ?? '' }}">
+                            </div>
+                            <div>
+                                <label>Region</label>
+                                <input type="text" name="spouse_house_region[]"
+                                value="{{ $spouse['houseAddress']['houseRegion'] ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="rowone">
+                            <div>
+                                <label>Zip Code</label>
+                                <input type="text" name="spouse_house_zip[]"
+                                value="{{ $spouse['houseAddress']['houseZipCode'] ?? '' }}">
+                            </div>
+                        </div>
+
                         <h4>Office Address</h4>
                         <div class="row">
                             <div>
