@@ -1044,19 +1044,28 @@
                         <table class="assets-table">
                             <thead>
                                 <tr>
-                                    <th rowspan="1">Name of Relative</th>
-                                    <th rowspan="1">Relationship</th>
-                                    <th rowspan="1">Position</th>
-                                    <th rowspan="1">Name of Agency/Office and Adress</th>
-                                    <th rowspan="1"></th>
+                                    <th colspan="3">Name of Relative</th>
+                                    <th rowspan="2">Relationship</th>
+                                    <th rowspan="2">Position</th>
+                                    <th rowspan="2">Name of Agency/Office and Adress</th>
+                                    <th rowspan="2"></th>
+                                </tr>
+                                <tr>
+                                    <th rowspan="1">Family Name</th>
+                                    <th rowspan="1">First Name</th>
+                                    <th rowspan="1">Middle Initial</th>
                                 </tr>
                             </thead>
                             <tbody id="relativesBody">
                                 @if (!($prefillData['declarant']['hasRelativesInGovermentService'] ?? false)&& !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
                                     @foreach ($prefillData['declarant']['relativesInGovernmentService'] as $relative)
                                         <tr>
-                                            <td><input type="text" name="nameRelative[]"
-                                                    value="{{ trim("{$relative['firstName']} {$relative['middleInitial']}. {$relative['familyName']}") ?? '' }}"></td>
+                                            <td><input type="text" name="relativeFamilyName[]"
+                                                    value="{{ $relative['familyName'] ?? '' }}"></td>
+                                            <td><input type="text" name="relativeFirstName[]"
+                                                    value="{{ $relative['firstName'] ?? '' }}"></td>
+                                            <td><input type="text" name="relativeMi[]"
+                                                    value="{{ $relative['middleInitial'] ?? '' }}"></td>
                                             <td><input type="text" name="relationship[]"
                                                     value="{{ $relative['relationship'] ?? '' }}"></td>
                                             <td><input type="text" name="position[]"
@@ -1072,8 +1081,12 @@
                                 @else
                                     @foreach ($saln->relativesInGovernment ?? [] as $relative)
                                     <tr>
-                                    <td><input type="text" name="nameRelative[]"
-                                                    value="{{ $relative['name_relative'] ?? '' }}"></td>
+                                    <td><input type="text" name="relativeFamilyName[]"
+                                                    value="{{ $relative['relative_family_name'] ?? '' }}"></td>
+                                            <td><input type="text" name="relativeFirstName[]"
+                                                    value="{{ $relative['relative_first_name'] ?? '' }}"></td>
+                                            <td><input type="text" name="relativeMi[]"
+                                                    value="{{ $relative['relative_mi'] ?? '' }}"></td>
                                             <td><input type="text" name="relationship[]"
                                                     value="{{ $relative['relationship'] ?? '' }}"></td>
                                             <td><input type="text" name="position[]"
