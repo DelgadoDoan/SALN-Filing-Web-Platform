@@ -341,7 +341,7 @@
                 </li>
                 <li>
                     <a href="/home/delete-account"
-                        onclick="return confirm('Are you sure you want to delete your account?')">
+                        onclick="return confirm('Are you sure you want to delete your account? \n\nThe account with email <{{ Auth::user()->email }}> will be permanently deleted along with all saved form data associated with it.')">
                         Delete Account
                     </a>
                 </li>

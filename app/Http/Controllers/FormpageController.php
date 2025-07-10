@@ -56,9 +56,15 @@ class FormpageController extends Controller
     }
 
     public function deleteAccount () {
-        $token = MagicToken::where('user_id', Auth::id())
+        $userId = Auth::id();
+
+        $token = MagicToken::where('user_id', $userId)
             ->first()
             ->delete();
+
+        foreach (SALN::where('user_id', $userId)->get() as $saln) {
+            $saln->delete();
+        }
 
         $user = Auth::user();
 
