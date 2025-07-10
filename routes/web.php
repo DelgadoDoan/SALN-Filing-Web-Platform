@@ -31,6 +31,8 @@ Route::get('/link-sent/{email}', [MagicLinkController::class, 'onSuccess'])->nam
 
 Route::post('/save-saln', [FormpageController::class, 'saveToDatabase'])->name('saln.save');
 
+Route::post('/home/import-json', [FormpageController::class, 'importJson']);
+
 Route::middleware(['prevent-back'])->group(function() {
     Route::get('/home', [FormpageController::class, 'isLoggedIn']);
 });

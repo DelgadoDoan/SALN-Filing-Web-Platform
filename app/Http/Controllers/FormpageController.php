@@ -28,7 +28,7 @@ class FormpageController extends Controller
 
         // check if token is expired        
         $expiredToken = MagicToken::where('user_id', Auth::id())
-            ->where('created_at', '<=', Carbon::now()->subMinutes(5)) // if token is already 120 minutes old
+            ->where('created_at', '<=', Carbon::now()->subMinutes(240)) // if token is already 120 minutes old
             ->first();
 
         if ($expiredToken) {
@@ -39,7 +39,10 @@ class FormpageController extends Controller
             return redirect('/login');
         }
 
-        return view('home');
+        $prefillData = session('prefill'); // this pulls the uploaded data
+
+        $saln = SALN::where('user_id', Auth::id())->latest()->first();
+        return view('home', compact('prefillData', 'saln'));
     }
 
     public function logout() {
@@ -70,6 +73,7 @@ class FormpageController extends Controller
         // $validated = $request->validated();
 
         $saln = new SALN();
+        $saln->user_id = Auth::id();
 
                 // --- Metadata ---
         $saln->asof_date = $request->input('asof_date');
@@ -176,7 +180,7 @@ class FormpageController extends Controller
                 'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
             ]);
         }
-        foreach ($request->nameBusiness as $index => $name) {
+        foreach ($request->input('nameBusiness',[]) as $index => $name) {
             BusinessInterest::create([
                 'saln_id' => $saln->id,
                 'name_business' => $name,
@@ -185,7 +189,7 @@ class FormpageController extends Controller
                 'date_interest' => $request->dateInterest[$index] ?? null,
             ]);
         }
-        foreach ($request->nameRelative as $index => $name) {
+        foreach ($request->input('nameRelative',[]) as $index => $name) {
             RelativeInGovernment::create([
                 'saln_id' => $saln->id,
                 'name_relative' => $name,
@@ -197,5 +201,25 @@ class FormpageController extends Controller
 
 
         return redirect()->back()->with('success', 'SALN Form submitted successfully!');
+    }
+    
+    public function importJson(Request $request)
+    {
+        $request->validate([
+            'json_file' => 'required|file|mimes:json',
+        ]);
+
+        $path = $request->file('json_file')->store('uploads');
+        $fullPath = storage_path("app/private/{$path}");
+
+        if (!file_exists($fullPath)) {
+            dd("File not found at: $fullPath");
+
+        }
+
+        $json = file_get_contents($fullPath);
+        $data = json_decode($json, true);
+
+        return redirect('/home')->with('prefill', $data);
     }
 }
