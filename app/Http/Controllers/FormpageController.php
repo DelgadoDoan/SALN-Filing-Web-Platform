@@ -189,10 +189,12 @@ class FormpageController extends Controller
                 'date_interest' => $request->dateInterest[$index] ?? null,
             ]);
         }
-        foreach ($request->input('nameRelative',[]) as $index => $name) {
+        foreach ($request->input('relativeFamilyName',[]) as $index => $relativeFamilyName) {
             RelativeInGovernment::create([
                 'saln_id' => $saln->id,
-                'name_relative' => $name,
+                'relative_family_name' => $relativeFamilyName,
+                'relative_first_name' => $request->relativeFirstName[$index] ?? null,
+                'relative_mi' => $request->relativeMi[$index] ?? null,
                 'relationship' => $request->relationship[$index] ?? null,
                 'position' => $request->position[$index] ?? null,
                 'name_agency' => $request->nameAgency[$index] ?? null,

@@ -262,7 +262,8 @@
             font-family: 'Nunito', sans-serif;
             font-size: 0.9rem;
             color: #4bb543;
-            margin-bottom: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: right;
         }
 
         .navbar {
@@ -762,54 +763,44 @@
                             </tr>
                         </thead>
                         <tbody id="assetsReal">
-                            @forelse ($prefillData['declarant']['assets']['realProperties'] ?? [] as $assetReal)
+                            @forelse ($prefillData['declarant']['assets']['realProperties'] ?? ($saln->realProperties ?? []) as $assetReal)
                                 <tr>
                                     <td><input type="text" name="desc[]"
                                             value="{{ $assetReal['description'] ?? '' }}"></td>
                                     <td><input type="text" name="kind[]" value="{{ $assetReal['kind'] ?? '' }}">
                                     </td>
                                     <td><input type="text" name="location[]"
-                                            value="{{ $assetReal['exactLocation'] ?? '' }}"></td>
+                                            value="{{ $assetReal['exactLocation'] ?? ($assetReal['location'] ?? '') }}"></td>
                                     <td><input type="text" name="assessed[]"
-                                            value="{{ $assetReal['assessedValue'] ?? '' }}"></td>
+                                            value="{{ $assetReal['assessedValue'] ?? ($assetReal['assessed_value'] ?? '') }}"></td>
                                     <td><input type="text" name="marketValue[]"
-                                            value="{{ $assetReal['currentFairMarketValue'] ?? '' }}"></td>
+                                            value="{{ $assetReal['currentFairMarketValue'] ?? ($assetReal['market_value'] ?? '') }}"></td>
                                     <td><input type="text" name="acqYear[]"
-                                            value="{{ $assetReal['acquisitionYear'] ?? '' }}"></td>
+                                            value="{{ $assetReal['acquisitionYear'] ?? ($assetReal['acquisition_year'] ?? '') }}"></td>
                                     <td><input type="text" name="acqMode[]"
-                                            value="{{ $assetReal['acquisitionMode'] ?? '' }}"></td>
+                                            value="{{ $assetReal['acquisitionMode'] ?? ($assetReal['acquisition_mode'] ?? '') }}"></td>
                                     <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"
-                                            value="{{ $assetReal['acquisitionCost'] ?? '' }}"></td>
+                                            value="{{ $assetReal['acquisitionCost'] ?? ($assetReal['acquisition_cost'] ?? '') }}"></td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeRealPropertyRow(this)">Delete</button>
                                     </td>
                                 </tr>
                             @empty
-                                @foreach ($saln->realProperties ?? [] as $assetReal)
                                 <tr>
-                                <td><input type="text" name="desc[]"
-                                            value="{{ $assetReal['description'] ?? '' }}"></td>
-                                    <td><input type="text" name="kind[]" value="{{ $assetReal['kind'] ?? '' }}">
-                                    </td>
-                                    <td><input type="text" name="location[]"
-                                            value="{{ $assetReal['location'] ?? '' }}"></td>
-                                    <td><input type="text" name="assessed[]"
-                                            value="{{ $assetReal['assessed_value'] ?? '' }}"></td>
-                                    <td><input type="text" name="marketValue[]"
-                                            value="{{ $assetReal['market_value'] ?? '' }}"></td>
-                                    <td><input type="text" name="acqYear[]"
-                                            value="{{ $assetReal['acquisition_year'] ?? '' }}"></td>
-                                    <td><input type="text" name="acqMode[]"
-                                            value="{{ $assetReal['acquisition_mode'] ?? '' }}"></td>
-                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"
-                                            value="{{ $assetReal['acquisition_cost'] ?? '' }}"></td>
+                                    <td><input type="text" name="desc[]"></td>
+                                    <td><input type="text" name="kind[]"></td>
+                                    <td><input type="text" name="location[]"></td>
+                                    <td><input type="text" name="assessed[]"></td>
+                                    <td><input type="text" name="marketValue[]"></td>
+                                    <td><input type="text" name="acqYear[]"></td>
+                                    <td><input type="text" name="acqMode[]"></td>
+                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"></td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeRealPropertyRow(this)">Delete</button>
                                     </td>
                                 </tr>
-                                @endforeach
                             @endforelse
 
                         </tbody>
@@ -837,36 +828,31 @@
                             </tr>
                         </thead>
                         <tbody id="assetsPersonal">
-                            @forelse ($prefillData['declarant']['assets']['personalProperties'] ?? [] as $assetPersonal)
+                            @forelse ($prefillData['declarant']['assets']['personalProperties'] ?? ($saln->personalProperties ?? []) as $assetPersonal)
                                 <tr>
                                     <td><input type="text" name="description[]"
                                             value="{{ $assetPersonal['description'] ?? '' }}"></td>
                                     <td><input type="text" name="yearAcquired[]"
-                                            value="{{ $assetPersonal['yearAcquired'] ?? '' }}"></td>
+                                            value="{{ $assetPersonal['yearAcquired'] ?? ($assetPersonal['year_acquired'] ?? '') }}"></td>
                                     <td><input type="text" name="acquisitionCost[]"
                                             oninput="calculatePersonalSubtotal()"
-                                            value="{{ $assetPersonal['acquisitionCost'] ?? '' }}"></td>
+                                            value="{{ $assetPersonal['acquisitionCost'] ?? ($assetPersonal['acquisition_cost'] ?? '') }}"></td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removePersonalPropertyRow(this)">Delete</button>
                                     </td>
                                 </tr>
                             @empty
-                                @foreach ($saln->personalProperties ?? [] as $assetPersonal)
                                 <tr>
-                                    <td><input type="text" name="description[]"
-                                            value="{{ $assetPersonal['description'] ?? '' }}"></td>
-                                    <td><input type="text" name="yearAcquired[]"
-                                            value="{{ $assetPersonal['year_acquired'] ?? '' }}"></td>
+                                    <td><input type="text" name="description[]"></td>
+                                    <td><input type="text" name="yearAcquired[]"></td>
                                     <td><input type="text" name="acquisitionCost[]"
-                                            oninput="calculatePersonalSubtotal()"
-                                            value="{{ $assetPersonal['acquisition_cost'] ?? '' }}"></td>
+                                            oninput="calculatePersonalSubtotal()"></td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removePersonalPropertyRow(this)">Delete</button>
                                     </td>
                                 </tr>
-                                @endforeach
                             @endforelse
 
                         </tbody>
@@ -903,14 +889,14 @@
                             </tr>
                         </thead>
                         <tbody id="liabilitiesBody">
-                            @forelse ($prefillData['declarant']['liabilities'] ?? [] as $liability)
+                            @forelse ($prefillData['declarant']['liabilities'] ?? ($saln->liabilities ?? []) as $liability)
                                 <tr>
                                     <td><input type="text" name="nature[]"
                                             value="{{ $liability['nature'] ?? '' }}"></td>
                                     <td><input type="text" name="nameCreditor[]"
-                                            value="{{ $liability['nameOfCreditor'] ?? '' }}"></td>
+                                            value="{{ $liability['nameOfCreditor'] ?? ($liability['name_creditor'] ?? '') }}"></td>
                                     <td><input type="text" name="OutstandingBalance[]"
-                                            value="{{ $liability['outstandingBalance'] ?? '' }}"
+                                            value="{{ $liability['outstandingBalance'] ?? ($liability['outstanding_balance'] ?? '') }}"
                                             oninput="calculateLiabilitiesSubtotal()"></td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
@@ -918,21 +904,16 @@
                                     </td>
                                 </tr>
                             @empty
-                                @foreach ($saln->liabilities ?? [] as $liability)
                                 <tr>
-                                    <td><input type="text" name="nature[]"
-                                            value="{{ $liability['nature'] ?? '' }}"></td>
-                                    <td><input type="text" name="nameCreditor[]"
-                                            value="{{ $liability['name_creditor'] ?? '' }}"></td>
+                                    <td><input type="text" name="nature[]"></td>
+                                    <td><input type="text" name="nameCreditor[]"></td>
                                     <td><input type="text" name="OutstandingBalance[]"
-                                            value="{{ $liability['outstanding_balance'] ?? '' }}"
                                             oninput="calculateLiabilitiesSubtotal()"></td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeLiabilitiesRow(this)">Delete</button>
                                     </td>
                                 </tr>
-                                @endforeach
                             @endforelse
 
                         </tbody>
@@ -1001,22 +982,33 @@
                                 </tr>
                                 @endforeach
                             @else
-                                @foreach ($saln->businessInterests ?? [] as $business)
-                                <tr>
-                                    <td><input type="text" name="nameBusiness[]" class="business-input"
-                                        value="{{ $business['name_business'] ?? '' }}"></td>
-                                    <td><input type="text" name="addressBusiness[]" class="business-input"
-                                        value="{{ $business['address_business'] ?? '' }}"></td>
-                                    <td><input type="text" name="natureBusiness[]" class="business-input"
-                                        value="{{ $business['nature_business'] ?? '' }}"></td>
-                                    <td><input type="date" name="dateInterest[]" class="business-input"
-                                        value="{{ $business['date_interest'] ?? '' }}"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-remove"
-                                            onclick="removeBusinessRow(this)">Delete</button>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                @forelse ($saln->businessInterests ?? [] as $business)
+                                    <tr>
+                                        <td><input type="text" name="nameBusiness[]" class="business-input"
+                                            value="{{ $business['name_business'] ?? '' }}"></td>
+                                        <td><input type="text" name="addressBusiness[]" class="business-input"
+                                            value="{{ $business['address_business'] ?? '' }}"></td>
+                                        <td><input type="text" name="natureBusiness[]" class="business-input"
+                                            value="{{ $business['nature_business'] ?? '' }}"></td>
+                                        <td><input type="date" name="dateInterest[]" class="business-input"
+                                            value="{{ $business['date_interest'] ?? '' }}"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-remove"
+                                                onclick="removeBusinessRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td><input type="text" name="nameBusiness[]" class="business-input"></td>
+                                        <td><input type="text" name="addressBusiness[]" class="business-input"></td>
+                                        <td><input type="text" name="natureBusiness[]" class="business-input"></td>
+                                        <td><input type="date" name="dateInterest[]" class="business-input"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-remove"
+                                                onclick="removeBusinessRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             @endif
                         </tbody>
                     </table>
@@ -1079,10 +1071,10 @@
                                         </tr>
                                     @endforeach
                                 @else
-                                    @foreach ($saln->relativesInGovernment ?? [] as $relative)
-                                    <tr>
-                                    <td><input type="text" name="relativeFamilyName[]"
-                                                    value="{{ $relative['relative_family_name'] ?? '' }}"></td>
+                                    @forelse ($saln->relativesInGovernment ?? [] as $relative)
+                                        <tr>
+                                            <td><input type="text" name="relativeFamilyName[]"
+                                                value="{{ $relative['relative_family_name'] ?? '' }}"></td>
                                             <td><input type="text" name="relativeFirstName[]"
                                                     value="{{ $relative['relative_first_name'] ?? '' }}"></td>
                                             <td><input type="text" name="relativeMi[]"
@@ -1093,12 +1085,25 @@
                                                     value="{{ $relative['position'] ?? '' }}"></td>
                                             <td><input type="text" name="nameAgency[]"
                                                     value="{{ $relative['name_agency'] ?? '' }}"></td>
-                                        <td>
-                                            <button type="button" class="btn btn-remove"
-                                                onclick="removeRelativeRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                            <td>
+                                                <button type="button" class="btn btn-remove"
+                                                    onclick="removeRelativeRow(this)">Delete</button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td><input type="text" name="relativeFamilyName[]"></td>
+                                            <td><input type="text" name="relativeFirstName[]"></td>
+                                            <td><input type="text" name="relativeMi[]"></td>
+                                            <td><input type="text" name="relationship[]"></td>
+                                            <td><input type="text" name="position[]"></td>
+                                            <td><input type="text" name="nameAgency[]"></td>
+                                            <td>
+                                                <button type="button" class="btn btn-remove"
+                                                    onclick="removeRelativeRow(this)">Delete</button>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 @endif
                             </tbody>
                         </table>
@@ -1524,7 +1529,9 @@
             const tbody = document.querySelector('#relativesBody');
             const tr = document.createElement('tr');
             const inputNames = [
-                'nameRelative[]',
+                'RelativeFamilyName[]',
+                'RelativeFirstName[]',
+                'RelativeMi[]',
                 'relationship[]',
                 'position[]',
                 'nameAgency[]'
