@@ -8,9 +8,9 @@ class PersonalProperty extends Model
 {
     protected $fillable = [
         'saln_id',
-        'description',
-        'year_acquired',
-        'acquisition_cost',
+        'personal_description',
+        'personal_year_acquired',
+        'personal_acquisition_cost',
     ];
 
     public function saln()

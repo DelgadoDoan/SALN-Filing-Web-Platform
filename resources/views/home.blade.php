@@ -366,7 +366,8 @@
         <div class="form-section asof-group">
         <label class="asof-label" for="date">As of</label>
         <div class="date-wrapper">
-            <input type="date" id="asof_date" name="asof_date">
+            <input type="date" id="asof_date" name="asof_date" 
+            value="{{ old('asof_date', $saln->asof_date ?? '') }}">
             <div class="error">{{ $errors->first('asOfDate') }}</div>
             <small>(Required by R.A. 6713)</small>
         </div>
@@ -689,21 +690,49 @@
                         </tr>
                     </thead>
                     <tbody id="assetsReal">
-                        <tr>
-                            <td><input type="text" name="desc[]"></td>
-                            <td><input type="text" name="kind[]"></td>
-                            <td><input type="text" name="location[]"></td>
-                            <td><input type="text" name="assessed[]"></td>
-                            <td><input type="text" name="marketValue[]"></td>
-                            <td><input type="text" name="acqYear[]"></td>
-                            <td><input type="text" name="acqMode[]"></td>
-                            <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"></td>
-                            <td>
-                                <button type="button" class="btn btn-remove" onclick="removeRealPropertyRow(this)">Delete</button>
-                            </td>
-                            </td>
-                        </tr>
-                    </tbody>
+                    @php
+                        $realProps = old('description') 
+                            ? collect(old('description'))->map(function ($desc, $i) {
+                                return [
+                                    'description' => $desc,
+                                    'kind' => old("kind.$i"),
+                                    'location' => old("location.$i"),
+                                    'assessed_value' => old("assessed_value.$i"),
+                                    'market_value' => old("market_value.$i"),
+                                    'acquisition_year' => old("acquisition_year.$i"),
+                                    'acquisition_mode' => old("acquisition_mode.$i"),
+                                    'acquisition_cost' => old("acquisition_cost.$i"),
+                                ];
+                            }) 
+                            : ($saln->realProperties ?? collect());
+                    @endphp
+
+                    @forelse ($realProps as $i => $row)
+                    <tr>
+                        <td><input type="text" name="description[]" value="{{ old("description.$i", $row['description'] ?? $row->description ?? '') }}"></td>
+                        <td><input type="text" name="kind[]" value="{{ old("kind.$i", $row['kind'] ?? $row->kind ?? '') }}"></td>
+                        <td><input type="text" name="location[]" value="{{ old("location.$i", $row['location'] ?? $row->location ?? '') }}"></td>
+                        <td><input type="text" name="assessed_value[]" value="{{ old("assessed_value.$i", $row['assessed_value'] ?? $row->assessed_value ?? '') }}"></td>
+                        <td><input type="text" name="market_value[]" value="{{ old("market_value.$i", $row['market_value'] ?? $row->market_value ?? '') }}"></td>
+                        <td><input type="text" name="acquisition_year[]" value="{{ old("acquisition_year.$i", $row['acquisition_year'] ?? $row->acquisition_year ?? '') }}"></td>
+                        <td><input type="text" name="acquisition_mode[]" value="{{ old("acquisition_mode.$i", $row['acquisition_mode'] ?? $row->acquisition_mode ?? '') }}"></td>
+                        <td><input type="text" name="acquisition_cost[]" value="{{ old("acquisition_cost.$i", $row['acquisition_cost'] ?? $row->acquisition_cost ?? '') }}" oninput="calculateRealSubtotal()"></td>
+                        <td><button type="button" class="btn btn-remove" onclick="removeRealPropertyRow(this)">Delete</button></td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td><input type="text" name="description[]"></td>
+                        <td><input type="text" name="kind[]"></td>
+                        <td><input type="text" name="location[]"></td>
+                        <td><input type="text" name="assessed_value[]"></td>
+                        <td><input type="text" name="market_value[]"></td>
+                        <td><input type="text" name="acquisition_year[]"></td>
+                        <td><input type="text" name="acquisition_mode[]"></td>
+                        <td><input type="text" name="acquisition_cost[]" oninput="calculateRealSubtotal()"></td>
+                        <td><button type="button" class="btn btn-remove" onclick="removeRealPropertyRow(this)">Delete</button></td>
+                    </tr>
+                    @endforelse
+                </tbody>
                 </table>
                 <button type="button" onclick="addRealProperty()">Add Another Entry</button>
                 <div class="asset-controls2">
@@ -728,15 +757,49 @@
                         </tr>
                     </thead>
                     <tbody id="assetsPersonal">
+                    @php
+                        $personalProps = old('personal_description') 
+                            ? collect(old('personal_description'))->map(function ($desc, $i) {
+                                return [
+                                    'personal_description' => $desc,
+                                    'personal_year_acquired' => old("personal_year_acquired.$i"),
+                                    'personal_acquisition_cost' => old("personal_acquisition_cost.$i"),
+                                ];
+                            })
+                            : ($saln->personalProperties ?? collect());
+                    @endphp
+
+                    @foreach ($personalProps as $i => $row)
                         <tr>
-                            <td><input type="text" name="description[]"></td>
-                            <td><input type="text" name="yearAcquired[]"></td>
-                            <td><input type="text" name="acquisitionCost[]" oninput="calculatePersonalSubtotal()"></td>
+                            <td>
+                                <input type="text" name="personal_description[]" 
+                                    value="{{ old("personal_description.$i", $row['personal_description'] ?? $row->personal_description ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="personal_year_acquired[]" 
+                                    value="{{ old("personal_year_acquired.$i", $row['personal_year_acquired'] ?? $row->personal_year_acquired ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="personal_acquisition_cost[]" 
+                                    value="{{ old("personal_acquisition_cost.$i", $row['personal_acquisition_cost'] ?? $row->personal_acquisition_cost ?? '') }}" 
+                                    oninput="calculatePersonalSubtotal()">
+                            </td>
                             <td>
                                 <button type="button" class="btn btn-remove" onclick="removePersonalPropertyRow(this)">Delete</button>
                             </td>
                         </tr>
-                    </tbody>
+                    @endforeach
+
+                    @if ($personalProps->isEmpty())
+                        {{-- Default blank row --}}
+                        <tr>
+                            <td><input type="text" name="personal_description[]"></td>
+                            <td><input type="text" name="personal_year_acquired[]"></td>
+                            <td><input type="text" name="personal_acquisition_cost[]" oninput="calculatePersonalSubtotal()"></td>
+                            <td><button type="button" class="btn btn-remove" onclick="removePersonalPropertyRow(this)">Delete</button></td>
+                        </tr>
+                    @endif
+                </tbody>
                 </table>
                 <div class="left-button">
                     <button type="button" onclick="addPersonalProperty()">Add Another Entry</button>
@@ -770,15 +833,49 @@
                         </tr>
                     </thead>
                     <tbody id="liabilitiesBody">
+                    @php
+                        $liabilityProps = old('nature') 
+                            ? collect(old('nature'))->map(function ($nature, $i) {
+                                return (object) [
+                                    'nature' => $nature,
+                                    'name_creditor' => old("name_creditor.$i"),
+                                    'outstanding_balance' => old("outstanding_balance.$i"),
+                                ];
+                            }) 
+                            : ($saln->liabilities ?? collect());
+                    @endphp
+                    @foreach ($liabilityProps as $i => $row)
+                    <tr>
+                        <td>
+                            <input type="text" name="nature[]" 
+                                value="{{ old("nature.$i") ?? $row->nature }}">
+                        </td>
+                        <td>
+                            <input type="text" name="name_creditor[]" 
+                                value="{{ old("name_creditor.$i") ?? $row->name_creditor }}">
+                        </td>
+                        <td>
+                            <input type="text" name="outstanding_balance[]" 
+                                value="{{ old("outstanding_balance.$i") ?? $row->outstanding_balance }}"
+                                oninput="calculateLiabilitiesSubtotal()">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-remove" onclick="removeLiabilitiesRow(this)">Delete</button>
+                        </td>
+                    </tr>
+                    @endforeach
+
+                    @if ($liabilityProps->isEmpty())
+                        {{-- Default blank row --}}
                         <tr>
                             <td><input type="text" name="nature[]"></td>
-                            <td><input type="text" name="nameCreditor[]"></td>
-                            <td><input type="text" name="OutstandingBalance[]" oninput="calculateLiabilitiesSubtotal()"></td>
-                            <td>
-                                <button type="button" class="btn btn-remove" onclick="removeLiabilitiesRow(this)">Delete</button>
-                            </td>
+                            <td><input type="text" name="name_creditor[]"></td>
+                            <td><input type="text" name="outstanding_balance[]" oninput="calculateLiabilitiesSubtotal()"></td>
+                            <td><button type="button" class="btn btn-remove" onclick="removeLiabilitiesRow(this)">Delete</button></td>
                         </tr>
-                    </tbody>
+                    @endif
+                </tbody>
+
                 </table>
                 <div class="left-button">
                     <button type="button" onclick="addLiability()">Add Another Entry</button>
@@ -824,16 +921,55 @@
                         </tr>
                     </thead>
                     <tbody id="businessBody">
+                    @php
+                        $businessProps = old('nameBusiness')
+                            ? collect(old('nameBusiness'))->map(function ($name, $i) {
+                                return [
+                                    'name_business'     => $name,
+                                    'address_business'  => old("addressBusiness.$i"),
+                                    'nature_business'   => old("natureBusiness.$i"),
+                                    'date_interest'     => old("dateInterest.$i"),
+                                ];
+                            })
+                            : ($saln->businessInterests ?? collect());
+                    @endphp
+
+                    @foreach ($businessProps as $i => $row)
+                        <tr>
+                            <td>
+                                <input type="text" name="nameBusiness[]"
+                                    value="{{ old("nameBusiness.$i", $row['name_business'] ?? $row->name_business ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="addressBusiness[]"
+                                    value="{{ old("addressBusiness.$i", $row['address_business'] ?? $row->address_business ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="natureBusiness[]"
+                                    value="{{ old("natureBusiness.$i", $row['nature_business'] ?? $row->nature_business ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="dateInterest[]"
+                                    value="{{ old("dateInterest.$i", $row['date_interest'] ?? $row->date_interest ?? '') }}">
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-remove" onclick="removeBusinessRow(this)">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @if ($businessProps->isEmpty())
+                        {{-- Default blank row --}}
                         <tr>
                             <td><input type="text" name="nameBusiness[]"></td>
                             <td><input type="text" name="addressBusiness[]"></td>
                             <td><input type="text" name="natureBusiness[]"></td>
                             <td><input type="text" name="dateInterest[]"></td>
-                            <td>
-                                <button type="button" class="btn btn-remove" onclick="removeBusinessRow(this)">Delete</button>
-                            </td>
+                            <td><button type="button" class="btn btn-remove" onclick="removeBusinessRow(this)">Delete</button></td>
                         </tr>
-                    </tbody>
+                    @endif
+                </tbody>
+
                 </table>
                 <div class="left-button">
                     <button type="button" onclick="addBusiness()">Add Another Entry</button>
@@ -865,16 +1001,55 @@
                         </tr>
                     </thead>
                     <tbody id="relativesBody">
+                    @php
+                        $relativeProps = old('nameRelative')
+                            ? collect(old('nameRelative'))->map(function ($name, $i) {
+                                return [
+                                    'name_relative' => $name,
+                                    'relationship'  => old("relationship.$i"),
+                                    'position'      => old("position.$i"),
+                                    'name_agency'   => old("nameAgency.$i"),
+                                ];
+                            })
+                            : ($saln->relativesInGovernment ?? collect());
+                    @endphp
+
+                    @foreach ($relativeProps as $i => $row)
+                        <tr>
+                            <td>
+                                <input type="text" name="nameRelative[]"
+                                    value="{{ old("nameRelative.$i", $row['name_relative'] ?? $row->name_relative ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="relationship[]"
+                                    value="{{ old("relationship.$i", $row['relationship'] ?? $row->relationship ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="position[]"
+                                    value="{{ old("position.$i", $row['position'] ?? $row->position ?? '') }}">
+                            </td>
+                            <td>
+                                <input type="text" name="nameAgency[]"
+                                    value="{{ old("nameAgency.$i", $row['name_agency'] ?? $row->name_agency ?? '') }}">
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-remove" onclick="removeRelativeRow(this)">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @if ($relativeProps->isEmpty())
+                        {{-- Default blank row --}}
                         <tr>
                             <td><input type="text" name="nameRelative[]"></td>
                             <td><input type="text" name="relationship[]"></td>
                             <td><input type="text" name="position[]"></td>
                             <td><input type="text" name="nameAgency[]"></td>
-                            <td>
-                                <button type="button" class="btn btn-remove" onclick="removeRelativeRow(this)">Delete</button>
-                            </td>
+                            <td><button type="button" class="btn btn-remove" onclick="removeRelativeRow(this)">Delete</button></td>
                         </tr>
-                    </tbody>
+                    @endif
+                </tbody>
+
                 </table>
                 <div class="left-button">
                     <button type="button" onclick="addRelative()">Add Another Entry</button>
@@ -898,40 +1073,46 @@
         <p>Date: _______________________________________</p>
         <br>
         <div class="row" style="margin-top: 30px;">
-            <div style="flex: 1; text-align: center;">
-                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                <label>Signature of Declarant</label>
-                <div>
-                    <label>Government Issued ID</label>
-                    <input type="text" name="govIDDeclarant">
-                </div>
-                <div>
-                    <label>ID No.:</label>
-                    <input type="text" name="idNoDeclarant">
-                </div>
-                <div>
-                    <label>Date Issued:</label>
-                    <input type="date" name="idDateDeclarant">
-                </div>
+        <div style="flex: 1; text-align: center;">
+            <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
+            <label>Signature of Declarant</label>
+            <div>
+                <label>Government Issued ID</label>
+                <input type="text" name="govIDDeclarant"
+                    value="{{ old('govIDDeclarant', $saln->gov_id_declarant ?? '') }}">
             </div>
-
-            <div style="flex: 1; text-align: center;">
-                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                <label>Signature of Co-Declarant/Spouse</label>
-                <div>
-                    <label>Government Issued ID</label>
-                    <input type="text" name="govIDSpouse">
-                </div>
-                <div>
-                    <label>ID No.:</label>
-                    <input type="text" name="idNoSpouse">
-                </div>
-                <div>
-                    <label>Date Issued:</label>
-                    <input type="date" name="idDateSpouse">
-                </div>
+            <div>
+                <label>ID No.:</label>
+                <input type="text" name="idNoDeclarant"
+                    value="{{ old('idNoDeclarant', $saln->id_no_declarant ?? '') }}">
+            </div>
+            <div>
+                <label>Date Issued:</label>
+                <input type="date" name="idDateDeclarant"
+                    value="{{ old('idDateDeclarant', $saln->id_date_declarant ?? '') }}">
             </div>
         </div>
+
+        <div style="flex: 1; text-align: center;">
+            <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
+            <label>Signature of Co-Declarant/Spouse</label>
+            <div>
+                <label>Government Issued ID</label>
+                <input type="text" name="govIDSpouse"
+                    value="{{ old('govIDSpouse', $saln->gov_id_spouse ?? '') }}">
+            </div>
+            <div>
+                <label>ID No.:</label>
+                <input type="text" name="idNoSpouse"
+                    value="{{ old('idNoSpouse', $saln->id_no_spouse ?? '') }}">
+            </div>
+            <div>
+                <label>Date Issued:</label>
+                <input type="date" name="idDateSpouse"
+                    value="{{ old('idDateSpouse', $saln->id_date_spouse ?? '') }}">
+            </div>
+        </div>
+    </div>
 
         <p style="margin-top: 30px;">
             <strong>SUBSCRIBED AND SWORN</strong> to before me this ______ day of ____________, affiant exhibiting to me the
@@ -986,14 +1167,14 @@
 
             const tr = document.createElement('tr');
             const inputNames = [
-                'desc[]',
+                'description[]',
                 'kind[]',
                 'location[]',
-                'assessed[]',
-                'marketValue[]',
-                'acqYear[]',
-                'acqMode[]',
-                'acqCost[]'
+                'assessed_value[]',
+                'market_value[]',
+                'acquisition_year[]',
+                'acquisition_mode[]',
+                'acquisition_cost[]'
             ];
 
             inputNames.forEach(name => {
@@ -1001,21 +1182,19 @@
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.name = name;
-                if (name === 'acqCost[]') {
+                if (name === 'acquisition_cost[]') {
                     input.addEventListener('input', calculateRealSubtotal);
                 }
                 td.appendChild(input);
                 tr.appendChild(td);
-                });
-            tbody.appendChild(tr);
-            
+            });
 
             // Add delete button
             const tdDelete = document.createElement('td');
             const deleteBtn = document.createElement('button');
             deleteBtn.type = 'button';
             deleteBtn.textContent = 'Delete';
-            deleteBtn.className = 'btn btn-remove'; // Add your styles here
+            deleteBtn.className = 'btn btn-remove';
             deleteBtn.onclick = function () {
                 const totalRows = tbody.querySelectorAll('tr').length;
                 if (totalRows > 1) {
@@ -1026,6 +1205,8 @@
             };
             tdDelete.appendChild(deleteBtn);
             tr.appendChild(tdDelete);
+
+            tbody.appendChild(tr);
         }
 
         function removeRealPropertyRow(button) {
@@ -1042,58 +1223,70 @@
         }
         function calculateRealSubtotal() {
             let total = 0;
-            const inputs = document.querySelectorAll('input[name="acqCost[]"]');
+            const inputs = document.querySelectorAll('input[name="acquisition_cost[]"]');
 
             inputs.forEach(input => {
                 const value = parseFloat(input.value.replace(/,/g, ''));
                 if (!isNaN(value)) {
                     total += value;
                 }
+                        input.value = value.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
             });
 
             document.getElementById('subtotalReal').value = total.toLocaleString('en-US', { minimumFractionDigits: 2 });
             calculateTotalAssets();
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            calculateRealSubtotal();
+        });
 
-        function addPersonalProperty(){
+        function addPersonalProperty() {
             const tbody = document.querySelector("#assetsPersonal");
             const tr = document.createElement('tr');
 
             const inputNames = [
-                'description[]',
-                'yearAcquired[]',
-                'acquisitionCost[]'
-            ]
+                'personal_description[]',
+                'personal_year_acquired[]',
+                'personal_acquisition_cost[]'
+            ];
 
             inputNames.forEach(name => {
                 const td = document.createElement('td');
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.name = name;
+
                 if (name === 'acquisitionCost[]') {
                     input.addEventListener('input', calculatePersonalSubtotal);
                 }
+
                 td.appendChild(input);
                 tr.appendChild(td);
-            })
-                tbody.appendChild(tr);
-                // Add delete button
-                const tdDelete = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.type = 'button';
-                deleteBtn.textContent = 'Delete';
-                deleteBtn.className = 'btn btn-remove'; // Add your styles here
-                deleteBtn.onclick = function () {
-                    const totalRows = tbody.querySelectorAll('tr').length;
-                    if (totalRows > 1) {
-                        tr.remove();
-                    } else {
-                        alert("At least one row is required.");
-                    }
-                };
-                tdDelete.appendChild(deleteBtn);
-                tr.appendChild(tdDelete);
-            }
+            });
+
+            // Add delete button
+            const tdDelete = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'btn btn-remove';
+            deleteBtn.onclick = function () {
+                const totalRows = tbody.querySelectorAll('tr').length;
+                if (totalRows > 1) {
+                    tr.remove();
+                } else {
+                    alert("At least one row is required.");
+                }
+            };
+
+            tdDelete.appendChild(deleteBtn);
+            tr.appendChild(tdDelete);
+            tbody.appendChild(tr);
+        }
+
         function removePersonalPropertyRow(button) {
             const row = button.closest('tr');
             const tbody = document.getElementById('assetsPersonal');
@@ -1108,21 +1301,41 @@
         }
         function calculatePersonalSubtotal() {
             let total = 0;
-            const inputs = document.querySelectorAll('input[name="acquisitionCost[]"]');
+            const inputs = document.querySelectorAll('input[name="personal_acquisition_cost[]"]');
 
             inputs.forEach(input => {
-                const value = parseFloat(input.value.replace(/,/g, ''));
+                // Remove commas and parse value
+                let rawValue = input.value.replace(/,/g, '');
+                let value = parseFloat(rawValue);
+
                 if (!isNaN(value)) {
                     total += value;
+
+                    // Optional: reformat input value with commas
+                    input.value = value.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
                 }
             });
 
-            document.getElementById('subtotalPersonal').value = total.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-            calculateTotalAssets();
+            // Update subtotal field
+            const subtotalField = document.getElementById('subtotalPersonal');
+            if (subtotalField) {
+                subtotalField.value = total.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+
+            calculateTotalAssets(); // Call next subtotal function if needed
         }
+
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            calculatePersonalSubtotal();
+        });
+
         function calculateTotalAssets() {
             const real = parseFloat(document.getElementById('subtotalReal').value.replace(/,/g, '')) || 0;
             const personal = parseFloat(document.getElementById('subtotalPersonal').value.replace(/,/g, '')) || 0;
@@ -1137,43 +1350,46 @@
             
         }
 
-        function addLiability(){
+        function addLiability() {
             const tbody = document.querySelector("#liabilitiesBody");
             const tr = document.createElement('tr');
+
             const inputNames = [
                 'nature[]',
-                'nameCreditor[]',
-                'OutstandingBalance[]'
-            ]
+                'name_creditor[]',
+                'outstanding_balance[]'
+            ];
+
             inputNames.forEach(name => {
                 const td = document.createElement('td');
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.name = name;
-                if (name === 'OutstandingBalance[]') {
+                if (name === 'outstanding_balance[]') {
                     input.addEventListener('input', calculateLiabilitiesSubtotal);
                 }
                 td.appendChild(input);
                 tr.appendChild(td);
-            })
-                tbody.appendChild(tr);
-                // Add delete button
-                const tdDelete = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.type = 'button';
-                deleteBtn.textContent = 'Delete';
-                deleteBtn.className = 'btn btn-remove'; // Add your styles here
-                deleteBtn.onclick = function () {
-                    const totalRows = tbody.querySelectorAll('tr').length;
-                    if (totalRows > 1) {
-                        tr.remove();
-                    } else {
-                        alert("At least one row is required.");
-                    }
-                };
-                tdDelete.appendChild(deleteBtn);
-                tr.appendChild(tdDelete);
-            }
+            });
+
+            const tdDelete = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'btn btn-remove';
+            deleteBtn.onclick = function () {
+                const totalRows = tbody.querySelectorAll('tr').length;
+                if (totalRows > 1) {
+                    tr.remove();
+                } else {
+                    alert("At least one row is required.");
+                }
+            };
+            tdDelete.appendChild(deleteBtn);
+            tr.appendChild(tdDelete);
+
+            tbody.appendChild(tr);
+        }
 
         function removeLiabilitiesRow(button) {
             const row = button.closest('tr');
@@ -1189,7 +1405,7 @@
         }
         function calculateLiabilitiesSubtotal() {
             let total = 0;
-            const inputs = document.querySelectorAll('input[name="OutstandingBalance[]"]');
+            const inputs = document.querySelectorAll('input[name="outstanding_balance[]"]');
 
             inputs.forEach(input => {
                 const value = parseFloat(input.value.replace(/,/g, ''));

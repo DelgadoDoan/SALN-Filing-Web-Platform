@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('personal_properties', function (Blueprint $table) {
             $table->id();
-        $table->unsignedBigInteger('saln_id'); // Foreign key
-        $table->string('description')->nullable();
-        $table->string('year_acquired')->nullable();
-        $table->decimal('acquisition_cost', 15, 2)->nullable();
-        $table->timestamps();
-
-        $table->foreign('saln_id')->references('id')->on('salns')->onDelete('cascade');
+            $table->unsignedBigInteger('saln_id'); // Foreign key
+            $table->string('personal_description')->nullable();
+            $table->string('personal_year_acquired')->nullable();
+            $table->decimal('personal_acquisition_cost', 15, 2)->nullable();
+            $table->timestamps();
+            $table->foreign('saln_id')->references('id')->on('salns')->onDelete('cascade');
         });
     }
 

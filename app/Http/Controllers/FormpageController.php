@@ -39,7 +39,7 @@ class FormpageController extends Controller
             return redirect('/login');
         }
 
-        $saln = SALN::where('user_id', Auth::id())->latest()->first();
+        $saln = SALN::with('liabilities')->where('user_id', Auth::id())->latest()->first();
         return view('home', compact('saln'));
     }
 
@@ -146,37 +146,39 @@ class FormpageController extends Controller
                 'office_zip' => $request->spouse_office_zip[$i],
             ]);
         }
-        if ($request->has('desc')) {
-            foreach ($request->desc as $i => $desc) {
-                RealProperty::create([
-                    'saln_id' => $saln->id,
-                    'description' => $desc,
-                    'kind' => $request->kind[$i] ?? null,
-                    'location' => $request->location[$i] ?? null,
-                    'assessed_value' => $request->assessed[$i] ?? null,
-                    'market_value' => $request->marketValue[$i] ?? null,
-                    'acquisition_year' => $request->acqYear[$i] ?? null,
-                    'acquisition_mode' => $request->acqMode[$i] ?? null,
-                    'acquisition_cost' => $request->acqCost[$i] ?? null,
-                ]);
-            }
-        }
+        if($request->has('description')) {
         foreach ($request->description as $index => $desc) {
+            RealProperty::create([
+                'saln_id'           => $saln->id,
+                'description'       => $desc,
+                'kind'              => $request->kind[$index] ?? null,
+                'location'          => $request->location[$index] ?? null,
+                'assessed_value'    => $request->assessed_value[$index] ?? null,
+                'market_value'      => $request->market_value[$index] ?? null,
+                'acquisition_year'  => $request->acquisition_year[$index] ?? null,
+                'acquisition_mode'  => $request->acquisition_mode[$index] ?? null,
+                'acquisition_cost'  => $request->acquisition_cost[$index] ?? null,
+            ]);
+        }
+    }
+        foreach ($request->personal_description as $index => $desc) {
             PersonalProperty::create([
                 'saln_id' => $saln->id,
-                'description' => $desc,
-                'year_acquired' => $request->yearAcquired[$index] ?? null,
-                'acquisition_cost' => $request->acquisitionCost[$index] ?? null,
+                'personal_description' => $desc,
+                'personal_year_acquired' => $request->personal_year_acquired[$index] ?? null,
+                'personal_acquisition_cost' => $request->personal_acquisition_cost[$index] ?? null,
             ]);
         }
+
         foreach ($request->nature as $index => $nature) {
             Liability::create([
-                'saln_id' => $saln->id,
-                'nature' => $nature,
-                'name_creditor' => $request->nameCreditor[$index] ?? null,
-                'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
+                'saln_id'             => $saln->id,
+                'nature'              => $nature,
+                'name_creditor'       => $request->name_creditor[$index] ?? null,
+                'outstanding_balance' => $request->outstanding_balance[$index] ?? null,
             ]);
         }
+
         foreach ($request->nameBusiness as $index => $name) {
             BusinessInterest::create([
                 'saln_id' => $saln->id,
