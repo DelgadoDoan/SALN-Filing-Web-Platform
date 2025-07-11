@@ -208,7 +208,7 @@ class FormpageController extends Controller
         }
 
 
-        return redirect()->back()->with('success', 'SALN Form submitted successfully!');
+        return redirect()->back()->with('success', 'SALN Form saved successfully!');
     }
     
     public function importJson(Request $request)
