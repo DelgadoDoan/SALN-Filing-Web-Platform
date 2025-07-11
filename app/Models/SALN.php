@@ -44,7 +44,7 @@ class SALN extends Model
         'spouse_office_zip',
         'real_properties',
         'personal_assets',
-        'liabilities',
+        // 'liabilities',
         'business_interests',
         'relatives_in_government',
         'subtotal_real',
@@ -71,7 +71,7 @@ class SALN extends Model
         'id_date_spouse' => 'date',
         'real_properties' => 'array',
         'personal_assets' => 'array',
-        'liabilities' => 'array',
+        // 'liabilities' => 'array',
         'business_interests' => 'array',
         'relatives_in_government' => 'array',
         'subtotal_real' => 'decimal:2',
@@ -85,31 +85,31 @@ class SALN extends Model
     ];
     public function unmarriedChildren()
     {
-        return $this->hasMany(UnmarriedChild::class);
+        return $this->hasMany(UnmarriedChild::class, 'saln_id');
     }
     public function spouses()
     {
-        return $this->hasMany(Spouse::class);
+        return $this->hasMany(Spouse::class, 'saln_id');
     }
     public function realProperties()
     {
-        return $this->hasMany(RealProperty::class);
+        return $this->hasMany(RealProperty::class, 'saln_id');
     }
     public function personalProperties()
     {
-        return $this->hasMany(PersonalProperty::class);
+        return $this->hasMany(PersonalProperty::class, 'saln_id');
     }
     public function liabilities()
     {
-        return $this->hasMany(Liability::class);
+        return $this->hasMany(Liability::class, 'saln_id');
     }
     public function businessInterests()
     {
-        return $this->hasMany(BusinessInterest::class);
+        return $this->hasMany(BusinessInterest::class, 'saln_id');
     }
     public function relativesInGovernment()
     {
-        return $this->hasMany(RelativeInGovernment::class);
+        return $this->hasMany(RelativeInGovernment::class, 'saln_id');
     }
 
 }

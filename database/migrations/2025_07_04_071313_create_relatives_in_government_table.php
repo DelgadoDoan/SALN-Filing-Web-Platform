@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('relative_in_governments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('saln_id');
-            $table->string('name_relative')->nullable();
+            $table->string('relative_family_name')->nullable();
+            $table->string('relative_first_name')->nullable();
+            $table->string('relative_mi')->nullable();
             $table->string('relationship')->nullable();
             $table->string('position')->nullable();
             $table->string('name_agency')->nullable();
