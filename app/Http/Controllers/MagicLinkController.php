@@ -111,8 +111,6 @@ class MagicLinkController extends Controller
             'used_at' => Carbon::now()
         ]);
 
-        error_log(Auth::check());
-
         Auth::login($magicToken->user);
 
         return redirect('/home');
