@@ -947,7 +947,7 @@
                     <label>
                         <input type="checkbox" name="noBusinessInterest" id="noBusinessInterest"
                             onchange="toggleBusinessForm()"
-                            {{ $prefillData['declarant']['hasBusinessInterests'] ?? false ? 'checked' : '' }} />
+                            {{ $prefillData['declarant']['hasNoBusinessInterests'] ?? false ? 'checked' : '' }} />
                         I/We do not have any business interest or financial connection
                     </label>
 
@@ -964,7 +964,7 @@
                             </tr>
                         </thead>
                         <tbody id="businessBody">
-                             @if (!($prefillData['declarant']['hasBusinessInterests'] ?? false)&& !empty($prefillData['declarant']['businessInterestsAndFinancialConnections'] ?? []))
+                             @if (!($prefillData['declarant']['hasNoBusinessInterests'] ?? false)&& !empty($prefillData['declarant']['businessInterestsAndFinancialConnections'] ?? []))
                                 @foreach ($prefillData['declarant']['businessInterestsAndFinancialConnections'] ?? [] as $business)
                                 <tr>
                                     <td><input type="text" name="nameBusiness[]" class="business-input"
@@ -1027,7 +1027,7 @@
                         <label>
                             <input type="checkbox" name="noRelativesGovernment" id="noRelativesGovernment"
                                 onchange="toggleRelativesForm()"
-                                {{ $prefillData['declarant']['hasRelativesInGovermentService'] ?? false ? 'checked' : '' }} />
+                                {{ $prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false ? 'checked' : '' }} />
                             I/We do not have any relative/s in the government service
                         </label>
 
@@ -1049,7 +1049,7 @@
                                 </tr>
                             </thead>
                             <tbody id="relativesBody">
-                                @if (!($prefillData['declarant']['hasRelativesInGovermentService'] ?? false)&& !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
+                                @if (!($prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false)&& !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
                                     @foreach ($prefillData['declarant']['relativesInGovernmentService'] as $relative)
                                         <tr>
                                             <td><input type="text" name="relativeFamilyName[]"
