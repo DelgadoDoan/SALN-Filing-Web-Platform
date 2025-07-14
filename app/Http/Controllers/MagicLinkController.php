@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
@@ -17,6 +16,22 @@ use Illuminate\Support\Facades\Crypt;
 
 class MagicLinkController extends Controller
 {
+    public function showSignup() {
+        if (Auth::check()) {
+            return redirect('/home');
+        }
+
+        return view('signup');
+    }
+
+    public function showLogin() {
+        if (Auth::check()) {
+            return redirect('/home');
+        }
+
+        return view('login');
+    }
+
     public function signup(SignupRequest $request) {
         $validated = $request->validated();
 
@@ -87,7 +102,7 @@ class MagicLinkController extends Controller
         return view('linksent', ['email' => $decrypted]);
     }
 
-    public function authenticate(MagicToken $magicToken) {
+    public function authenticate(MagicToken $magicToken, string $randomStr) {
         // if link is not clicked within 30 min or already used
         if ($magicToken->created_at <= Carbon::now()->subMinutes(30) || !is_null($magicToken->used_at))
             abort(403);
@@ -97,8 +112,6 @@ class MagicLinkController extends Controller
         ]);
 
         Auth::login($magicToken->user);
-
-        Cookie::queue('user', $magicToken->user, 120); // cookie lifetime set to 120 minutes
 
         return redirect('/home');
     }

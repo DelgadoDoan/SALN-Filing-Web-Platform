@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Carbon;
 use App\Http\Requests\FormDataRequest;
+use App\Models\MagicToken;
 use App\Models\User;
 use App\Models\BusinessInterest;
 use App\Models\Liability;
@@ -21,26 +22,33 @@ class FormpageController extends Controller
 {
     public function isLoggedIn(Request $request) {
         // check if user is logged in
-        if (!Auth::check()) {
-            Cookie::expire('user');
-            
+        if (!Auth::check()) {            
             return redirect('/login');
         }
 
-        // check if cookie exists        
-        $cookie = $request->cookie('user');
-        
-        if (!$cookie) {
+        // check if token is expired        
+        $expiredToken = MagicToken::where('user_id', Auth::id())
+            ->where('created_at', '<=', Carbon::now()->subMinutes(240)) // if token is already 120 minutes old
+            ->first();
+
+        if ($expiredToken) {
+            $expiredToken->delete();
+
             Auth::logout();
 
             return redirect('/login');
         }
 
-        return view('home');
+        $prefillData = session('prefill'); // this pulls the uploaded data
+
+        $saln = SALN::where('user_id', Auth::id())->latest()->first();
+        return view('home', compact('prefillData', 'saln'));
     }
 
     public function logout() {
-        Cookie::expire('user');
+        $token = MagicToken::where('user_id', Auth::id())
+            ->first()
+            ->delete();
 
         Auth::logout();
 
@@ -48,11 +56,19 @@ class FormpageController extends Controller
     }
 
     public function deleteAccount () {
+        $userId = Auth::id();
+
+        $token = MagicToken::where('user_id', $userId)
+            ->first()
+            ->delete();
+
+        foreach (SALN::where('user_id', $userId)->get() as $saln) {
+            $saln->delete();
+        }
+
         $user = Auth::user();
 
         $user = User::where('email', $user->email)->delete();
-
-        Cookie::expire('user');
 
         Auth::logout();
 
@@ -63,6 +79,7 @@ class FormpageController extends Controller
         // $validated = $request->validated();
 
         $saln = new SALN();
+        $saln->user_id = Auth::id();
 
                 // --- Metadata ---
         $saln->asof_date = $request->input('asof_date');
@@ -111,7 +128,7 @@ class FormpageController extends Controller
 
         // --- Save to DB ---
         $saln->save();
-        foreach ($request->children_name as $index => $name) {
+        foreach ($request->input('children_name',[]) as $index => $name) {
             UnmarriedChild::create([
                 'saln_id' => $saln->id,
                 'name' => $name,
@@ -169,7 +186,7 @@ class FormpageController extends Controller
                 'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
             ]);
         }
-        foreach ($request->nameBusiness as $index => $name) {
+        foreach ($request->input('nameBusiness',[]) as $index => $name) {
             BusinessInterest::create([
                 'saln_id' => $saln->id,
                 'name_business' => $name,
@@ -178,10 +195,12 @@ class FormpageController extends Controller
                 'date_interest' => $request->dateInterest[$index] ?? null,
             ]);
         }
-        foreach ($request->nameRelative as $index => $name) {
+        foreach ($request->input('relativeFamilyName',[]) as $index => $relativeFamilyName) {
             RelativeInGovernment::create([
                 'saln_id' => $saln->id,
-                'name_relative' => $name,
+                'relative_family_name' => $relativeFamilyName,
+                'relative_first_name' => $request->relativeFirstName[$index] ?? null,
+                'relative_mi' => $request->relativeMi[$index] ?? null,
                 'relationship' => $request->relationship[$index] ?? null,
                 'position' => $request->position[$index] ?? null,
                 'name_agency' => $request->nameAgency[$index] ?? null,
@@ -189,6 +208,26 @@ class FormpageController extends Controller
         }
 
 
-        return redirect()->back()->with('success', 'SALN Form submitted successfully!');
+        return redirect()->back()->with('success', 'SALN Form saved successfully!');
+    }
+    
+    public function importJson(Request $request)
+    {
+        $request->validate([
+            'json_file' => 'required|file|mimes:json',
+        ]);
+
+        $path = $request->file('json_file')->store('uploads');
+        $fullPath = storage_path("app/private/{$path}");
+
+        if (!file_exists($fullPath)) {
+            dd("File not found at: $fullPath");
+
+        }
+
+        $json = file_get_contents($fullPath);
+        $data = json_decode($json, true);
+
+        return redirect('/home')->with('prefill', $data);
     }
 }
