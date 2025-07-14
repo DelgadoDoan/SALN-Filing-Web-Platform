@@ -102,7 +102,7 @@ class MagicLinkController extends Controller
         return view('linksent', ['email' => $decrypted]);
     }
 
-    public function authenticate(MagicToken $magicToken) {
+    public function authenticate(MagicToken $magicToken, string $randomStr) {
         // if link is not clicked within 30 min or already used
         if ($magicToken->created_at <= Carbon::now()->subMinutes(30) || !is_null($magicToken->used_at))
             abort(403);
