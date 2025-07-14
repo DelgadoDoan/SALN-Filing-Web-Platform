@@ -1,0 +1,181 @@
+{
+  "filingType": "not applicable",
+  "asOfDate": "2025-07-02",
+  "declarant": {
+    "familyName": "Dela Cruz",
+    "firstName": "Juan",
+    "middleInitial": "M",
+    "position": "Software Engineer",
+    "agencyOffice": "Department of Information and Communications Technology",
+    "officeAddress": {
+      "officeNo": "123",
+      "officeStreet": "Technology Ave",
+      "officeCity": "Quezon City",
+      "officeRegion": "NCR",
+      "officeZipCode": "1101"
+    },
+    "houseAddress": {
+      "houseNo": "45",
+      "houseStreet": "Maple Street",
+      "houseSubdivision": "Greenfields",
+      "houseBarangay": "Barangay Central",
+      "houseCity": "Quezon City",
+      "houseRegion": "NCR",
+      "houseZipCode": "1102"
+    },
+    "governmentIssuedId": {
+      "type": "Passport",
+      "idNumber": "P123456789",
+      "dateIssued": "2022-01-15"
+    },
+    "spouses": [
+      {
+        "familyName": "Santos",
+        "firstName": "Maria",
+        "middleInitial": "L",
+        "position": "Teacher",
+        "agencyOffice": "DepEd",
+        "officeAddress": {
+          "officeNo": "88",
+          "officeStreet": "Education St",
+          "officeCity": "Makati",
+          "officeRegion": "NCR",
+          "officeZipCode": "1229"
+        },
+        "governmentIssuedId": {
+          "type": "Driver's License",
+          "idNumber": "DL987654321",
+          "dateIssued": "2023-06-20"
+        }
+      },
+      {
+        "familyName": "Santjdjdndos",
+        "firstName": "Marsjsjsjsia",
+        "middleInitial": "L",
+        "position": "Tesnsjsjer",
+        "agencyOffice": "DdssaddepEd",
+        "officeAddress": {
+          "officeNo": "88",
+          "officeStreet": "Education St",
+          "officeCity": "Makati",
+          "officeRegion": "NCR",
+          "officeZipCode": "1229"
+        },
+        "governmentIssuedId": {
+          "type": "Driver's License",
+          "idNumber": "DL987654321",
+          "dateIssued": "2023-06-20"
+        }
+      }
+    ],
+    "unmarriedChildren": [
+      {
+        "name": "Miguel Dela Cruz",
+        "dateOfBirth": "2012-04-10"
+      },
+      {
+        "name": "Isabella Dela Cruz",
+        "dateOfBirth": "2015-09-25"
+      }
+    ],
+    "assets": {
+      "realProperties": [
+        {
+          "description": "Residential Lot",
+          "kind": "Land",
+          "exactLocation": "Tagaytay City",
+          "assessedValue": "1500000",
+          "currentFairMarketValue": "2000000",
+          "acquisitionYear": "2018",
+          "acquisitionMode": "Purchase",
+          "acquisitionCost": "1800000"
+        },
+        {
+          "description": "Residential Lot",
+          "kind": "Land",
+          "exactLocation": "Tagaytay City",
+          "assessedValue": "1500000",
+          "currentFairMarketValue": "2000000",
+          "acquisitionYear": "2018",
+          "acquisitionMode": "Purchase",
+          "acquisitionCost": "1800000"
+        },
+        {
+          "description": "Residential Lot",
+          "kind": "Land",
+          "exactLocation": "Tagaytay City",
+          "assessedValue": "1500000",
+          "currentFairMarketValue": "2000000",
+          "acquisitionYear": "2018",
+          "acquisitionMode": "Purchase",
+          "acquisitionCost": "1800000"
+        }
+      ],
+      "personalProperties": [
+        {
+          "description": "Toyota Vios 2019",
+          "yearAcquired": "2019",
+          "acquisitionCost": "750000"
+        },
+        {
+          "description": "Laptop (MacBook Pro)",
+          "yearAcquired": "2023",
+          "acquisitionCost": "120000"
+        }
+      ],
+      "totalAssets": "4670000"
+    },
+    "liabilities": [
+      {
+        "nature": "Home Loan",
+        "nameOfCreditor": "BPI",
+        "outstandingBalance": "500000"
+      },
+      {
+        "nature": "Home Loan",
+        "nameOfCreditor": "BPI",
+        "outstandingBalance": "500000"
+      },
+      {
+        "nature": "Home Loan",
+        "nameOfCreditor": "BPI",
+        "outstandingBalance": "500000"
+      }
+    ],
+    "hasBusinessInterests": true,
+    "businessInterestsAndFinancialConnections": [
+      {
+        "nameOfEntity": "CodeWise Solutions",
+        "businessAddress": "Ortigas Center, Pasig",
+        "natureOfInterestOrConnection": "Owner",
+        "dateOfAcquisition": "2020-05-15"
+      },
+      {
+        "nameOfEntity": "CodeWise Solutions",
+        "businessAddress": "Ortigas Center, Pasig",
+        "natureOfInterestOrConnection": "Owner",
+        "dateOfAcquisition": "2020-05-15"
+      }
+    ],
+    "hasRelativesInGovermentService": true,
+    "relativesInGovernmentService": [
+      {
+        "familyName": "Reyes",
+        "firstName": "Carlos",
+        "middleInitial": "J",
+        "relationship": "Cousin",
+        "position": "Customs Officer",
+        "agencyOfficeAndAddress": "Bureau of Customs, Port Area, Manila"
+      },
+      {
+        "familyName": "Reyes",
+        "firstName": "Carlos",
+        "middleInitial": "J",
+        "relationship": "Cousin",
+        "position": "Customs Officer",
+        "agencyOfficeAndAddress": "Bureau of Customs, Port Area, Manila"
+      }
+    ]
+  }
+}
+
