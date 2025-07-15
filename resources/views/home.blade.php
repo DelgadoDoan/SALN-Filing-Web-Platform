@@ -326,6 +326,10 @@
             opacity: 0.8;
             cursor: not-allowed;
         }
+
+        .field-lines {
+            
+        }
     </style>
 </head>
 
@@ -1133,7 +1137,7 @@
                             household covering previous years to include the year I first assumed office in government.
                         </p>
                         <br>
-                        <p>Date: _______________________________________</p>
+                        <p>Date: <span style="display: inline-block; border-bottom: 1px solid #000; width: 25%; vertical-align: -0.2em;"></span></p>
                         <br>
                         <div class="row" style="margin-top: 30px;">
                             <div style="flex: 1; text-align: center;">
@@ -1178,7 +1182,10 @@
                         </div>
 
                         <p style="margin-top: 30px;">
-                            <strong>SUBSCRIBED AND SWORN</strong> to before me this ______ day of ____________, affiant
+                            <strong>SUBSCRIBED AND SWORN</strong> to before me this 
+                            <span style="display: inline-block; border-bottom: 1px solid #000; width: 6%; vertical-align: -0.1em;"></span> 
+                            day of 
+                            <span style="display: inline-block; border-bottom: 1px solid #000; width: 14%; vertical-align: -0.1em;"></span>, affiant
                             exhibiting to me the
                             above-stated government issued identification card.
                         </p>
@@ -1191,14 +1198,20 @@
 
                 </div>
             </div>
-            <button type="submit">Save SALN</button>
+            <br />
+            <div style="text-align: right;">
+                <button type="submit">Save Form</button>
+            </div>
     </form>
-    <br />
+    
     <form action="{{ route('saln.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="file" name="json_file" accept=".json">
-        <button type="submit">Import JSON</button>
-        <button type="button" onclick="exportData()">Export JSON</button>
+        <br />
+        <div style="display: flex; justify-content: space-between;">
+            <button type="submit">Import JSON</button>
+            <button type="button" onclick="exportData()">Export as JSON</button>
+        </div>
     </form>
 
     <script>
