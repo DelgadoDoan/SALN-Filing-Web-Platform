@@ -1206,7 +1206,7 @@
     
     <form action="{{ route('saln.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="file" name="json_file" accept=".json">
+        <input type="file" name="json_file" accept=".json" required>
         <br />
         <div style="display: flex; justify-content: space-between;">
             <button type="submit">Import JSON</button>
@@ -1216,6 +1216,9 @@
 
     <script>
         const form = document.getElementById('saln-form');
+        const prefill = @json($prefillData);
+
+        console.log(prefill);
 
         function serializeForm(form) {
             const formData = new FormData(form);
@@ -1246,7 +1249,9 @@
         });
 
         function exportData() {
-            if (hasChanged) {
+            if (prefill) {
+                alert('You currently have an unsaved import. Please save before exporting.');
+            } else if (hasChanged) {
                 alert('You have unsaved changes. Please save before exporting.');
             } else {
                 window.location.href = "{{ route('saln.export') }}";
