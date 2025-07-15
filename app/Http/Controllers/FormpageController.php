@@ -270,7 +270,7 @@ class FormpageController extends Controller
                 'governmentIssuedId' => [
                     'type' => $saln->gov_id_spouse,
                     'idNumber' => $saln->id_no_spouse,
-                    'dateIssued' => $saln->id_date_spouse,
+                    'dateIssued' => $saln->id_date_spouse->format('Y-m-d'),
                 ],
             ];
         };
@@ -333,7 +333,7 @@ class FormpageController extends Controller
 
         $data = [
             'filingType' => $saln->filing_type,
-            'asOfDate' => $saln->asof_date,
+            'asOfDate' => $saln->asof_date->format('Y-m-d'),
             'declarant' => [
                 'familyName' => $saln->declarant_family_name,
                 'firstName' => $saln->declarant_first_name,
@@ -359,7 +359,7 @@ class FormpageController extends Controller
                 'governmentIssuedId' => [
                     'type' => $saln->gov_id_declarant,
                     'idNumber' => $saln->id_no_declarant,
-                    'dateIssued' => $saln->id_date_declarant,
+                    'dateIssued' => $saln->id_date_declarant->format('Y-m-d'),
                 ],
                 'spouses' => $spouses,
                 'unmarriedChildren' => $unmarried_children,
