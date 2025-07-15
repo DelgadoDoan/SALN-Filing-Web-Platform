@@ -353,7 +353,7 @@
     </nav>
 
 
-    <form action="{{ route('saln.save') }}" method="POST">
+    <form id="saln-form" action="{{ route('saln.save') }}" method="POST">
         @csrf
 
         @if (session('success'))
@@ -1194,13 +1194,52 @@
             <button type="submit">Save SALN</button>
     </form>
     <br />
-    <form action="/home/import-json" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('saln.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="file" name="json_file" accept=".json">
         <button type="submit">Import JSON</button>
+        <button type="button" onclick="exportData()">Export JSON</button>
     </form>
 
     <script>
+        const form = document.getElementById('saln-form');
+
+        function serializeForm(form) {
+            const formData = new FormData(form);
+            const entries = [...formData.entries()];
+            return JSON.stringify(entries);
+        }
+
+        let initialData;
+        window.onload = () => {
+            initialData = serializeForm(form);
+        };
+
+        let hasChanged = false;
+
+        form.addEventListener('input', () => {
+            hasChanged = serializeForm(form) !== initialData;
+        });
+
+        window.addEventListener('beforeunload', function (e) {
+            if (hasChanged) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        form.addEventListener('submit', () => {
+            hasChanged = false;
+        });
+
+        function exportData() {
+            if (hasChanged) {
+                alert('You have unsaved changes. Please save before exporting.');
+            } else {
+                window.location.href = "{{ route('saln.export') }}";
+            }
+        }
+        
         function addSpouseBlock() {
             const container = document.getElementById('spouseRepeater');
             const original = container.querySelector('.spouse-block');
