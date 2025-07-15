@@ -99,8 +99,12 @@ class FormpageController extends Controller
         $saln->declarant_house_region = $request->input('declarant_house_region');
         $saln->declarant_house_zip = $request->input('declarant_house_zip');
 
-        // Declarant Office Address
+        // Declarant Office
+        $saln->declarant_position = $request->input('declarant_position');
         $saln->declarant_office_name = $request->input('declarant_office_name');
+        
+        // Declarant Office Address
+        $saln->declarant_office_number = $request->input('declarant_office_number');
         $saln->declarant_office_street = $request->input('declarant_office_street');
         $saln->declarant_office_city = $request->input('declarant_office_city');
         $saln->declarant_office_region = $request->input('declarant_office_region');
@@ -123,8 +127,8 @@ class FormpageController extends Controller
         $saln->id_date_spouse = $request->input('idDateSpouse');
 
         // --- Flags ---
-        $saln->no_business_interest = $request->has('noBusinessInterest') ? true : false;
-        $saln->no_relatives_in_government = $request->has('noRelatives') ? true : false;
+        $saln->no_business_interest = $request->has('noBusinessInterests') ? true : false;
+        $saln->no_relatives_in_government = $request->has('noRelativesInGovernment') ? true : false;
 
         // --- Save to DB ---
         $saln->save();
@@ -148,7 +152,9 @@ class FormpageController extends Controller
                 'house_city' => $request->spouse_house_city[$i],
                 'house_region' => $request->spouse_house_region[$i],
                 'house_zip' => $request->spouse_house_zip[$i],
+                'position' => $request->spouse_position[$i],
                 'office_name' => $request->spouse_office_name[$i],
+                'office_number' => $request->spouse_office_number[$i],
                 'office_street' => $request->spouse_office_street[$i],
                 'office_city' => $request->spouse_office_city[$i],
                 'office_region' => $request->spouse_office_region[$i],
@@ -249,17 +255,17 @@ class FormpageController extends Controller
                 'familyName' => $spouse->family_name,
                 'firstName' => $spouse->first_name,
                 'middleInitial' => $spouse->mi,
-                'position' => '',
+                'position' => $spouse->position,
                 'agencyOffice' => $spouse->office_name,
                 'officeAddress' => [
-                    'officeNo' => '',
+                    'officeNo' => $spouse->office_number,
                     'officeStreet' => $spouse->office_street,
                     'officeCity' => $spouse->office_city,
                     'officeRegion' => $spouse->office_region,
                     'officeZipCode' => $spouse->office_zip,
                 ],
                 'houseAddress' => [
-                    'houseNo' => $spouse->house_no,
+                    'houseNo' => $spouse->house_number,
                     'houseStreet' => $spouse->house_street,
                     'houseSubdivision' => $spouse->house_subdivision,
                     'houseBarangay' => $spouse->house_barangay,
@@ -338,10 +344,10 @@ class FormpageController extends Controller
                 'familyName' => $saln->declarant_family_name,
                 'firstName' => $saln->declarant_first_name,
                 'middleInitial' => $saln->declarant_mi,
-                'position' => '',
+                'position' => $saln->declarant_position,
                 'agencyOffice' => $saln->declarant_office_name,
                 'officeAddress' => [
-                    'officeNo' => '',
+                    'officeNo' => $saln->declarant_office_number,
                     'officeStreet' => $saln->declarant_office_street,
                     'officeCity' => $saln->declarant_office_city,
                     'officeRegion' => $saln->declarant_office_region,
@@ -377,7 +383,7 @@ class FormpageController extends Controller
 
         $json = json_encode($data);
         
-        $filename = Auth::user()->name . '-' . 'saln' . '-' . Carbon::now('Asia/Manila')->format('Ymd\THisO');;
+        $filename = Auth::user()->name . '-' . 'saln' . '-' . Carbon::now('Asia/Manila')->format('Ymd\THis');
 
         return response($json)
             ->header('Content-Type', 'application/json')

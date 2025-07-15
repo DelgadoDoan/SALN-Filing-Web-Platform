@@ -33,8 +33,12 @@ return new class extends Migration
             $table->string('declarant_house_region')->nullable();
             $table->string('declarant_house_zip')->nullable();
             
-            // Declarant office address
+            // Declarant office
+            $table->string('declarant_position')->nullable();
             $table->string('declarant_office_name')->nullable();
+
+            // Declarant office address
+            $table->string('declarant_office_number')->nullable();
             $table->string('declarant_office_street')->nullable();
             $table->string('declarant_office_city')->nullable();
             $table->string('declarant_office_region')->nullable();

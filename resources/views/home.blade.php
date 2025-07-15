@@ -468,13 +468,27 @@
                             value="{{ old('declarant_house_zip', $prefillData['declarant']['houseAddress']['houseZipCode'] ?? ($saln->declarant_house_zip ?? '')) }}">
                     </div>
                 </div>
-                <!-- DECLARANT OFFICE ADDRESS -->
-                <h3>Office Address</h3>
+                <!-- DECLARANT OFFICE -->
+                <h3>Office</h3>
                 <div class="row">
+                    <div>
+                        <label for="declarant_position">Position</label>
+                        <input type="text" id="declarant_position" name="declarant_position"
+                            value="{{ old('declarant_position', $prefillData['declarant']['position'] ?? ($saln->declarant_office_name ?? '')) }}">
+                    </div>
                     <div>
                         <label for="declarant_office_name">Agency/Office</label>
                         <input type="text" id="declarant_office_name" name="declarant_office_name"
                             value="{{ old('declarant_office_name', $prefillData['declarant']['agencyOffice'] ?? ($saln->declarant_office_name ?? '')) }}">
+                    </div>
+                </div>
+                <!-- DECLARANT OFFICE ADDRESS -->
+                <h3>Office Address</h3>
+                <div class="row">
+                    <div>
+                        <label for="declarant_office_number">No.</label>
+                        <input type="text" id="declarant_office_number" name="declarant_office_number"
+                            value="{{ old('declarant_office_number', $prefillData['declarant']['officeAddress']['officeNo'] ?? ($saln->declarant_office_number ?? '')) }}">
                     </div>
                     <div>
                         <label for="declarant_office_street">Street</label>
@@ -571,12 +585,26 @@
                             </div>
                         </div>
 
-                        <h4>Office Address</h4>
+                        <h4>Office</h4>
                         <div class="row">
+                            <div>
+                                <label>Position</label>
+                                <input type="text" name="spouse_position[]"
+                                    value="{{ $spouse['position'] ?? '' }}">
+                            </div>
                             <div>
                                 <label>Agency/Office</label>
                                 <input type="text" name="spouse_office_name[]"
                                     value="{{ $spouse['agencyOffice'] ?? ($spouse['office_name'] ?? '') }}">
+                            </div>
+                        </div>
+
+                        <h4>Office Address</h4>
+                        <div class="row">
+                            <div>
+                                <label>No.</label>
+                                <input type="text" name="spouse_office_number[]"
+                                    value="{{ $spouse['officeAddress']['officeNo'] ?? ($spouse['office_number'] ?? '') }}">
                             </div>
                             <div>
                                 <label>Street</label>
@@ -949,9 +977,9 @@
                 </div>
                 <div class="checkbox-group">
                     <label>
-                        <input type="checkbox" name="noBusinessInterest" id="noBusinessInterest"
+                        <input type="checkbox" name="noBusinessInterests" id="noBusinessInterests"
                             onchange="toggleBusinessForm()"
-                            {{ $prefillData['declarant']['hasNoBusinessInterests'] ?? false ? 'checked' : '' }} />
+                            {{ $prefillData['declarant']['hasNoBusinessInterests'] ?? ($saln->no_business_interest ?? false) ? 'checked' : '' }} />
                         I/We do not have any business interest or financial connection
                     </label>
 
@@ -1029,9 +1057,9 @@
                     </div>
                     <div class="checkbox-group">
                         <label>
-                            <input type="checkbox" name="noRelativesGovernment" id="noRelativesGovernment"
+                            <input type="checkbox" name="noRelativesInGovernment" id="noRelativesInGovernment"
                                 onchange="toggleRelativesForm()"
-                                {{ $prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false ? 'checked' : '' }} />
+                                {{ $prefillData['declarant']['hasNoRelativesInGovermentService'] ?? ($saln->no_relatives_in_government ?? false) ? 'checked' : '' }} />
                             I/We do not have any relative/s in the government service
                         </label>
 
@@ -1217,8 +1245,6 @@
     <script>
         const form = document.getElementById('saln-form');
         const prefill = @json($prefillData);
-
-        console.log(prefill);
 
         function serializeForm(form) {
             const formData = new FormData(form);
@@ -1682,7 +1708,7 @@
         }
 
         function toggleBusinessForm() {
-            const checkbox = document.querySelector("#noBusinessInterest");
+            const checkbox = document.querySelector("#noBusinessInterests");
             const businessForm = document.querySelector("#business-form");
             const isDisabled = checkbox.checked;
 
@@ -1699,7 +1725,7 @@
         }
 
         function toggleRelativesForm() {
-            const checkbox = document.querySelector("#noRelativesGovernment");
+            const checkbox = document.querySelector("#noRelativesInGovernment");
             const relativesGovernmentForm = document.querySelector("#relatives-government-form");
             const isDisabled = checkbox.checked;
 
