@@ -232,7 +232,9 @@ class FormpageController extends Controller
 
     public function exportJson() {
 
-        $saln = SALN::where('user_id', Auth::id())->first();
+        $saln = SALN::where('user_id', Auth::id())
+            ->latest('created_at')    
+            ->first();
 
         $spouses = array();
         $unmarried_children = array();
@@ -244,33 +246,31 @@ class FormpageController extends Controller
         
         foreach ($saln->spouses ?? [] as $spouse) {
             $spouses[] = [
-                [
-                    'familyName' => $spouse->family_name,
-                    'firstName' => $spouse->first_name,
-                    'middleInitial' => $spouse->mi,
-                    'position' => '',
-                    'agencyOffice' => $spouse->office_name,
-                    'officeAddress' => [
-                        'officeNo' => '',
-                        'officeStreet' => $spouse->office_street,
-                        'officeCity' => $spouse->office_city,
-                        'officeRegion' => $spouse->office_region,
-                        'officeZipCode' => $spouse->office_zip,
-                    ],
-                    'houseAddress' => [
-                        'houseNo' => $spouse->house_no,
-                        'houseStreet' => $spouse->house_street,
-                        'houseSubdivision' => $spouse->house_subdivision,
-                        'houseBarangay' => $spouse->house_barangay,
-                        'houseCity' => $spouse->house_city,
-                        'houseRegion' => $spouse->house_region,
-                        'houseZipCode' => $spouse->house_zip,
-                    ],
-                    'governmentIssuedId' => [
-                        'type' => $saln->gov_id_spouse,
-                        'idNumber' => $saln->id_no_spouse,
-                        'dateIssued' => $saln->id_date_spouse,
-                    ],
+                'familyName' => $spouse->family_name,
+                'firstName' => $spouse->first_name,
+                'middleInitial' => $spouse->mi,
+                'position' => '',
+                'agencyOffice' => $spouse->office_name,
+                'officeAddress' => [
+                    'officeNo' => '',
+                    'officeStreet' => $spouse->office_street,
+                    'officeCity' => $spouse->office_city,
+                    'officeRegion' => $spouse->office_region,
+                    'officeZipCode' => $spouse->office_zip,
+                ],
+                'houseAddress' => [
+                    'houseNo' => $spouse->house_no,
+                    'houseStreet' => $spouse->house_street,
+                    'houseSubdivision' => $spouse->house_subdivision,
+                    'houseBarangay' => $spouse->house_barangay,
+                    'houseCity' => $spouse->house_city,
+                    'houseRegion' => $spouse->house_region,
+                    'houseZipCode' => $spouse->house_zip,
+                ],
+                'governmentIssuedId' => [
+                    'type' => $saln->gov_id_spouse,
+                    'idNumber' => $saln->id_no_spouse,
+                    'dateIssued' => $saln->id_date_spouse,
                 ],
             ];
         };
@@ -381,6 +381,6 @@ class FormpageController extends Controller
 
         return response($json)
             ->header('Content-Type', 'application/json')
-            ->header('Content-Disposition', "attachment; filename={$filename}");
+            ->header('Content-Disposition', "attachment; filename={$filename}.json");
     }
 }
