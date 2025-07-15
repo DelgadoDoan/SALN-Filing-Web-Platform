@@ -1191,14 +1191,35 @@
 
                 </div>
             </div>
-            <button type="submit">Save SALN</button>
     </form>
     <br />
+    <form action="/save-saln" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary">Save SALN</button>
+    </form>
+
+    <hr style="margin: 20px 0;" />
+
     <form action="/home/import-json" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="file" name="json_file" accept=".json">
-        <button type="submit">Import JSON</button>
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
+            <input type="file" name="json_file" accept=".json">
+            <button type="submit" class="btn btn-primary">Import JSON</button>
+        </div>
     </form>
+
+    <hr style="margin: 20px 0;" />
+    
+    <form> <!-- Add action method etc -->
+        @csrf
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
+            <input type="file" name="json_file" accept=".json">
+            <button type="submit" class="btn btn-primary">Export</button>
+        </div>
+    </form>
+
+
+
 
     <script>
         function addSpouseBlock() {
