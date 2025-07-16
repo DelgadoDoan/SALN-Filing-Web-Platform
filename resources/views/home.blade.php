@@ -592,7 +592,6 @@
                                 <input type="text" name="spouse_position[]"
                                     value="{{ $spouse['position'] ?? '' }}">
                             </div>
-                            <h1>{{ $spouse['position'] ?? '' }}</h1>
                             <div>
                                 <label>Agency/Office</label>
                                 <input type="text" name="spouse_office_name[]"
