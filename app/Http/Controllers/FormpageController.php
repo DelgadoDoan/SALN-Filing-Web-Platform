@@ -137,184 +137,98 @@ class FormpageController extends Controller
         // --- Save to DB ---
         $saln->save();
 
-        if (unmarriedChild::where('saln_id', $saln->id)->get()->isEmpty()) {
-            foreach ($request->input('children_name',[]) as $index => $name) {
-                UnmarriedChild::create([
-                    'saln_id' => $saln->id,
-                    'name' => $name,
-                    'date_of_birth' => $request->children_dob[$index],
-                ]);
-            }
-        } else {
-            foreach ($request->input('children_name',[]) as $index => $name) {
-                UnmarriedChild::where('saln_id', $saln->id)->update([
-                    'name' => $name,
-                    'date_of_birth' => $request->children_dob[$index],
-                ]);
-            }
+        // -- Refresh tables --
+        unmarriedChild::where('saln_id', $saln->id)->delete();
+        Spouse::where('saln_id', $saln->id)->delete();
+        RealProperty::where('saln_id', $saln->id)->delete();
+        PersonalProperty::where('saln_id', $saln->id)->delete();
+        Liability::where('saln_id', $saln->id)->delete();
+        BusinessInterest::where('saln_id', $saln->id)->delete();
+        RelativeInGovernment::where('saln_id', $saln->id)->delete();
+
+        foreach ($request->input('children_name',[]) as $index => $name) {
+            UnmarriedChild::create([
+                'saln_id' => $saln->id,
+                'name' => $name,
+                'date_of_birth' => $request->children_dob[$index],
+            ]);
         }
         
-        if (Spouse::where('saln_id', $saln->id)->get()->isEmpty()) {
-            foreach ($request->input('spouse_family_name',[]) as $i => $family_name) {
-                Spouse::create([
-                    'saln_id' => $saln->id,
-                    'family_name' => $family_name,
-                    'first_name' => $request->spouse_first_name[$i],
-                    'mi' => $request->spouse_mi[$i],
-                    'house_number' => $request->spouse_house_number[$i],
-                    'house_street' => $request->spouse_house_street[$i],
-                    'house_subdivision' => $request->spouse_house_subdivision[$i],
-                    'house_barangay' => $request->spouse_house_barangay[$i],
-                    'house_city' => $request->spouse_house_city[$i],
-                    'house_region' => $request->spouse_house_region[$i],
-                    'house_zip' => $request->spouse_house_zip[$i],
-                    'position' => $request->spouse_position[$i],
-                    'office_name' => $request->spouse_office_name[$i],
-                    'office_number' => $request->spouse_office_number[$i],
-                    'office_street' => $request->spouse_office_street[$i],
-                    'office_city' => $request->spouse_office_city[$i],
-                    'office_region' => $request->spouse_office_region[$i],
-                    'office_zip' => $request->spouse_office_zip[$i],
-                ]);
-            }
-        } else {
-            foreach ($request->input('spouse_family_name',[]) as $i => $family_name) {
-                Spouse::where('saln_id', $saln->id)->update([
-                    'family_name' => $family_name,
-                    'first_name' => $request->spouse_first_name[$i],
-                    'mi' => $request->spouse_mi[$i],
-                    'house_number' => $request->spouse_house_number[$i],
-                    'house_street' => $request->spouse_house_street[$i],
-                    'house_subdivision' => $request->spouse_house_subdivision[$i],
-                    'house_barangay' => $request->spouse_house_barangay[$i],
-                    'house_city' => $request->spouse_house_city[$i],
-                    'house_region' => $request->spouse_house_region[$i],
-                    'house_zip' => $request->spouse_house_zip[$i],
-                    'position' => $request->spouse_position[$i],
-                    'office_name' => $request->spouse_office_name[$i],
-                    'office_number' => $request->spouse_office_number[$i],
-                    'office_street' => $request->spouse_office_street[$i],
-                    'office_city' => $request->spouse_office_city[$i],
-                    'office_region' => $request->spouse_office_region[$i],
-                    'office_zip' => $request->spouse_office_zip[$i],
-                ]);
-            }
+        foreach ($request->input('spouse_family_name',[]) as $i => $family_name) {
+            Spouse::create([
+                'saln_id' => $saln->id,
+                'family_name' => $family_name,
+                'first_name' => $request->spouse_first_name[$i],
+                'mi' => $request->spouse_mi[$i],
+                'house_number' => $request->spouse_house_number[$i],
+                'house_street' => $request->spouse_house_street[$i],
+                'house_subdivision' => $request->spouse_house_subdivision[$i],
+                'house_barangay' => $request->spouse_house_barangay[$i],
+                'house_city' => $request->spouse_house_city[$i],
+                'house_region' => $request->spouse_house_region[$i],
+                'house_zip' => $request->spouse_house_zip[$i],
+                'position' => $request->spouse_position[$i],
+                'office_name' => $request->spouse_office_name[$i],
+                'office_number' => $request->spouse_office_number[$i],
+                'office_street' => $request->spouse_office_street[$i],
+                'office_city' => $request->spouse_office_city[$i],
+                'office_region' => $request->spouse_office_region[$i],
+                'office_zip' => $request->spouse_office_zip[$i],
+            ]);
         }
 
-        if ($request->has('desc')) {
-            if (RealProperty::where('saln_id', $saln->id)->get()->isEmpty()) {
-                foreach ($request->desc as $i => $desc) {
-                    RealProperty::create([
-                        'saln_id' => $saln->id,
-                        'description' => $desc,
-                        'kind' => $request->kind[$i] ?? null,
-                        'location' => $request->location[$i] ?? null,
-                        'assessed_value' => $request->assessed[$i] ?? null,
-                        'market_value' => $request->marketValue[$i] ?? null,
-                        'acquisition_year' => $request->acqYear[$i] ?? null,
-                        'acquisition_mode' => $request->acqMode[$i] ?? null,
-                        'acquisition_cost' => $request->acqCost[$i] ?? null,
-                    ]);
-                }
-            } else {
-                foreach ($request->desc as $i => $desc) {
-                    RealProperty::where('saln_id', $saln->id)->update([
-                        'description' => $desc,
-                        'kind' => $request->kind[$i] ?? null,
-                        'location' => $request->location[$i] ?? null,
-                        'assessed_value' => $request->assessed[$i] ?? null,
-                        'market_value' => $request->marketValue[$i] ?? null,
-                        'acquisition_year' => $request->acqYear[$i] ?? null,
-                        'acquisition_mode' => $request->acqMode[$i] ?? null,
-                        'acquisition_cost' => $request->acqCost[$i] ?? null,
-                    ]);
-                }
-            }
+        foreach ($request->desc as $i => $desc) {
+            RealProperty::create([
+                'saln_id' => $saln->id,
+                'description' => $desc,
+                'kind' => $request->kind[$i] ?? null,
+                'location' => $request->location[$i] ?? null,
+                'assessed_value' => $request->assessed[$i] ?? null,
+                'market_value' => $request->marketValue[$i] ?? null,
+                'acquisition_year' => $request->acqYear[$i] ?? null,
+                'acquisition_mode' => $request->acqMode[$i] ?? null,
+                'acquisition_cost' => $request->acqCost[$i] ?? null,
+            ]);
         }
 
-        if (PersonalProperty::where('saln_id', $saln->id)->get()->isEmpty()) {
-            foreach ($request->description as $index => $desc) {
-                PersonalProperty::create([
-                    'saln_id' => $saln->id,
-                    'description' => $desc,
-                    'year_acquired' => $request->yearAcquired[$index] ?? null,
-                    'acquisition_cost' => $request->acquisitionCost[$index] ?? null,
-                ]);
-            }
-        } else {
-            foreach ($request->description as $index => $desc) {
-                PersonalProperty::where('saln_id', $saln->id)->update([
-                    'description' => $desc,
-                    'year_acquired' => $request->yearAcquired[$index] ?? null,
-                    'acquisition_cost' => $request->acquisitionCost[$index] ?? null,
-                ]);
-            }
+        foreach ($request->description as $index => $desc) {
+            PersonalProperty::create([
+                'saln_id' => $saln->id,
+                'description' => $desc,
+                'year_acquired' => $request->yearAcquired[$index] ?? null,
+                'acquisition_cost' => $request->acquisitionCost[$index] ?? null,
+            ]);
         }
 
-        if (Liability::where('saln_id', $saln->id)->get()->isEmpty()) {
-            foreach ($request->nature as $index => $nature) {
-                Liability::create([
-                    'saln_id' => $saln->id,
-                    'nature' => $nature,
-                    'name_creditor' => $request->nameCreditor[$index] ?? null,
-                    'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
-                ]);
-            }
-        } else {
-            foreach ($request->nature as $index => $nature) {
-                Liability::where('saln_id', $saln->id)->update([
-                    'nature' => $nature,
-                    'name_creditor' => $request->nameCreditor[$index] ?? null,
-                    'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
-                ]);
-            }
+        foreach ($request->nature as $index => $nature) {
+            Liability::create([
+                'saln_id' => $saln->id,
+                'nature' => $nature,
+                'name_creditor' => $request->nameCreditor[$index] ?? null,
+                'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
+            ]);
         }
 
-        if (BusinessInterest::where('saln_id', $saln->id)->get()->isEmpty()) {
-            foreach ($request->input('nameBusiness',[]) as $index => $name) {
-                BusinessInterest::create([
-                    'saln_id' => $saln->id,
-                    'name_business' => $name,
-                    'address_business' => $request->addressBusiness[$index] ?? null,
-                    'nature_business' => $request->natureBusiness[$index] ?? null,
-                    'date_interest' => $request->dateInterest[$index] ?? null,
-                ]);
-            }
-        } else {
-            foreach ($request->input('nameBusiness',[]) as $index => $name) {
-                BusinessInterest::where('saln_id', $saln->id)->update([
-                    'name_business' => $name,
-                    'address_business' => $request->addressBusiness[$index] ?? null,
-                    'nature_business' => $request->natureBusiness[$index] ?? null,
-                    'date_interest' => $request->dateInterest[$index] ?? null,
-                ]);
-            }
+        foreach ($request->input('nameBusiness',[]) as $index => $name) {
+            BusinessInterest::create([
+                'saln_id' => $saln->id,
+                'name_business' => $name,
+                'address_business' => $request->addressBusiness[$index] ?? null,
+                'nature_business' => $request->natureBusiness[$index] ?? null,
+                'date_interest' => $request->dateInterest[$index] ?? null,
+            ]);
         }
 
-        if (RelativeInGovernment::where('saln_id', $saln->id)->get()->isEmpty()) {
-            foreach ($request->input('relativeFamilyName',[]) as $index => $relativeFamilyName) {
-                RelativeInGovernment::create([
-                    'saln_id' => $saln->id,
-                    'relative_family_name' => $relativeFamilyName,
-                    'relative_first_name' => $request->relativeFirstName[$index] ?? null,
-                    'relative_mi' => $request->relativeMi[$index] ?? null,
-                    'relationship' => $request->relationship[$index] ?? null,
-                    'position' => $request->position[$index] ?? null,
-                    'name_agency' => $request->nameAgency[$index] ?? null,
-                ]);
-            }
-        } else {
-            foreach ($request->input('relativeFamilyName',[]) as $index => $relativeFamilyName) {
-                RelativeInGovernment::where('saln_id', $saln->id)->update([
-                    'saln_id' => $saln->id,
-                    'relative_family_name' => $relativeFamilyName,
-                    'relative_first_name' => $request->relativeFirstName[$index] ?? null,
-                    'relative_mi' => $request->relativeMi[$index] ?? null,
-                    'relationship' => $request->relationship[$index] ?? null,
-                    'position' => $request->position[$index] ?? null,
-                    'name_agency' => $request->nameAgency[$index] ?? null,
-                ]);
-            }
+        foreach ($request->input('relativeFamilyName',[]) as $index => $relativeFamilyName) {
+            RelativeInGovernment::create([
+                'saln_id' => $saln->id,
+                'relative_family_name' => $relativeFamilyName,
+                'relative_first_name' => $request->relativeFirstName[$index] ?? null,
+                'relative_mi' => $request->relativeMi[$index] ?? null,
+                'relationship' => $request->relationship[$index] ?? null,
+                'position' => $request->position[$index] ?? null,
+                'name_agency' => $request->nameAgency[$index] ?? null,
+            ]);
         }
 
         return redirect()->back()->with('success', 'SALN Form saved successfully!');
