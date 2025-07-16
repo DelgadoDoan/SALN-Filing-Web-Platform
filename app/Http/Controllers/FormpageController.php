@@ -41,8 +41,34 @@ class FormpageController extends Controller
 
         $prefillData = session('prefill'); // this pulls the uploaded data
 
+        // create or update form
         $saln = SALN::updateOrCreate(
             ['user_id' => Auth::id()],
+        );
+
+        // initial form fields
+        $spouse = Spouse::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $realProperties = RealProperty::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $personalProperties = PersonalProperty::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $liabilities = Liability::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+        
+        $businessInterests = BusinessInterest::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+        
+        $relatives = RelativeInGovernment::updateOrCreate(
+            ['saln_id' => $saln->id],
         );
 
         return view('home', compact('prefillData', 'saln'));
@@ -433,9 +459,9 @@ class FormpageController extends Controller
                 ],
                 'liabilities' => $liabilities,
                 'hasNoBusinessInterests' => $saln->no_business_interest,
-                'businessInterestsAndFinancialConnections' => $business_interests,
+                'businessInterestsAndFinancialConnections' => $saln->no_business_interest ? [] : $business_interests,
                 'hasNoRelativesInGovermentService' => $saln->no_relatives_in_government,
-                'relativesInGovernmentService' => $relatives_in_government,
+                'relativesInGovernmentService' => $saln->no_relatives_in_government ? [] : $relatives_in_government,
             ],
         ];
 

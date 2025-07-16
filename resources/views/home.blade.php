@@ -638,108 +638,6 @@
                         </div>
                     </div>
                 @endforeach
-
-                @if (empty($prefillData['declarant']['spouses']) && empty($saln->spouses))
-                    <div class="spouse-block">
-                        <h4 class ="spouse-header">Spouse 1 Information</h4>
-                        <div class="row">
-                            <div>
-                                <label>Family Name</label>
-                                <input type="text" name="spouse_family_name[]">
-                            </div>
-                            <div>
-                                <label>First Name</label>
-                                <input type="text" name="spouse_first_name[]">
-                            </div>
-                            <div>
-                                <label>M.I.</label>
-                                <input type="text" name="spouse_mi[]">
-                            </div>
-                        </div>
-
-                        <h4>Home Address</h4>
-                        <div class="row">
-                            <div>
-                                <label>House Number</label>
-                                <input type="text" name="spouse_house_number[]">
-                            </div>
-                            <div>
-                                <label>Street</label>
-                                <input type="text" name="spouse_house_street[]">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>Subdivision</label>
-                                <input type="text" name="spouse_house_subdivision[]">
-                            </div>
-                            <div>
-                                <label>Barangay</label>
-                                <input type="text" name="spouse_house_barangay[]">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>City/Municipality</label>
-                                <input type="text" name="spouse_house_city[]">
-                            </div>
-                            <div>
-                                <label>Region</label>
-                                <input type="text" name="spouse_house_region[]">
-                            </div>
-                        </div>
-                        <div class="rowone">
-                            <div>
-                                <label>Zip Code</label>
-                                <input type="text" name="spouse_house_zip[]">
-                            </div>
-                        </div>
-
-                        <h4>Office</h4>
-                        <div class="row">
-                            <div>
-                                <label>Position</label>
-                                <input type="text" name="spouse_position[]">
-                            </div>
-                            <div>
-                                <label>Agency/Office</label>
-                                <input type="text" name="spouse_office_name[]">
-                            </div>
-                        </div>
-
-                        <h4>Office Address</h4>
-                        <div class="row">
-                            <div>
-                                <label>No.</label>
-                                <input type="text" name="spouse_office_number[]">
-                            </div>
-                            <div>
-                                <label>Street</label>
-                                <input type="text" name="spouse_office_street[]">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>City/Municipality</label>
-                                <input type="text" name="spouse_office_city[]">
-                            </div>
-                            <div>
-                                <label>Region</label>
-                                <input type="text" name="spouse_office_region[]">
-                            </div>
-                        </div>
-                        <div class="rowone">
-                            <div>
-                                <label>Zip Code</label>
-                                <input type="text" name="spouse_office_zip[]">
-                            </div>
-                        </div>
-                        <div class="spouse-actions">
-                            <button type="button" class="button-remove remove-spouse"
-                                onclick="removeSpouseBlock(this)">Remove Spouse</button>
-                        </div>
-                    </div>
-                @endif
             </div>
 
 
@@ -1094,7 +992,7 @@
                             </thead>
                             <tbody id="relativesBody">
                                 @if (!($prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false)&& !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
-                                    @foreach ($prefillData['declarant']['relativesInGovernmentService'] as $relative)
+                                    @foreach ($prefillData['declarant']['relativesInGovernmentService'] ?? [] as $relative)
                                         <tr>
                                             <td><input type="text" name="relativeFamilyName[]"
                                                     value="{{ $relative['familyName'] ?? '' }}"></td>
@@ -1625,9 +1523,9 @@
             const tbody = document.querySelector('#relativesBody');
             const tr = document.createElement('tr');
             const inputNames = [
-                'RelativeFamilyName[]',
-                'RelativeFirstName[]',
-                'RelativeMi[]',
+                'relativeFamilyName[]',
+                'relativeFirstName[]',
+                'relativeMi[]',
                 'relationship[]',
                 'position[]',
                 'nameAgency[]'
