@@ -1586,7 +1586,7 @@
                 const td = document.createElement('td');
                 const input = document.createElement('input');
                 input.name = name;
-                input.type = 'text';
+                input.type = (name === 'dateInterest[]') ? 'date' : 'text';;
                 td.appendChild(input);
                 tr.appendChild(td);
             })

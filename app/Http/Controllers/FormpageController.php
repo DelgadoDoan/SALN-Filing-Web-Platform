@@ -256,12 +256,7 @@ class FormpageController extends Controller
 
     public function exportJson() {
         $saln = SALN::where('user_id', Auth::id())
-            ->latest('created_at')    
             ->first();
-
-        if (!$saln) {
-            return redirect()->back();
-        }
 
         $spouses = array();
         $unmarried_children = array();
@@ -271,9 +266,11 @@ class FormpageController extends Controller
         $business_interests = array();
         $relatives_in_government = array();
 
+        $first_spouse = true;
+
         if ($saln->spouses->isNotEmpty()) {
             foreach ($saln->spouses as $spouse) {
-                $spouses[] = [
+                $spouse_info = [
                     'familyName' => $spouse->family_name ?? '',
                     'firstName' => $spouse->first_name ?? '',
                     'middleInitial' => $spouse->mi ?? '',
@@ -295,12 +292,19 @@ class FormpageController extends Controller
                         'houseRegion' => $spouse->house_region ?? '',
                         'houseZipCode' => $spouse->house_zip ?? '',
                     ],
-                    'governmentIssuedId' => [
+                ];
+
+                if ($first_spouse) {
+                    $spouse_info['governmentIssuedId'] = [
                         'type' => $saln->gov_id_spouse ?? '',
                         'idNumber' => $saln->id_no_spouse ?? '',
                         'dateIssued' => $saln->id_date_spouse ? $saln->id_date_spouse->format('Y-m-d') : '',
-                    ],
-                ];
+                    ];
+                    
+                    $first_spouse = false;
+                }
+
+                $spouses[] = $spouse_info;
             };
         } else {
             $spouses[] = [
@@ -435,7 +439,7 @@ class FormpageController extends Controller
             ],
         ];
 
-        $json = json_encode($data);
+        $json = json_encode($data, JSON_PRETTY_PRINT);
         
         $filename = Auth::user()->name . '-' . 'saln' . '-' . Carbon::now('Asia/Manila')->format('Ymd\THis');
 
