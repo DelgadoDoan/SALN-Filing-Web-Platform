@@ -474,7 +474,7 @@
                     <div>
                         <label for="declarant_position">Position</label>
                         <input type="text" id="declarant_position" name="declarant_position"
-                            value="{{ old('declarant_position', $prefillData['declarant']['position'] ?? ($saln->declarant_office_name ?? '')) }}">
+                            value="{{ old('declarant_position', $prefillData['declarant']['position'] ?? ($saln->declarant_position ?? '')) }}">
                     </div>
                     <div>
                         <label for="declarant_office_name">Agency/Office</label>
@@ -592,6 +592,7 @@
                                 <input type="text" name="spouse_position[]"
                                     value="{{ $spouse['position'] ?? '' }}">
                             </div>
+                            <h1>{{ $spouse['position'] ?? '' }}</h1>
                             <div>
                                 <label>Agency/Office</label>
                                 <input type="text" name="spouse_office_name[]"
@@ -695,11 +696,23 @@
                             </div>
                         </div>
 
-                        <h4>Office Address</h4>
+                        <h4>Office</h4>
                         <div class="row">
+                            <div>
+                                <label>Position</label>
+                                <input type="text" name="spouse_position[]">
+                            </div>
                             <div>
                                 <label>Agency/Office</label>
                                 <input type="text" name="spouse_office_name[]">
+                            </div>
+                        </div>
+
+                        <h4>Office Address</h4>
+                        <div class="row">
+                            <div>
+                                <label>No.</label>
+                                <input type="text" name="spouse_office_number[]">
                             </div>
                             <div>
                                 <label>Street</label>
@@ -1245,6 +1258,7 @@
     <script>
         const form = document.getElementById('saln-form');
         const prefill = @json($prefillData);
+        console.log(prefill);
 
         function serializeForm(form) {
             const formData = new FormData(form);
@@ -1256,6 +1270,9 @@
         window.onload = () => {
             initialData = serializeForm(form);
         };
+
+        let formData = serializeForm(form);
+        console.log(formData);
 
         let hasChanged = false;
 
