@@ -28,7 +28,7 @@ class FormpageController extends Controller
 
         // check if token is expired        
         $expiredToken = MagicToken::where('user_id', Auth::id())
-            ->where('created_at', '<=', Carbon::now()->subMinutes(240)) // if token is already 120 minutes old
+            ->where('created_at', '<=', Carbon::now()->subMinutes(360)) // if token is already 360 minutes (6 hours) old
             ->first();
 
         if ($expiredToken) {
