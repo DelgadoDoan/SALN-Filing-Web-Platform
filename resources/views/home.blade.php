@@ -486,7 +486,7 @@
                 <h3>Office Address</h3>
                 <div class="row">
                     <div>
-                        <label for="declarant_office_number">No.</label>
+                        <label for="declarant_office_number">Office Number</label>
                         <input type="text" id="declarant_office_number" name="declarant_office_number"
                             value="{{ old('declarant_office_number', $prefillData['declarant']['officeAddress']['officeNo'] ?? ($saln->declarant_office_number ?? '')) }}">
                     </div>
@@ -602,7 +602,7 @@
                         <h4>Office Address</h4>
                         <div class="row">
                             <div>
-                                <label>No.</label>
+                                <label>Office Number</label>
                                 <input type="text" name="spouse_office_number[]"
                                     value="{{ $spouse['officeAddress']['officeNo'] ?? ($spouse['office_number'] ?? '') }}">
                             </div>
