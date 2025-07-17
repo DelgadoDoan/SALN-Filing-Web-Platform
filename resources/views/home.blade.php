@@ -326,6 +326,10 @@
             opacity: 0.8;
             cursor: not-allowed;
         }
+
+        .field-lines {
+            
+        }
     </style>
 </head>
 
@@ -353,7 +357,7 @@
     </nav>
 
 
-    <form action="{{ route('saln.save') }}" method="POST">
+    <form id="saln-form" action="{{ route('saln.save') }}" method="POST">
         @csrf
 
         @if (session('success'))
@@ -464,13 +468,27 @@
                             value="{{ old('declarant_house_zip', $prefillData['declarant']['houseAddress']['houseZipCode'] ?? ($saln->declarant_house_zip ?? '')) }}">
                     </div>
                 </div>
-                <!-- DECLARANT OFFICE ADDRESS -->
-                <h3>Office Address</h3>
+                <!-- DECLARANT OFFICE -->
+                <h3>Office</h3>
                 <div class="row">
+                    <div>
+                        <label for="declarant_position">Position</label>
+                        <input type="text" id="declarant_position" name="declarant_position"
+                            value="{{ old('declarant_position', $prefillData['declarant']['position'] ?? ($saln->declarant_position ?? '')) }}">
+                    </div>
                     <div>
                         <label for="declarant_office_name">Agency/Office</label>
                         <input type="text" id="declarant_office_name" name="declarant_office_name"
                             value="{{ old('declarant_office_name', $prefillData['declarant']['agencyOffice'] ?? ($saln->declarant_office_name ?? '')) }}">
+                    </div>
+                </div>
+                <!-- DECLARANT OFFICE ADDRESS -->
+                <h3>Office Address</h3>
+                <div class="row">
+                    <div>
+                        <label for="declarant_office_number">Office Number</label>
+                        <input type="text" id="declarant_office_number" name="declarant_office_number"
+                            value="{{ old('declarant_office_number', $prefillData['declarant']['officeAddress']['officeNo'] ?? ($saln->declarant_office_number ?? '')) }}">
                     </div>
                     <div>
                         <label for="declarant_office_street">Street</label>
@@ -567,12 +585,26 @@
                             </div>
                         </div>
 
-                        <h4>Office Address</h4>
+                        <h4>Office</h4>
                         <div class="row">
+                            <div>
+                                <label>Position</label>
+                                <input type="text" name="spouse_position[]"
+                                    value="{{ $spouse['position'] ?? '' }}">
+                            </div>
                             <div>
                                 <label>Agency/Office</label>
                                 <input type="text" name="spouse_office_name[]"
                                     value="{{ $spouse['agencyOffice'] ?? ($spouse['office_name'] ?? '') }}">
+                            </div>
+                        </div>
+
+                        <h4>Office Address</h4>
+                        <div class="row">
+                            <div>
+                                <label>Office Number</label>
+                                <input type="text" name="spouse_office_number[]"
+                                    value="{{ $spouse['officeAddress']['officeNo'] ?? ($spouse['office_number'] ?? '') }}">
                             </div>
                             <div>
                                 <label>Street</label>
@@ -606,96 +638,6 @@
                         </div>
                     </div>
                 @endforeach
-
-                @if (empty($prefillData['declarant']['spouses']) && empty($saln->spouses))
-                    <div class="spouse-block">
-                        <h4 class ="spouse-header">Spouse 1 Information</h4>
-                        <div class="row">
-                            <div>
-                                <label>Family Name</label>
-                                <input type="text" name="spouse_family_name[]">
-                            </div>
-                            <div>
-                                <label>First Name</label>
-                                <input type="text" name="spouse_first_name[]">
-                            </div>
-                            <div>
-                                <label>M.I.</label>
-                                <input type="text" name="spouse_mi[]">
-                            </div>
-                        </div>
-
-                        <h4>Home Address</h4>
-                        <div class="row">
-                            <div>
-                                <label>House Number</label>
-                                <input type="text" name="spouse_house_number[]">
-                            </div>
-                            <div>
-                                <label>Street</label>
-                                <input type="text" name="spouse_house_street[]">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>Subdivision</label>
-                                <input type="text" name="spouse_house_subdivision[]">
-                            </div>
-                            <div>
-                                <label>Barangay</label>
-                                <input type="text" name="spouse_house_barangay[]">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>City/Municipality</label>
-                                <input type="text" name="spouse_house_city[]">
-                            </div>
-                            <div>
-                                <label>Region</label>
-                                <input type="text" name="spouse_house_region[]">
-                            </div>
-                        </div>
-                        <div class="rowone">
-                            <div>
-                                <label>Zip Code</label>
-                                <input type="text" name="spouse_house_zip[]">
-                            </div>
-                        </div>
-
-                        <h4>Office Address</h4>
-                        <div class="row">
-                            <div>
-                                <label>Agency/Office</label>
-                                <input type="text" name="spouse_office_name[]">
-                            </div>
-                            <div>
-                                <label>Street</label>
-                                <input type="text" name="spouse_office_street[]">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>City/Municipality</label>
-                                <input type="text" name="spouse_office_city[]">
-                            </div>
-                            <div>
-                                <label>Region</label>
-                                <input type="text" name="spouse_office_region[]">
-                            </div>
-                        </div>
-                        <div class="rowone">
-                            <div>
-                                <label>Zip Code</label>
-                                <input type="text" name="spouse_office_zip[]">
-                            </div>
-                        </div>
-                        <div class="spouse-actions">
-                            <button type="button" class="button-remove remove-spouse"
-                                onclick="removeSpouseBlock(this)">Remove Spouse</button>
-                        </div>
-                    </div>
-                @endif
             </div>
 
 
@@ -945,9 +887,9 @@
                 </div>
                 <div class="checkbox-group">
                     <label>
-                        <input type="checkbox" name="noBusinessInterest" id="noBusinessInterest"
+                        <input type="checkbox" name="noBusinessInterests" id="noBusinessInterests"
                             onchange="toggleBusinessForm()"
-                            {{ $prefillData['declarant']['hasNoBusinessInterests'] ?? false ? 'checked' : '' }} />
+                            {{ $prefillData['declarant']['hasNoBusinessInterests'] ?? ($saln->no_business_interest ?? false) ? 'checked' : '' }} />
                         I/We do not have any business interest or financial connection
                     </label>
 
@@ -1025,9 +967,9 @@
                     </div>
                     <div class="checkbox-group">
                         <label>
-                            <input type="checkbox" name="noRelativesGovernment" id="noRelativesGovernment"
+                            <input type="checkbox" name="noRelativesInGovernment" id="noRelativesInGovernment"
                                 onchange="toggleRelativesForm()"
-                                {{ $prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false ? 'checked' : '' }} />
+                                {{ $prefillData['declarant']['hasNoRelativesInGovermentService'] ?? ($saln->no_relatives_in_government ?? false) ? 'checked' : '' }} />
                             I/We do not have any relative/s in the government service
                         </label>
 
@@ -1050,7 +992,7 @@
                             </thead>
                             <tbody id="relativesBody">
                                 @if (!($prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false)&& !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
-                                    @foreach ($prefillData['declarant']['relativesInGovernmentService'] as $relative)
+                                    @foreach ($prefillData['declarant']['relativesInGovernmentService'] ?? [] as $relative)
                                         <tr>
                                             <td><input type="text" name="relativeFamilyName[]"
                                                     value="{{ $relative['familyName'] ?? '' }}"></td>
@@ -1133,7 +1075,7 @@
                             household covering previous years to include the year I first assumed office in government.
                         </p>
                         <br>
-                        <p>Date: _______________________________________</p>
+                        <p>Date: <span style="display: inline-block; border-bottom: 1px solid #000; width: 25%; vertical-align: -0.2em;"></span></p>
                         <br>
                         <div class="row" style="margin-top: 30px;">
                             <div style="flex: 1; text-align: center;">
@@ -1178,7 +1120,10 @@
                         </div>
 
                         <p style="margin-top: 30px;">
-                            <strong>SUBSCRIBED AND SWORN</strong> to before me this ______ day of ____________, affiant
+                            <strong>SUBSCRIBED AND SWORN</strong> to before me this 
+                            <span style="display: inline-block; border-bottom: 1px solid #000; width: 6%; vertical-align: -0.1em;"></span> 
+                            day of 
+                            <span style="display: inline-block; border-bottom: 1px solid #000; width: 14%; vertical-align: -0.1em;"></span>, affiant
                             exhibiting to me the
                             above-stated government issued identification card.
                         </p>
@@ -1191,16 +1136,68 @@
 
                 </div>
             </div>
-            <button type="submit">Save SALN</button>
+            <br />
+            <div style="text-align: right;">
+                <button type="submit">Save Form</button>
+            </div>
     </form>
-    <br />
-    <form action="/home/import-json" method="POST" enctype="multipart/form-data">
+    
+    <form action="{{ route('saln.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="file" name="json_file" accept=".json">
-        <button type="submit">Import JSON</button>
+        <input type="file" name="json_file" accept=".json" required>
+        <br />
+        <div style="display: flex; justify-content: space-between;">
+            <button type="submit">Import JSON</button>
+            <button type="button" onclick="exportData()">Export as JSON</button>
+        </div>
     </form>
 
     <script>
+        const form = document.getElementById('saln-form');
+        const prefill = @json($prefillData);
+        console.log(prefill);
+
+        function serializeForm(form) {
+            const formData = new FormData(form);
+            const entries = [...formData.entries()];
+            return JSON.stringify(entries);
+        }
+
+        let initialData;
+        window.onload = () => {
+            initialData = serializeForm(form);
+        };
+
+        let formData = serializeForm(form);
+        console.log(formData);
+
+        let hasChanged = false;
+
+        form.addEventListener('input', () => {
+            hasChanged = serializeForm(form) !== initialData;
+        });
+
+        window.addEventListener('beforeunload', function (e) {
+            if (hasChanged) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        form.addEventListener('submit', () => {
+            hasChanged = false;
+        });
+
+        function exportData() {
+            if (prefill) {
+                alert('You currently have an unsaved import. Please save before exporting.');
+            } else if (hasChanged) {
+                alert('You have unsaved changes. Please save before exporting.');
+            } else {
+                window.location.href = "{{ route('saln.export') }}";
+            }
+        }
+        
         function addSpouseBlock() {
             const container = document.getElementById('spouseRepeater');
             const original = container.querySelector('.spouse-block');
@@ -1289,7 +1286,6 @@
             } else {
                 alert("At least one row is required.");
             }
-            button.closest('tr').remove();
             calculateRealSubtotal();
         }
 
@@ -1360,7 +1356,6 @@
             } else {
                 alert("At least one row is required.");
             }
-            button.closest('tr').remove();
             calculatePersonalSubtotal();
         }
 
@@ -1444,7 +1439,6 @@
             } else {
                 alert("At least one row is required.");
             }
-            button.closest('tr').remove();
             calculateLiabilitiesSubtotal();
         }
 
@@ -1490,7 +1484,7 @@
                 const td = document.createElement('td');
                 const input = document.createElement('input');
                 input.name = name;
-                input.type = 'text';
+                input.type = (name === 'dateInterest[]') ? 'date' : 'text';;
                 td.appendChild(input);
                 tr.appendChild(td);
             })
@@ -1529,9 +1523,9 @@
             const tbody = document.querySelector('#relativesBody');
             const tr = document.createElement('tr');
             const inputNames = [
-                'RelativeFamilyName[]',
-                'RelativeFirstName[]',
-                'RelativeMi[]',
+                'relativeFamilyName[]',
+                'relativeFirstName[]',
+                'relativeMi[]',
                 'relationship[]',
                 'position[]',
                 'nameAgency[]'
@@ -1625,7 +1619,7 @@
         }
 
         function toggleBusinessForm() {
-            const checkbox = document.querySelector("#noBusinessInterest");
+            const checkbox = document.querySelector("#noBusinessInterests");
             const businessForm = document.querySelector("#business-form");
             const isDisabled = checkbox.checked;
 
@@ -1642,7 +1636,7 @@
         }
 
         function toggleRelativesForm() {
-            const checkbox = document.querySelector("#noRelativesGovernment");
+            const checkbox = document.querySelector("#noRelativesInGovernment");
             const relativesGovernmentForm = document.querySelector("#relatives-government-form");
             const isDisabled = checkbox.checked;
 
