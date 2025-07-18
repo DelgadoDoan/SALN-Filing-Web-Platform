@@ -327,9 +327,7 @@
             cursor: not-allowed;
         }
 
-        .field-lines {
-            
-        }
+        .field-lines {}
     </style>
 </head>
 
@@ -393,13 +391,15 @@
 
             <div class="checkbox-group">
                 <label><input type="radio" name="filing_type" value="joint filing"
-                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'joint filing' ? 'checked' : '' }}> Joint
+                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'joint filing' ? 'checked' : '' }}>
+                    Joint
                     Filing</label>
                 <label><input type="radio" name="filing_type" value="separate filing"
                         {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'separate filing' ? 'checked' : '' }}>
                     Separate Filing</label>
                 <label><input type="radio" name="filing_type" value="not applicable"
-                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'not applicable' ? 'checked' : '' }}> Not
+                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'not applicable' ? 'checked' : '' }}>
+                    Not
                     Applicable</label>
             </div>
 
@@ -424,6 +424,23 @@
                     </div>
                 </div>
                 <!-- DECLARANT HOME ADRESS -->
+                @php
+                    $declarantHouseRegion = old(
+                        'declarant_house_region',
+                        $prefillData['declarant']['houseAddress']['houseRegion'] ??
+                            ($saln->declarant_house_region ?? ''),
+                    );
+                    $declarantHouseCity = old(
+                        'declarant_house_city',
+                        $prefillData['declarant']['houseAddress']['houseCity'] ?? ($saln->declarant_house_city ?? ''),
+                    );
+                    $declarantHouseBarangay = old(
+                        'declarant_house_barangay',
+                        $prefillData['declarant']['houseAddress']['houseBarangay'] ??
+                            ($saln->declarant_house_barangay ?? ''),
+                    );
+                @endphp
+
                 <h3>Home Address</h3>
                 <div class="row">
                     <div>
@@ -445,20 +462,26 @@
                     </div>
                     <div>
                         <label for="declarant_house_barangay">Barangay</label>
-                        <input type="text" id="declarant_house_barangay" name="declarant_house_barangay"
-                            value="{{ old('declarant_house_barangay', $prefillData['declarant']['houseAddress']['houseBarangay'] ?? ($saln->declarant_house_barangay ?? '')) }}">
+                        <select id="declarant_house_barangay" name="declarant_house_barangay"
+                            data-selected="{{ $declarantHouseBarangay }}" disabled>
+                            <option value="" disabled selected>-- Select Barangay --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
                     <div>
                         <label for="declarant_house_city">City/Municipality</label>
-                        <input type="text" id="declarant_house_city" name="declarant_house_city"
-                            value="{{ old('declarant_house_city', $prefillData['declarant']['houseAddress']['houseCity'] ?? ($saln->declarant_house_city ?? '')) }}">
+                        <select id="declarant_house_city" name="declarant_house_city"
+                            data-selected="{{ $declarantHouseCity }}" disabled>
+                            <option value="" disabled selected>-- Select City --</option>
+                        </select>
                     </div>
                     <div>
                         <label for="declarant_house_region">Region</label>
-                        <input type="text" id="declarant_house_region" name="declarant_house_region"
-                            value="{{ old('declarant_house_region', $prefillData['declarant']['houseAddress']['houseRegion'] ?? ($saln->declarant_house_region ?? '')) }}">
+                        <select id="declarant_house_region" name="declarant_house_region"
+                            data-selected="{{ $declarantHouseRegion }}">
+                            <option value="" disabled selected>-- Select Region --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="rowone">
@@ -483,6 +506,18 @@
                     </div>
                 </div>
                 <!-- DECLARANT OFFICE ADDRESS -->
+                @php
+                    $declarantOfficeRegion = old(
+                        'declarant_office_region',
+                        $prefillData['declarant']['officeAddress']['officeRegion'] ??
+                            ($saln->declarant_office_region ?? ''),
+                    );
+                    $declarantOfficeCity = old(
+                        'declarant_office_city',
+                        $prefillData['declarant']['officeAddress']['officeCity'] ??
+                            ($saln->declarant_office_city ?? ''),
+                    );
+                @endphp
                 <h3>Office Address</h3>
                 <div class="row">
                     <div>
@@ -499,13 +534,17 @@
                 <div class="row">
                     <div>
                         <label for="declarant_office_city">City/Municipality</label>
-                        <input type="text" id="declarant_office_city" name="declarant_office_city"
-                            value="{{ old('declarant_office_city', $prefillData['declarant']['officeAddress']['officeCity'] ?? ($saln->declarant_office_city ?? '')) }}">
+                        <select id="declarant_office_city" name="declarant_office_city"
+                            data-selected="{{ $declarantOfficeCity }}" disabled>
+                            <option value="" disabled selected>-- Select City --</option>
+                        </select>
                     </div>
                     <div>
                         <label for="declarant_office_region">Region</label>
-                        <input type="text" id="declarant_office_region" name="declarant_office_region"
-                            value="{{ old('declarant_office_region', $prefillData['declarant']['officeAddress']['officeRegion'] ?? ($saln->declarant_office_region ?? '')) }}">
+                        <select id="declarant_office_region" name="declarant_office_region"
+                            data-selected="{{ $declarantOfficeRegion }}">
+                            <option value="" disabled selected>-- Select Region --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="rowone">
@@ -519,24 +558,24 @@
 
             <div id="spouseRepeater">
                 @foreach ($prefillData['declarant']['spouses'] ?? ($saln->spouses ?? []) as $index => $spouse)
-                    <div class="spouse-block">
+                    <div class="spouse-block" data-index="{{ $index + 1 }}">
                         <h4 class="spouse-header">Spouse {{ $index + 1 }} Information</h4>
 
                         <div class="row">
                             <div>
                                 <label>Family Name</label>
                                 <input type="text" name="spouse_family_name[]"
-                                    value="{{ $spouse['familyName'] ?? ($spouse['family_name'] ?? '') }}">
+                                    value="{{ $spouse['familyName'] ?? '' }}">
                             </div>
                             <div>
                                 <label>First Name</label>
                                 <input type="text" name="spouse_first_name[]"
-                                    value="{{ $spouse['firstName'] ?? ($spouse['first_name'] ?? '') }}">
+                                    value="{{ $spouse['firstName'] ?? '' }}">
                             </div>
                             <div>
                                 <label>M.I.</label>
                                 <input type="text" name="spouse_mi[]"
-                                    value="{{ $spouse['middleInitial'] ?? ($spouse['mi']  ?? '') }}">
+                                    value="{{ $spouse['middleInitial'] ?? '' }}">
                             </div>
                         </div>
 
@@ -545,43 +584,49 @@
                             <div>
                                 <label>House Number</label>
                                 <input type="text" name="spouse_house_number[]"
-                                value="{{ $spouse['houseAddress']['houseNo'] ?? ($spouse['house_number'] ?? '') }}">
+                                    value="{{ $spouse['houseAddress']['houseNo'] ?? '' }}">
                             </div>
                             <div>
                                 <label>Street</label>
                                 <input type="text" name="spouse_house_street[]"
-                                value="{{ $spouse['houseAddress']['houseStreet'] ?? ($spouse['house_street'] ?? '') }}">
+                                    value="{{ $spouse['houseAddress']['houseStreet'] ?? '' }}">
                             </div>
                         </div>
                         <div class="row">
                             <div>
                                 <label>Subdivision</label>
                                 <input type="text" name="spouse_house_subdivision[]"
-                                value="{{ $spouse['houseAddress']['houseSubdivision'] ?? ($spouse['house_subdivision'] ?? '') }}">
+                                    value="{{ $spouse['houseAddress']['houseSubdivision'] ?? '' }}">
                             </div>
                             <div>
                                 <label>Barangay</label>
-                                <input type="text" name="spouse_house_barangay[]"
-                                value="{{ $spouse['houseAddress']['houseBarangay'] ?? ($spouse['house_barangay'] ?? '') }}">
+                                <select name="spouse_house_barangay[]" id="spouse_house_barangay{{ $index + 1 }}"
+                                    disabled data-selected="{{ $spouse['houseAddress']['houseBarangay'] ?? '' }}">
+                                    <option value="" disabled selected>-- Select Barangay --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
                             <div>
                                 <label>City/Municipality</label>
-                                <input type="text" name="spouse_house_city[]"
-                                value="{{ $spouse['houseAddress']['houseCity'] ?? ($spouse['house_city'] ?? '') }}">
+                                <select name="spouse_house_city[]" id="spouse_house_city{{ $index + 1 }}" disabled
+                                    data-selected="{{ $spouse['houseAddress']['houseCity'] ?? '' }}">
+                                    <option value="" disabled selected>-- Select City --</option>
+                                </select>
                             </div>
                             <div>
                                 <label>Region</label>
-                                <input type="text" name="spouse_house_region[]"
-                                value="{{ $spouse['houseAddress']['houseRegion'] ?? ($spouse['house_region'] ?? '') }}">
+                                <select name="spouse_house_region[]" id="spouse_house_region{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['houseAddress']['houseRegion'] ?? '' }}">
+                                    <option value="" disabled selected>-- Select Region --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="rowone">
                             <div>
                                 <label>Zip Code</label>
                                 <input type="text" name="spouse_house_zip[]"
-                                value="{{ $spouse['houseAddress']['houseZipCode'] ?? ($spouse['house_zip'] ?? '') }}">
+                                    value="{{ $spouse['houseAddress']['houseZipCode'] ?? '' }}">
                             </div>
                         </div>
 
@@ -595,7 +640,7 @@
                             <div>
                                 <label>Agency/Office</label>
                                 <input type="text" name="spouse_office_name[]"
-                                    value="{{ $spouse['agencyOffice'] ?? ($spouse['office_name'] ?? '') }}">
+                                    value="{{ $spouse['agencyOffice'] ?? '' }}">
                             </div>
                         </div>
 
@@ -604,31 +649,35 @@
                             <div>
                                 <label>Office Number</label>
                                 <input type="text" name="spouse_office_number[]"
-                                    value="{{ $spouse['officeAddress']['officeNo'] ?? ($spouse['office_number'] ?? '') }}">
+                                    value="{{ $spouse['officeAddress']['officeNo'] ?? '' }}">
                             </div>
                             <div>
                                 <label>Street</label>
                                 <input type="text" name="spouse_office_street[]"
-                                    value="{{ $spouse['officeAddress']['officeStreet'] ?? ($spouse['office_street'] ?? '') }}">
+                                    value="{{ $spouse['officeAddress']['officeStreet'] ?? '' }}">
                             </div>
                         </div>
                         <div class="row">
                             <div>
                                 <label>City/Municipality</label>
-                                <input type="text" name="spouse_office_city[]"
-                                    value="{{ $spouse['officeAddress']['officeCity'] ?? ($spouse['office_city'] ?? '') }}">
+                                <select name="spouse_office_city[]" id="spouse_office_city{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['officeAddress']['officeCity'] ?? '' }}" disabled>
+                                    <option value="" disabled selected>-- Select City --</option>
+                                </select>
                             </div>
                             <div>
                                 <label>Region</label>
-                                <input type="text" name="spouse_office_region[]"
-                                    value="{{ $spouse['officeAddress']['officeRegion'] ?? ($spouse['office_region'] ?? '') }}">
+                                <select name="spouse_office_region[]" id="spouse_office_region{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['officeAddress']['officeRegion'] ?? '' }}">
+                                    <option value="" disabled selected>-- Select Region --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="rowone">
                             <div>
                                 <label>Zip Code</label>
                                 <input type="text" name="spouse_office_zip[]"
-                                    value="{{ $spouse['officeAddress']['officeZipCode'] ?? ($spouse['office_zip'] ?? '') }}">
+                                    value="{{ $spouse['officeAddress']['officeZipCode'] ?? '' }}">
                             </div>
                         </div>
 
@@ -657,7 +706,8 @@
                         </div>
                         <div>
                             <label>Date of Birth</label>
-                            <input type="date" name="children_dob[]" value="{{ $child['dateOfBirth'] ?? ($child['date_of_birth'] ?? '') }}"
+                            <input type="date" name="children_dob[]"
+                                value="{{ $child['dateOfBirth'] ?? ($child['date_of_birth'] ?? '') }}"
                                 onchange="calculateAge(this)">
                         </div>
                         <div>
@@ -712,17 +762,23 @@
                                     <td><input type="text" name="kind[]" value="{{ $assetReal['kind'] ?? '' }}">
                                     </td>
                                     <td><input type="text" name="location[]"
-                                            value="{{ $assetReal['exactLocation'] ?? ($assetReal['location'] ?? '') }}"></td>
+                                            value="{{ $assetReal['exactLocation'] ?? ($assetReal['location'] ?? '') }}">
+                                    </td>
                                     <td><input type="text" name="assessed[]"
-                                            value="{{ $assetReal['assessedValue'] ?? ($assetReal['assessed_value'] ?? '') }}"></td>
+                                            value="{{ $assetReal['assessedValue'] ?? ($assetReal['assessed_value'] ?? '') }}">
+                                    </td>
                                     <td><input type="text" name="marketValue[]"
-                                            value="{{ $assetReal['currentFairMarketValue'] ?? ($assetReal['market_value'] ?? '') }}"></td>
+                                            value="{{ $assetReal['currentFairMarketValue'] ?? ($assetReal['market_value'] ?? '') }}">
+                                    </td>
                                     <td><input type="text" name="acqYear[]"
-                                            value="{{ $assetReal['acquisitionYear'] ?? ($assetReal['acquisition_year'] ?? '') }}"></td>
+                                            value="{{ $assetReal['acquisitionYear'] ?? ($assetReal['acquisition_year'] ?? '') }}">
+                                    </td>
                                     <td><input type="text" name="acqMode[]"
-                                            value="{{ $assetReal['acquisitionMode'] ?? ($assetReal['acquisition_mode'] ?? '') }}"></td>
+                                            value="{{ $assetReal['acquisitionMode'] ?? ($assetReal['acquisition_mode'] ?? '') }}">
+                                    </td>
                                     <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"
-                                            value="{{ $assetReal['acquisitionCost'] ?? ($assetReal['acquisition_cost'] ?? '') }}"></td>
+                                            value="{{ $assetReal['acquisitionCost'] ?? ($assetReal['acquisition_cost'] ?? '') }}">
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeRealPropertyRow(this)">Delete</button>
@@ -737,7 +793,8 @@
                                     <td><input type="text" name="marketValue[]"></td>
                                     <td><input type="text" name="acqYear[]"></td>
                                     <td><input type="text" name="acqMode[]"></td>
-                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"></td>
+                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()">
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeRealPropertyRow(this)">Delete</button>
@@ -775,10 +832,12 @@
                                     <td><input type="text" name="description[]"
                                             value="{{ $assetPersonal['description'] ?? '' }}"></td>
                                     <td><input type="text" name="yearAcquired[]"
-                                            value="{{ $assetPersonal['yearAcquired'] ?? ($assetPersonal['year_acquired'] ?? '') }}"></td>
+                                            value="{{ $assetPersonal['yearAcquired'] ?? ($assetPersonal['year_acquired'] ?? '') }}">
+                                    </td>
                                     <td><input type="text" name="acquisitionCost[]"
                                             oninput="calculatePersonalSubtotal()"
-                                            value="{{ $assetPersonal['acquisitionCost'] ?? ($assetPersonal['acquisition_cost'] ?? '') }}"></td>
+                                            value="{{ $assetPersonal['acquisitionCost'] ?? ($assetPersonal['acquisition_cost'] ?? '') }}">
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-remove"
                                             onclick="removePersonalPropertyRow(this)">Delete</button>
@@ -836,7 +895,8 @@
                                     <td><input type="text" name="nature[]"
                                             value="{{ $liability['nature'] ?? '' }}"></td>
                                     <td><input type="text" name="nameCreditor[]"
-                                            value="{{ $liability['nameOfCreditor'] ?? ($liability['name_creditor'] ?? '') }}"></td>
+                                            value="{{ $liability['nameOfCreditor'] ?? ($liability['name_creditor'] ?? '') }}">
+                                    </td>
                                     <td><input type="text" name="OutstandingBalance[]"
                                             value="{{ $liability['outstandingBalance'] ?? ($liability['outstanding_balance'] ?? '') }}"
                                             oninput="calculateLiabilitiesSubtotal()"></td>
@@ -906,34 +966,36 @@
                             </tr>
                         </thead>
                         <tbody id="businessBody">
-                             @if (!($prefillData['declarant']['hasNoBusinessInterests'] ?? false)&& !empty($prefillData['declarant']['businessInterestsAndFinancialConnections'] ?? []))
+                            @if (
+                                !($prefillData['declarant']['hasNoBusinessInterests'] ?? false) &&
+                                    !empty($prefillData['declarant']['businessInterestsAndFinancialConnections'] ?? []))
                                 @foreach ($prefillData['declarant']['businessInterestsAndFinancialConnections'] ?? [] as $business)
-                                <tr>
-                                    <td><input type="text" name="nameBusiness[]" class="business-input"
-                                        value="{{$business['nameOfEntity'] ?? '' }}"></td>
-                                    <td><input type="text" name="addressBusiness[]" class="business-input"
-                                        value="{{$business['businessAddress'] ?? ''}}"></td>
-                                    <td><input type="text" name="natureBusiness[]" class="business-input"
-                                        value="{{$business['natureOfInterestOrConnection'] ?? ''}}"></td>
-                                    <td><input type="date" name="dateInterest[]" class="business-input"
-                                        value="{{$business['dateOfAcquisition'] ?? ''}}"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-remove"
-                                            onclick="removeBusinessRow(this)">Delete</button>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><input type="text" name="nameBusiness[]" class="business-input"
+                                                value="{{ $business['nameOfEntity'] ?? '' }}"></td>
+                                        <td><input type="text" name="addressBusiness[]" class="business-input"
+                                                value="{{ $business['businessAddress'] ?? '' }}"></td>
+                                        <td><input type="text" name="natureBusiness[]" class="business-input"
+                                                value="{{ $business['natureOfInterestOrConnection'] ?? '' }}"></td>
+                                        <td><input type="date" name="dateInterest[]" class="business-input"
+                                                value="{{ $business['dateOfAcquisition'] ?? '' }}"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-remove"
+                                                onclick="removeBusinessRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             @else
                                 @forelse ($saln->businessInterests ?? [] as $business)
                                     <tr>
                                         <td><input type="text" name="nameBusiness[]" class="business-input"
-                                            value="{{ $business['name_business'] ?? '' }}"></td>
+                                                value="{{ $business['name_business'] ?? '' }}"></td>
                                         <td><input type="text" name="addressBusiness[]" class="business-input"
-                                            value="{{ $business['address_business'] ?? '' }}"></td>
+                                                value="{{ $business['address_business'] ?? '' }}"></td>
                                         <td><input type="text" name="natureBusiness[]" class="business-input"
-                                            value="{{ $business['nature_business'] ?? '' }}"></td>
+                                                value="{{ $business['nature_business'] ?? '' }}"></td>
                                         <td><input type="date" name="dateInterest[]" class="business-input"
-                                            value="{{ $business['date_interest'] ?? '' }}"></td>
+                                                value="{{ $business['date_interest'] ?? '' }}"></td>
                                         <td>
                                             <button type="button" class="btn btn-remove"
                                                 onclick="removeBusinessRow(this)">Delete</button>
@@ -942,8 +1004,10 @@
                                 @empty
                                     <tr>
                                         <td><input type="text" name="nameBusiness[]" class="business-input"></td>
-                                        <td><input type="text" name="addressBusiness[]" class="business-input"></td>
-                                        <td><input type="text" name="natureBusiness[]" class="business-input"></td>
+                                        <td><input type="text" name="addressBusiness[]" class="business-input">
+                                        </td>
+                                        <td><input type="text" name="natureBusiness[]" class="business-input">
+                                        </td>
                                         <td><input type="date" name="dateInterest[]" class="business-input"></td>
                                         <td>
                                             <button type="button" class="btn btn-remove"
@@ -991,7 +1055,9 @@
                                 </tr>
                             </thead>
                             <tbody id="relativesBody">
-                                @if (!($prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false)&& !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
+                                @if (
+                                    !($prefillData['declarant']['hasNoRelativesInGovermentService'] ?? false) &&
+                                        !empty($prefillData['declarant']['relativesInGovernmentService'] ?? []))
                                     @foreach ($prefillData['declarant']['relativesInGovernmentService'] ?? [] as $relative)
                                         <tr>
                                             <td><input type="text" name="relativeFamilyName[]"
@@ -1016,7 +1082,7 @@
                                     @forelse ($saln->relativesInGovernment ?? [] as $relative)
                                         <tr>
                                             <td><input type="text" name="relativeFamilyName[]"
-                                                value="{{ $relative['relative_family_name'] ?? '' }}"></td>
+                                                    value="{{ $relative['relative_family_name'] ?? '' }}"></td>
                                             <td><input type="text" name="relativeFirstName[]"
                                                     value="{{ $relative['relative_first_name'] ?? '' }}"></td>
                                             <td><input type="text" name="relativeMi[]"
@@ -1075,7 +1141,9 @@
                             household covering previous years to include the year I first assumed office in government.
                         </p>
                         <br>
-                        <p>Date: <span style="display: inline-block; border-bottom: 1px solid #000; width: 25%; vertical-align: -0.2em;"></span></p>
+                        <p>Date: <span
+                                style="display: inline-block; border-bottom: 1px solid #000; width: 25%; vertical-align: -0.2em;"></span>
+                        </p>
                         <br>
                         <div class="row" style="margin-top: 30px;">
                             <div style="flex: 1; text-align: center;">
@@ -1120,10 +1188,13 @@
                         </div>
 
                         <p style="margin-top: 30px;">
-                            <strong>SUBSCRIBED AND SWORN</strong> to before me this 
-                            <span style="display: inline-block; border-bottom: 1px solid #000; width: 6%; vertical-align: -0.1em;"></span> 
-                            day of 
-                            <span style="display: inline-block; border-bottom: 1px solid #000; width: 14%; vertical-align: -0.1em;"></span>, affiant
+                            <strong>SUBSCRIBED AND SWORN</strong> to before me this
+                            <span
+                                style="display: inline-block; border-bottom: 1px solid #000; width: 6%; vertical-align: -0.1em;"></span>
+                            day of
+                            <span
+                                style="display: inline-block; border-bottom: 1px solid #000; width: 14%; vertical-align: -0.1em;"></span>,
+                            affiant
                             exhibiting to me the
                             above-stated government issued identification card.
                         </p>
@@ -1141,7 +1212,7 @@
                 <button type="submit">Save Form</button>
             </div>
     </form>
-    
+
     <form action="{{ route('saln.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="file" name="json_file" accept=".json" required>
@@ -1177,7 +1248,7 @@
             hasChanged = serializeForm(form) !== initialData;
         });
 
-        window.addEventListener('beforeunload', function (e) {
+        window.addEventListener('beforeunload', function(e) {
             if (hasChanged) {
                 e.preventDefault();
                 e.returnValue = '';
@@ -1197,20 +1268,63 @@
                 window.location.href = "{{ route('saln.export') }}";
             }
         }
-        
+
         function addSpouseBlock() {
             const container = document.getElementById('spouseRepeater');
             const original = container.querySelector('.spouse-block');
             const clone = original.cloneNode(true);
 
+            const newIndex = container.querySelectorAll('.spouse-block').length + 1;
 
-            clone.querySelectorAll('input').forEach(input => input.value = '');
+            // Clear inputs
+            clone.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
+
+            const regionFieldHouse = clone.querySelector('[id^="spouse_house_region"]');
+            const cityFieldHouse = clone.querySelector('[id^="spouse_house_city"]');
+            const barangayFieldHouse = clone.querySelector('[id^="spouse_house_barangay"]');
+
+            regionFieldHouse.id = `spouse_house_region${newIndex}`;
+            cityFieldHouse.id = `spouse_house_city${newIndex}`;
+            barangayFieldHouse.id = `spouse_house_barangay${newIndex}`;
+
+            regionFieldHouse.dataset.selected = '';
+            cityFieldHouse.dataset.selected = '';
+            barangayFieldHouse.dataset.selected = '';
+
+            const regionFieldOffice = clone.querySelector('[id^="spouse_office_region"]');
+            const cityFieldOffice = clone.querySelector('[id^="spouse_office_city"]');
+
+            if (regionFieldOffice && cityFieldOffice) {
+                regionFieldOffice.id = `spouse_office_region${newIndex}`;
+                cityFieldOffice.id = `spouse_office_city${newIndex}`;
+                regionFieldOffice.dataset.selected = '';
+                cityFieldOffice.dataset.selected = '';
+            }
 
             container.appendChild(clone);
+            
+            
             container.querySelectorAll('.spouse-header').forEach((el, idx) => {
                 el.textContent = `Spouse ${idx + 1} Information`;
             });
+
+            // Reinitialize selects
+            initializeRegionCityBarangay(regionFieldHouse, cityFieldHouse, barangayFieldHouse, {
+                selectedRegion: '',
+                selectedCity: '',
+                selectedBarangay: '',
+            });
+
+            if (regionFieldOffice && cityFieldOffice) {
+                initializeRegionCityBarangay(regionFieldOffice, cityFieldOffice, null, {
+                    selectedRegion: '',
+                    selectedCity: '',
+                });
+            }
         }
+
 
         function removeSpouseBlock(button) {
             const container = document.getElementById('spouseRepeater');
@@ -1667,6 +1781,192 @@
 
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
+
+        const region_city_brgy_data = {
+            "NCR": {
+                cities: {
+                    "Manila City": ["Binondo", "Ermita", "Malate", "Paco", "Pandacan"],
+                    "Quezon City": ["Bagong Pag-asa", "Batasan Hills", "Commonwealth", "Cubao", "Diliman"],
+                    "Makati City": ["Bangkal", "Bel-Air", "Magallanes", "Pio Del Pilar", "San Antonio"]
+                }
+            },
+            "Region I": {
+                cities: {
+                    "LAOAG": ["Barangay 1", "Barangay 2", "Barangay 3"],
+                    "VIGAN": ["Ayusan Norte", "Ayusan Sur", "Capangpangan"]
+                }
+            },
+            "Region II": {
+                cities: {
+                    "TUGUEGARAO": ["Ugac Norte", "Ugac Sur", "Carig", "Centro 1", "Centro 2"],
+                    "ILAGAN": ["Alibagu", "Baligatan", "Cabeseria 10"]
+                }
+            },
+            "Region III": {
+                cities: {
+                    "SAN FERNANDO": ["Del Pilar", "Dolores", "Maimpis", "San Jose"],
+                    "ANGELES": ["Balibago", "Cutcut", "Malabanias"]
+                }
+            },
+            "Region IV-A": {
+                cities: {
+                    "BACOOR": ["Alima", "Aniban", "Banalo", "Digman", "Dulong Bayan"],
+                    "CALAMBA": ["Banadero", "Bucal", "La Mesa", "Parian", "Real"],
+                    "DASMARIÑAS": ["Burol", "Langkaan", "Salitran", "Sampaloc", "San Agustin"]
+                }
+            },
+            "Region IV-B": {
+                cities: {
+                    "PUERTO PRINCESA": ["Bancao-Bancao", "San Miguel", "San Pedro"],
+                    "CALAPAN": ["Bayanan", "Guinobatan", "Tawiran"]
+                }
+            },
+            "Region V": {
+                cities: {
+                    "LEGAZPI": ["Bagumbayan", "Bonot", "Bitano", "Bogtong"],
+                    "NAGA": ["Abella", "Balatas", "Bagumbayan Norte", "Calauag"]
+                }
+            },
+            "Region VI": {
+                cities: {
+                    "ILOILO CITY": ["Arevalo", "Jaro", "Lapaz", "Lapuz", "Mandurriao"],
+                    "BACOLOD": ["Alijis", "Banago", "Barangay 16", "Taculing"]
+                }
+            },
+            "Region VII": {
+                cities: {
+                    "CEBU CITY": ["Banilad", "Guadalupe", "Lahug", "Mabolo", "Talamban"],
+                    "DUMAGUETE": ["Bantayan", "Calindagan", "Piapi"]
+                }
+            },
+            "Region VIII": {
+                cities: {
+                    "TACLOBAN": ["Abucay", "San Jose", "V&G", "Downtown"],
+                    "ORMOC": ["Cogon", "Linao", "San Isidro"]
+                }
+            },
+            "Region IX": {
+                cities: {
+                    "ZAMBOANGA CITY": ["Ayala", "Baliwasan", "San Roque", "Tetuan"],
+                    "DIPOLOG": ["Central", "Magsaysay", "Sicayab"]
+                }
+            },
+            "Region X": {
+                cities: {
+                    "CAGAYAN DE ORO": ["Balulang", "Carmen", "Kauswagan", "Macasandig"],
+                    "VALENCIA": ["Lurogan", "Mailag", "Poblacion"]
+                }
+            },
+            "Region XI": {
+                cities: {
+                    "DAVAO CITY": ["Agdao", "Buhangin", "Matina", "Talomo", "Toril"],
+                    "TAGUM": ["Apokon", "Magugpo", "San Miguel"]
+                }
+            },
+            "Region XII": {
+                cities: {
+                    "GENERAL SANTOS": ["Bula", "Calumpang", "Lagao", "San Isidro"],
+                    "KORONADAL": ["Assumption", "Concepcion", "Gen. Paulino Santos"]
+                }
+            },
+            "Region XIII": {
+                cities: {
+                    "BUTUAN": ["Ampayon", "Bading", "Bancasi", "Libertad"],
+                    "SURIGAO": ["Canlanipa", "Rizal", "San Juan"]
+                }
+            },
+            "CAR": {
+                cities: {
+                    "BAGUIO CITY": ["Asin Road", "Aurora Hill", "Loakan", "Pacdal", "Session Road"],
+                    "LA TRINIDAD": ["Balili", "Pico", "Wangal"]
+                }
+            },
+            "BARMM": {
+                cities: {
+                    "COTABATO CITY": ["Bagua", "Kalanganan", "Poblacion", "Rosary Heights", "Tamontaka"],
+                    "MARAWI": ["Bubong", "Dimaluna", "Kilala", "Marawi Poblacion", "Moncado Colony"]
+                }
+            }
+        };
+
+
+        function initializeRegionCityBarangay(regionField, cityField, barangayField = null, {
+            selectedRegion,
+            selectedCity,
+            selectedBarangay = ''
+        }) {
+
+            function populateRegions() {
+                for (const region in region_city_brgy_data) {
+                    const selected = region === selectedRegion ? 'selected' : '';
+                    regionField.innerHTML += `<option value="${region}" ${selected}>${region}</option>`;
+                }
+            }
+
+            function populateCities(region) {
+                // reset the innerhtml of both city and barangay if a different region is selected
+                cityField.innerHTML = '<option value="" disabled selected>-- Select City --</option>';
+                cityField.disabled = true;
+                if (barangayField) {
+                    barangayField.innerHTML = '<option value="" disabled selected>-- Select Barangay --</option>';
+                    barangayField.disabled = true;
+                }
+                // check if a region was selected already
+                // and if that city actually exists in the philippines
+                if (region && region_city_brgy_data[region]?.cities) {
+                    cityField.disabled = false;
+                    const cities = region_city_brgy_data[region].cities;
+                    for (const city in cities) {
+                        const selected = city === selectedCity ? 'selected' : '';
+                        cityField.innerHTML += `<option value="${city}" ${selected}>${city}</option>`;
+                    }
+                }
+            }
+
+            function populateBarangays(region, city) {
+                // reset barangay innerhtml if a different city is selected 
+                barangayField.innerHTML = '<option value="" disabled selected>-- Select Barangay --</option>';
+                barangayField.disabled = true;
+                if (region && city && region_city_brgy_data[region]?.cities[city]) {
+                    barangayField.disabled = false;
+                    const barangays = region_city_brgy_data[region].cities[city];
+                    for (const barangay of barangays) {
+                        const selected = barangay === selectedBarangay ? 'selected' : '';
+                        barangayField.innerHTML += `<option value="${barangay}" ${selected}>${barangay}</option>`;
+                    }
+                }
+            }
+
+            regionField.addEventListener('change', () => {
+                populateCities(regionField.value);
+            });
+
+            cityField.addEventListener('change', () => {
+                if (barangayField) {
+                    populateBarangays(regionField.value, cityField.value);
+                }
+            });
+
+
+            populateRegions();
+
+            cityField.innerHTML = '<option value="" disabled selected>-- Select City --</option>';
+            cityField.disabled = true;
+
+            if (barangayField) {
+                barangayField.innerHTML = '<option value="" disabled selected>-- Select Barangay --</option>';
+                barangayField.disabled = true;
+            }
+
+            if (selectedRegion && selectedCity) {
+                populateCities(selectedRegion);
+            }
+
+            if (selectedRegion && selectedCity && selectedBarangay && barangayField) {
+                populateBarangays(selectedRegion, selectedCity);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('input[name="children_dob[]"]').forEach(input => {
                 if (input.value) {
@@ -1681,9 +1981,47 @@
             toggleRelativesForm();
             toggleBusinessForm();
 
+            initializeRegionCityBarangay(document.getElementById('declarant_house_region'),
+                document.getElementById('declarant_house_city'),
+                document.getElementById('declarant_house_barangay'), {
+                    selectedRegion: document.getElementById('declarant_house_region').dataset.selected,
+                    selectedCity: document.getElementById('declarant_house_city').dataset.selected,
+                    selectedBarangay: document.getElementById('declarant_house_barangay').dataset.selected,
+                });
+
+            initializeRegionCityBarangay(document.getElementById('declarant_office_region'),
+                document.getElementById('declarant_office_city'),
+                null, {
+                    selectedRegion: document.getElementById('declarant_office_region').dataset.selected,
+                    selectedCity: document.getElementById('declarant_office_city').dataset.selected,
+                    selectedBarangay: '',
+                });
+
             document.querySelectorAll('input[name="acquisitionCost[]"]').forEach(input => {
                 input.addEventListener('input', calculatePersonalSubtotal);
             });
+
+            document.querySelectorAll('.spouse-block').forEach((spouseBlock) => {
+                const index = spouseBlock.dataset.index;
+                const regionFieldHouse = spouseBlock.querySelector(`#spouse_house_region${index}`);
+                const cityFieldHouse = spouseBlock.querySelector(`#spouse_house_city${index}`);
+                const barangayFieldHouse = spouseBlock.querySelector(`#spouse_house_barangay${index}`);
+
+                initializeRegionCityBarangay(regionFieldHouse, cityFieldHouse, barangayFieldHouse, {
+                    selectedRegion: regionFieldHouse.dataset.selected,
+                    selectedCity: cityFieldHouse.dataset.selected,
+                    selectedBarangay: barangayFieldHouse.dataset.selected,
+                });
+
+                const regionFieldOffice = spouseBlock.querySelector(`#spouse_office_region${index}`);
+                const cityFieldOffice = spouseBlock.querySelector(`#spouse_office_city${index}`);
+
+                initializeRegionCityBarangay(regionFieldOffice, cityFieldOffice, null, {
+                    selectedRegion: regionFieldOffice.dataset.selected,
+                    selectedCity: cityFieldOffice.dataset.selected,
+                    selectedBarangay: '',
+                });
+            })
         });
     </script>
 </body>
