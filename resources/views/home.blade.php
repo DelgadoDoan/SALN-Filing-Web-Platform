@@ -15,22 +15,29 @@
 
         body {
             background: #F9FAFB;
-            padding: 40px;
             color: #222;
         }
 
         .form-container {
             background: #fff;
-            padding: 30px;
-            max-width: 800px;
-            margin: 0 auto;
+            padding: 1rem;
+            max-width: 55rem;
+            margin: 2.5rem auto 0;
             border: 1px solid #ddd;
-            margin-top: 50px;
         }
 
         h2 {
+            font-size:1em;
             text-align: center;
             margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size:0.9rem;
+        }
+
+        h4 {
+            font-size:0.8rem;
         }
 
         .subtitle {
@@ -39,11 +46,11 @@
         }
 
         .form-section {
-            margin-bottom: 20px;
+            padding: 0.5rem 0;
         }
 
         label {
-            font-size: 14px;
+            font-size: 0.6rem;
             display: block;
             margin-bottom: 4px;
         }
@@ -56,7 +63,7 @@
         }
 
         .asof-label {
-            font-size: 14px;
+            font-size: 0.7rem;
             padding-top: 5px;
             white-space: nowrap;
         }
@@ -68,53 +75,45 @@
         }
 
         .date-wrapper input[type="date"] {
-            width: 160px;
+            width: 8rem;
             padding: 4px 6px;
         }
 
         .date-wrapper small {
-            font-size: 12px;
+            font-size: 0.6rem;
             color: #555;
+            margin-top: 0.5rem;
         }
 
         input[type="text"],
         input[type="date"] {
+            font-size: 0.7rem;
             width: 100%;
             padding: 6px 8px;
-            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
 
-        .row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .rowone {
-            width: 50%;
-        }
-
-        .row>div {
-            flex: 1;
-        }
+        input[type="file"] {
+                font-size: 0.5rem;
+            }
 
         .checkbox-group {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
+            gap: 0.6rem;
+            padding-top: 0.6rem;
         }
 
         .checkbox-group label {
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 14px;
+            font-size: 0.65rem;
         }
 
         .note {
-            font-size: 13px;
+            font-size: 0.65rem;
             margin-bottom: 15px;
             text-align: center;
         }
@@ -124,7 +123,8 @@
         }
 
         .small {
-            font-size: 12px;
+            padding-top: 1rem;
+            font-size: 0.65rem;
             color: #555;
             text-align: right;
         }
@@ -145,33 +145,33 @@
             border: 1px solid #999;
             padding: 8px;
             vertical-align: middle;
-            font-weight: normal;
+            font-weight: bold;
         }
 
         .assets-table th {
             background-color: #c7d6ea;
-            font-size: 14px;
+            font-size: 0.6rem;
             text-align: center;
+            min-width: 7rem;
         }
 
         .assets-table input[type="text"] {
             width: 100%;
             border: 1px solid #ccc;
             padding: 4px 6px;
-            font-size: 13px;
+            font-size: 0.7rem;
         }
 
         button {
             background-color: #1F2937;
             color: white;
-            padding: 8px 14px;
+            padding: 0.5rem;
             border: none;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 0.5rem;
             cursor: pointer;
             margin-top: 10px;
-            width: 150px;
-            /* or whatever width looks right */
+            width: 6rem;
             text-align: center;
         }
 
@@ -182,46 +182,38 @@
         .btn-remove {
             background-color: #ED2100;
             color: white;
-            padding: 4px 10px;
+            padding: 0.5em;
             border: none;
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 0.5rem;
             cursor: pointer;
-            width: 60px;
-            margin-top: -50px;
+            width: 4rem;
             display: block;
             margin: 0 auto;
         }
-
 
         .subtotal-row {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             gap: 10px;
-            font-size: 14px;
             margin-top: 10px;
-            width: 32.5%
-        }
-
-        .subtotal-row2 {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            margin-top: 10px;
+            font-size: 0.7rem;
             width: 100%;
             white-space: nowrap;
+            
+        }
+        .subtotal-row input[type="text"] {
+            max-width: 6rem;
         }
 
         .asset-totals {
+            
             display: flex;
             flex-direction: column;
             gap: 8px;
             align-items: flex-end;
             margin-left: auto;
-            margin-top: -52px;
         }
 
         .asset-controls {
@@ -238,7 +230,6 @@
             gap: 8px;
             align-items: flex-end;
             margin-left: auto;
-            margin-top: -42px;
         }
 
         .assets-table td {
@@ -246,16 +237,9 @@
             vertical-align: middle;
         }
 
-        .left-button {
+        .button-wrapper {
             display: flex;
-            align-items: center;
-        }
-
-        .error {
-            font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
-            color: #ed4337;
-            margin-bottom: 1.5rem;
+            justify-content: end;
         }
 
         .success {
@@ -273,30 +257,28 @@
             width: 100%;
             background: rgb(255, 255, 255);
             color: #fff;
-            height: 56px;
+            height: 2.5rem;
             display: flex;
             align-items: center;
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: top 0.3s ease-in-out;
-            /* Add this line */
         }
 
-        /* Container to center content and limit width */
         .navbar-container {
-            max-width: 1200px;
+            max-width: 90rem;
             width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
-            padding: 0 16px;
+            padding: 0 1rem;
             justify-content: space-between;
         }
 
         /* Brand styling */
         .navbar-brand {
             font-weight: bold;
-            font-size: 1.25rem;
+            font-size: 0.8rem;
             color: #1F2937;
         }
 
@@ -304,15 +286,16 @@
         .navbar-links {
             list-style: none;
             display: flex;
-            gap: 24px;
+            gap: 1rem;
         }
 
         /* Link styling */
         .navbar-links a {
+            text-align: center;
             text-decoration: none;
             color: #1F2937;
-            font-size: 1rem;
-            padding: 8px 12px;
+            font-size: 0.7rem;
+            padding: 0.1rem;
             border-radius: 4px;
             transition: background 0.2s;
         }
@@ -327,9 +310,157 @@
             cursor: not-allowed;
         }
 
-        .field-lines {
-            
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
         }
+
+        .rowone {
+            max-width: 50%;
+            padding-right: 0.35rem;
+        }
+
+        .row>div {
+            flex: 1;
+        }
+
+        p {
+            font-size: 0.65rem;
+        }
+
+        @media(min-width: 360px) {
+            .form-container {
+                padding: 1.25rem;
+                margin-top: 3rem;
+            }
+
+            .navbar {
+                height: 3rem;
+            }
+
+            .navbar-links {
+                font-size: 0.8rem;
+            }
+
+            .navbar-brand {
+                font-size: 0.9rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            h4 {
+                font-size: 0.9rem;
+            }
+
+            label, .date-wrapper small {
+                font-size: 0.7rem;
+            }
+
+            .checkbox-group label, .note, .small, p {
+                font-size: 0.75rem;
+            }
+
+            input[type="text"],
+            input[type="date"] {
+                font-size: 0.8rem;
+            }
+
+            button {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .form-container {
+                padding: 2.5rem;
+                margin-top: 3rem;
+            }
+
+            .navbar {
+                height: 3rem;
+            }
+
+            .navbar-links {
+                gap: 2rem;
+            }
+
+            .navbar-links a {
+                font-size: 0.8rem;
+            }
+
+            .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .checkbox-group {
+                gap: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            h4 {
+                font-size: 1.1rem;
+            }
+
+            .row {
+                gap: 1.2rem;
+            }
+
+            label, .date-wrapper small {
+                font-size: 0.8rem;
+            }
+
+            .checkbox-group label, .note, .small, p {
+                font-size: 0.9rem;
+            }
+
+            input[type="text"],
+            input[type="date"] {
+                font-size: 0.8rem;
+            }
+
+            input[type="file"] {
+                font-size: 0.7rem;
+            }
+
+            button {
+                font-size: 0.7rem;
+                width: 8rem;
+            }
+
+            .btn-remove {
+                font-size: 0.7rem;
+                width: 5rem;
+            }
+
+            .subtotal-row input[type="text"] {
+                max-width: 8rem;
+            }
+
+            .assets-table th {
+                font-size: 0.8rem;
+                min-width: 4rem;
+            }
+
+            .assets-table input[type="text"] {
+                font-size: 0.8rem;
+            }
+        }
+ 
     </style>
 </head>
 
@@ -380,7 +511,6 @@
                 <div class="date-wrapper">
                     <input type="date" id="asof_date" name="asof_date"
                         value="{{ old('asof_date', $prefillData['asOfDate'] ?? optional($saln->asof_date ?? '')->format('Y-m-d')) }}">
-                    <div class="error">{{ $errors->first('asOfDate') }}</div>
                     <small>(Required by R.A. 6713)</small>
                 </div>
             </div>
@@ -424,7 +554,7 @@
                     </div>
                 </div>
                 <!-- DECLARANT HOME ADRESS -->
-                <h3>Home Address</h3>
+                <h4>Home Address</h4>
                 <div class="row">
                     <div>
                         <label for="declarant_house_number">House Number</label>
@@ -469,7 +599,7 @@
                     </div>
                 </div>
                 <!-- DECLARANT OFFICE -->
-                <h3>Office</h3>
+                <h4>Office</h4>
                 <div class="row">
                     <div>
                         <label for="declarant_position">Position</label>
@@ -483,7 +613,7 @@
                     </div>
                 </div>
                 <!-- DECLARANT OFFICE ADDRESS -->
-                <h3>Office Address</h3>
+                <h4>Office Address</h4>
                 <div class="row">
                     <div>
                         <label for="declarant_office_number">Office Number</label>
@@ -520,7 +650,7 @@
             <div id="spouseRepeater">
                 @foreach ($prefillData['declarant']['spouses'] ?? ($saln->spouses ?? []) as $index => $spouse)
                     <div class="spouse-block">
-                        <h4 class="spouse-header">Spouse {{ $index + 1 }} Information</h4>
+                        <h3 class="spouse-header">Spouse {{ $index + 1 }} Information</h3>
 
                         <div class="row">
                             <div>
@@ -633,8 +763,10 @@
                         </div>
 
                         <div class="spouse-actions">
-                            <button type="button" class="button-remove remove-spouse"
-                                onclick="removeSpouseBlock(this)">Remove Spouse</button>
+                            <div class="button-wrapper"> 
+                                <button type="button" class="button-remove remove-spouse"
+                                    onclick="removeSpouseBlock(this)">Remove Spouse</button>
+                            </div>    
                         </div>
                     </div>
                 @endforeach
@@ -642,7 +774,7 @@
 
 
             <!-- Add Row Button -->
-            <div class="left-button">
+            <div class="button-wrapper">
                 <button type="button" onclick="addSpouseBlock()">Add Spouse</button>
             </div>
 
@@ -668,12 +800,12 @@
                 @endforeach
             </div>
 
-            <div class="left-button">
-                <button type="button" style="font-size: 13px;" onclick="addChildRow()">Add Unmarried Child</button>
+            <div class="button-wrapper">
+                <button type="button" onclick="addChildRow()">Add Child</button>
             </div>
-            <div class="left-button">
-                <button type="button" style="font-size: 13px;" class="button-remove"
-                    onclick="removeLastChildRow()">Remove Unmarried Child</button>
+            <div class="button-wrapper">
+                <button type="button" class="button-remove"
+                    onclick="removeLastChildRow()">Remove Child</button>
             </div>
 
             <!-- Assets Section -->
@@ -747,11 +879,15 @@
 
                         </tbody>
                     </table>
-                    <button type="button" onclick="addRealProperty()">Add Another Entry</button>
-                    <div class="asset-controls2">
-                        <div class="subtotal-row">
-                            <label for="subtotal">Subtotal: </label>
-                            <input type="text" id="subtotalReal" readonly>
+                    <div class="button-wrapper">
+                        <button type="button" onclick="addRealProperty()">Add Another Entry</button>
+                    </div>
+                    <div class="asset-controls"> 
+                        <div class ="asset-totals">
+                            <div class="subtotal-row">
+                                <label for="subtotalReal">Subtotal: </label>
+                                <input type="text" id="subtotalReal" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -799,16 +935,16 @@
 
                         </tbody>
                     </table>
-                    <div class="left-button">
+                    <div class="button-wrapper">
                         <button type="button" onclick="addPersonalProperty()">Add Another Entry</button>
                     </div>
-                    <div class="asset-controls">
+                    <div class="asset-controls"> 
                         <div class ="asset-totals">
-                            <div class="subtotal-row2">
-                                <label for="subtotal">Subtotal: </label>
+                            <div class="subtotal-row">
+                                <label for="subtotalPersonal">Subtotal: </label>
                                 <input type="text" id="subtotalPersonal" readonly>
                             </div>
-                            <div class="subtotal-row2">
+                            <div class="subtotal-row">
                                 <label for="totalAssets">Total Assets: </label>
                                 <input type="text" id="totalAssets" readonly>
                             </div>
@@ -818,7 +954,7 @@
                 </div>
             </div>
             <div class="form-section">
-                <h4 style="font-weight:normal;">Liabilities</h4>
+                <h3>Liabilities</h3>
                 <div class="assets-table-wrapper">
                     <table class="assets-table">
                         <thead>
@@ -860,17 +996,19 @@
 
                         </tbody>
                     </table>
-                    <div class="left-button">
-                        <button type="button" onclick="addLiability()">Add Another Entry</button>
-                    </div>
+
+                    <div class="button-wrapper">
+                                <button type="button" onclick="addLiability()">Add Another Entry</button>
+                            </div>
                     <div class="asset-controls">
                         <div class ="asset-totals">
-                            <div class="subtotal-row2">
-                                <label for="subtotal">Subtotal: </label>
+                            
+                            <div class="subtotal-row">
+                                <label for="subtotalLiabilities">Subtotal: </label>
                                 <input type="text" id="subtotalLiabilities" readonly>
                             </div>
-                            <div class="subtotal-row2">
-                                <label for="totalAssets">Networth: </label>
+                            <div class="subtotal-row">
+                                <label for="netWorth">Networth: </label>
                                 <input type="text" id="netWorth" readonly>
                             </div>
                         </div>
@@ -878,7 +1016,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-section">
                 <h3 style="text-align: center;">Business Interests and Financial Connections</h3>
                 <div class="note">
@@ -954,11 +1091,11 @@
                             @endif
                         </tbody>
                     </table>
-                    <div class="left-button">
+                    <div class="button-wrapper">
                         <button type="button" onclick="addBusiness()" id="addBusinessBtn">Add Another Entry</button>
                     </div>
                 </div>
-
+                
                 <div class="form-section">
                     <h3 style="text-align: center;">Relatives in the Government Service</h3>
                     <div class="note">
@@ -1049,7 +1186,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        <div class="left-button">
+                        <div class="button-wrapper">
                             <button type="button" onclick="addRelative()">Add Another Entry</button>
                         </div>
                     </div>
@@ -1077,10 +1214,18 @@
                         <br>
                         <p>Date: <span style="display: inline-block; border-bottom: 1px solid #000; width: 25%; vertical-align: -0.2em;"></span></p>
                         <br>
-                        <div class="row" style="margin-top: 30px;">
-                            <div style="flex: 1; text-align: center;">
+                        <div class="row" style="margin-top: 30px; justify-content:center; text-align: center;">
+                            <div style="min-width:50%;">    
                                 <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                                <label>Signature of Declarant</label>
+                                <label>Signature of Declarant</label><br />
+                            </div style="min-width:50%;">
+                            <div>
+                                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
+                                <label>Signature of Co-Declarant/Spouse</label>
+                            </div>
+                        </div>
+                        <div class="row" style="align-self:center; justify-content:center;">
+                            <div style="max-width:50%; text-align:center;">
                                 <div>
                                     <label>Government Issued ID</label>
                                     <input type="text" name="govIDDeclarant"
@@ -1098,9 +1243,7 @@
                                 </div>
                             </div>
 
-                            <div style="flex: 1; text-align: center;">
-                                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                                <label>Signature of Co-Declarant/Spouse</label>
+                            <div style="max-width:50%; text-align:center;">
                                 <div>
                                     <label>Government Issued ID</label>
                                     <input type="text" name="govIDSpouse"
@@ -1129,7 +1272,7 @@
                         </p>
 
                         <div style="text-align: center; margin-top: 40px;">
-                            <div style="border-top: 1px solid #000; width: 300px; margin: 0 auto 8px;"></div>
+                            <div style="border-top: 1px solid #000; width: 50%; max-width: 20rem; margin: 0 auto 8px;"></div>
                             <label>Person Administering Oath</label>
                         </div>
                     </div>

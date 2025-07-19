@@ -12,7 +12,6 @@
             box-sizing: border-box;
             font-family: 'Atkinson Hyperlegible', 'Nunito', sans-serif;
         }
-
         
         body {
             margin: 0;
@@ -22,19 +21,47 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            padding: 1rem;
         }
 
         h1 {
-            font-size: 2.25rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: #1f2937;
             margin-bottom: 2rem;
             text-align: left;
         }
 
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        
+        @media(min-width: 350px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .card h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media(min-width: 600px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+
+            .card h2 {
+                font-size: 1.75rem;
+            }
+        }
+
         .card {
             background-color: white;
-            padding: 2.5rem;
+            padding: 4.5rem 2.5rem 0 2.5rem;
             border-radius: 16px;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
             width: 100%;
@@ -43,16 +70,8 @@
             min-height: 400px;
         }
 
-        .card h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #1f2937;
-        }
-
         .card p {
             font-size: 0.9rem;
-            margin-bottom: 2rem;
         }
 
         input {
