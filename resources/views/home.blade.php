@@ -605,7 +605,7 @@
                         <label for="declarant_house_city">City/Municipality</label>
                         <select id="declarant_house_city" name="declarant_house_city"
                             data-selected="{{ $declarantHouseCity }}" disabled>
-                            <option value="" disabled selected>-- Select City --</option>
+                            <option value="" disabled selected>-- Select City/Municipality --</option>
                         </select>
                     </div>
                     <div>
@@ -669,7 +669,7 @@
                         <label for="declarant_office_city">City/Municipality</label>
                         <select id="declarant_office_city" name="declarant_office_city"
                             data-selected="{{ $declarantOfficeCity }}" disabled>
-                            <option value="" disabled selected>-- Select City --</option>
+                            <option value="" disabled selected>-- Select City/Municipality --</option>
                         </select>
                     </div>
                     <div>
@@ -711,8 +711,14 @@
                                     value="{{ $spouse['middleInitial'] ?? ($spouse['mi']  ?? '') }}">
                             </div>
                         </div>
-
                         <h4>Home Address</h4>
+                        <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
+                            <label>
+                                <input type="checkbox" name="copy_house_address[]" onclick="copyHouseAddress()">
+                                Same House Address as Declarant
+                            </label> 
+                        </div>
+
                         <div class="row">
                             <div>
                                 <label>House Number</label>
@@ -744,7 +750,7 @@
                                 <label>City/Municipality</label>
                                 <select name="spouse_house_city[]" id="spouse_house_city{{ $index + 1 }}" disabled
                                     data-selected="{{ $spouse['houseAddress']['houseCity'] ?? ($spouse['house_city'] ?? '') }}">
-                                    <option value="" disabled selected>-- Select City --</option>
+                                    <option value="" disabled selected>-- Select City/Municipality --</option>
                                 </select>
                             </div>
                             <div>
@@ -778,6 +784,12 @@
                         </div>
 
                         <h4>Office Address</h4>
+                        <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
+                            <label>
+                                <input type="checkbox" name="copy_office_address[]" onclick="copyOfficeAddress()">
+                                Same Office Address as Declarant
+                            </label> 
+                        </div>
                         <div class="row">
                             <div>
                                 <label>Office Number</label>
@@ -795,7 +807,7 @@
                                 <label>City/Municipality</label>
                                 <select name="spouse_office_city[]" id="spouse_office_city{{ $index + 1 }}"
                                     data-selected="{{ $spouse['officeAddress']['officeCity'] ?? ($spouse['office_city'] ?? '') }}" disabled>
-                                    <option value="" disabled selected>-- Select City --</option>
+                                    <option value="" disabled selected>-- Select City/Municipality --</option>
                                 </select>
                             </div>
                             <div>
@@ -1399,7 +1411,11 @@
 
             // Clear inputs
             clone.querySelectorAll('input').forEach(input => {
-                input.value = '';
+                if (input.type === 'checkbox') {
+                    input.checked = false; // Uncheck boxes and radios
+                } else {
+                    input.value = ''; // Clear text, number, etc.
+                }
             });
 
             const regionFieldHouse = clone.querySelector('[id^="spouse_house_region"]');
@@ -1445,6 +1461,74 @@
                 });
             }
         }
+
+        function copyHouseAddress() {
+            const spouseHouseInputs = document.getElementsByName("spouse_house_number[]");
+            const checkbox = document.getElementsByName("copy_house_address[]");
+
+            Array.from(spouseHouseInputs).forEach((input, i) => {
+                if (checkbox[i].checked) {
+                    // House Address
+                    input.value = document.getElementById("declarant_house_number").value;
+                    document.getElementsByName("spouse_house_street[]")[i].value = document.getElementById("declarant_house_street").value;
+                    document.getElementsByName("spouse_house_subdivision[]")[i].value = document.getElementById("declarant_house_subdivision").value;
+                    initializeRegionCityBarangay(
+                        document.getElementsByName("spouse_house_region[]")[i],
+                        document.getElementsByName("spouse_house_city[]")[i],
+                        document.getElementsByName("spouse_house_barangay[]")[i],
+                        {
+                            selectedRegion: document.getElementById("declarant_house_region").value,
+                            selectedCity: document.getElementById("declarant_house_city").value,
+                            selectedBarangay: document.getElementById("declarant_house_barangay").value,
+                        }
+                    );       
+                    document.getElementsByName("spouse_house_zip[]")[i].value = document.getElementById("declarant_house_zip").value;
+                } else {
+                    // Clear all inputs
+                    input.value = '';
+                    document.getElementsByName("spouse_house_street[]")[i].value = '';
+                    document.getElementsByName("spouse_house_subdivision[]")[i].value = '';
+                    document.getElementsByName("spouse_house_barangay[]")[i].value = '';
+                    document.getElementsByName("spouse_house_barangay[]")[i].disabled = true;
+                    document.getElementsByName("spouse_house_city[]")[i].value = '';
+                    document.getElementsByName("spouse_house_city[]")[i].disabled = true;
+                    document.getElementsByName("spouse_house_region[]")[i].value = '';
+                    document.getElementsByName("spouse_house_zip[]")[i].value = '';
+                }
+            });
+        }
+
+        function copyOfficeAddress() {
+            const spouseOfficeInputs = document.getElementsByName("spouse_office_number[]");
+            const checkbox = document.getElementsByName("copy_office_address[]");
+
+            Array.from(spouseOfficeInputs).forEach((input, i) => {
+                if (checkbox[i].checked) {
+                    // House Address
+                    input.value = document.getElementById("declarant_office_number").value;
+                    document.getElementsByName("spouse_office_street[]")[i].value = document.getElementById("declarant_office_street").value;
+                    initializeRegionCityBarangay(
+                        document.getElementsByName("spouse_office_region[]")[i],
+                        document.getElementsByName("spouse_office_city[]")[i],
+                        null,
+                        {
+                            selectedRegion: document.getElementById("declarant_office_region").value,
+                            selectedCity: document.getElementById("declarant_office_city").value,
+                        }
+                    );
+                    document.getElementsByName("spouse_office_zip[]")[i].value = document.getElementById("declarant_office_zip").value;
+                } else {
+                    // Clear all inputs
+                    document.getElementsByName("spouse_office_number[]")[i].value = '';
+                    document.getElementsByName("spouse_office_street[]")[i].value = '';
+                    document.getElementsByName("spouse_office_city[]")[i].value = '';
+                    document.getElementsByName("spouse_office_city[]")[i].disabled = true;
+                    document.getElementsByName("spouse_office_region[]")[i].value = '';
+                    document.getElementsByName("spouse_office_zip[]")[i].value = '';
+                }
+            });
+        }
+
 
         function removeSpouseBlock(button) {
             const container = document.getElementById('spouseRepeater');
@@ -1955,7 +2039,7 @@
                 await fetchCities(region);
 
                 // reset the innerhtml of both city and barangay if a different region is selected
-                cityField.innerHTML = '<option value="" disabled selected>-- Select City --</option>';
+                cityField.innerHTML = '<option value="" disabled selected>-- Select City/Municipality --</option>';
                 cityField.disabled = true;
                 if (barangayField) {
                     barangayField.innerHTML = '<option value="" disabled selected>-- Select Barangay --</option>';
@@ -2003,7 +2087,7 @@
 
             await populateRegions();
 
-            cityField.innerHTML = '<option value="" disabled selected>-- Select City --</option>';
+            cityField.innerHTML = '<option value="" disabled selected>-- Select City/Municipality --</option>';
             cityField.disabled = true;
 
             if (barangayField) {
