@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -124,9 +125,15 @@ class FormpageController extends Controller
         $saln->declarant_house_number = $request->input('declarant_house_number');
         $saln->declarant_house_street = $request->input('declarant_house_street');
         $saln->declarant_house_subdivision = $request->input('declarant_house_subdivision');
-        $saln->declarant_house_barangay = $request->input('declarant_house_barangay');
-        $saln->declarant_house_city = $request->input('declarant_house_city');
-        $saln->declarant_house_region = $request->input('declarant_house_region');
+        $saln->declarant_house_barangay = $request->has('declarant_house_barangay')
+            ? $request->input('declarant_house_barangay')
+            : '';
+        $saln->declarant_house_city = $request->has('declarant_house_barangay')
+            ? $request->input('declarant_house_city')
+            : '';
+        $saln->declarant_house_region = $request->has('declarant_house_region')
+            ? $request->input('declarant_house_region')
+            : '';
         $saln->declarant_house_zip = $request->input('declarant_house_zip');
 
         // Declarant Office
@@ -189,16 +196,16 @@ class FormpageController extends Controller
                 'house_number' => $request->spouse_house_number[$i],
                 'house_street' => $request->spouse_house_street[$i],
                 'house_subdivision' => $request->spouse_house_subdivision[$i],
-                'house_barangay' => $request->spouse_house_barangay[$i],
-                'house_city' => $request->spouse_house_city[$i],
-                'house_region' => $request->spouse_house_region[$i],
+                'house_barangay' => $request->spouse_house_barangay[$i] ?? '',
+                'house_city' => $request->spouse_house_city[$i] ?? '',
+                'house_region' => $request->spouse_house_region[$i] ?? '',
                 'house_zip' => $request->spouse_house_zip[$i],
                 'position' => $request->spouse_position[$i],
                 'office_name' => $request->spouse_office_name[$i],
                 'office_number' => $request->spouse_office_number[$i],
                 'office_street' => $request->spouse_office_street[$i],
-                'office_city' => $request->spouse_office_city[$i],
-                'office_region' => $request->spouse_office_region[$i],
+                'office_city' => $request->spouse_office_city[$i] ?? '',
+                'office_region' => $request->spouse_office_region[$i] ?? '',
                 'office_zip' => $request->spouse_office_zip[$i],
             ]);
         }
@@ -472,5 +479,19 @@ class FormpageController extends Controller
         return response($json)
             ->header('Content-Type', 'application/json')
             ->header('Content-Disposition', "attachment; filename={$filename}.json");
+    }
+
+    public function getRegions() {
+        $path = 'regions.json';
+    
+        if (!Storage::exists($path)) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+    
+        $jsonFile = Storage::get($path);
+
+        $data = json_decode($jsonFile);
+    
+        return response()->json($data);
     }
 }
