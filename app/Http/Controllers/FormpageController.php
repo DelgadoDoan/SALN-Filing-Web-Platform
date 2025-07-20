@@ -27,9 +27,9 @@ class FormpageController extends Controller
             return redirect('/login');
         }
 
-        // check if token is expired        
+        // check if token is expired
         $expiredToken = MagicToken::where('user_id', Auth::id())
-            ->where('created_at', '<=', Carbon::now()->subMinutes(360)) // if token is already 360 minutes (6 hours) old
+            ->where('used_at', '<=', Carbon::now()->subMinutes(360)) // if token is already 360 minutes (6 hours) old
             ->first();
 
         if ($expiredToken) {
@@ -39,6 +39,12 @@ class FormpageController extends Controller
 
             return redirect('/login');
         }
+
+        $token = MagicToken::where('user_id', Auth::id());
+
+        $token->update([
+            'used_at' => Carbon::now()
+        ]);
 
         $prefillData = session('prefill'); // this pulls the uploaded data
 

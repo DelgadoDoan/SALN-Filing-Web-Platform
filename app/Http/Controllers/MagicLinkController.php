@@ -45,10 +45,13 @@ class MagicLinkController extends Controller
                 'email' => $email,
             ]);
 
-            $magicToken = MagicToken::create([
-                'user_id' => $newUser->id,
-                'token' => Str::uuid()->toString(),
-            ]);
+            $magicToken = MagicToken::updateOrCreate(
+                ['user_id' => $newUser->id],
+                [
+                    'token' => Str::uuid()->toString(),
+                    'used_at' => null,
+                ],
+            );
 
             $randomStr = Str::random(30);
 
@@ -88,10 +91,13 @@ class MagicLinkController extends Controller
                 ->withInput();
         }
 
-        $magicToken = MagicToken::create([
-            'user_id' => $user->id,
-            'token' => Str::uuid()->toString(),
-        ]);
+        $magicToken = MagicToken::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'token' => Str::uuid()->toString(),
+                'used_at' => null,
+            ],
+        );
 
         $randomStr = Str::random(30);
 
