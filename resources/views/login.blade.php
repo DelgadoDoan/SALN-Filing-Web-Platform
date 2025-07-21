@@ -12,29 +12,28 @@
             box-sizing: border-box;
             font-family: 'Atkinson Hyperlegible', 'Nunito', sans-serif;
         }
-
         
         body {
-            margin: 0;
             background-color: #f9fafb;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            padding: 1rem;
         }
 
         h1 {
-            font-size: 2.25rem;
+            font-size: 1.4rem;
             font-weight: 600;
             color: #1f2937;
             margin-bottom: 2rem;
             text-align: left;
         }
-
+        
         .card {
             background-color: white;
-            padding: 2.5rem;
+            padding: 1.5rem 2.5rem 3rem 2.5rem;
             border-radius: 16px;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
             width: 100%;
@@ -43,10 +42,30 @@
         }
 
         .card h2 {
-            font-size: 1.75rem;
+            font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
             color: #1f2937;
+        }
+
+        @media(min-width: 360px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .card h2 {
+                font-size: 1.45rem;
+            }
+        }
+
+        @media(min-width: 600px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+
+            .card h2 {
+                font-size: 2rem;
+            }
         }
 
         .card p {
@@ -126,7 +145,7 @@
             @endif
         </form>
 
-        <div class="redirect">Don't have an account yet? <a href="{{ route('signup') }}">Sign up here</a></div>
+        <div class="redirect">Don't have an account yet?<br /><a href="{{ route('signup') }}">Sign up here</a></div>
 
     </div>
 </body>

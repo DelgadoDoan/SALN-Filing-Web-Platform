@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -26,9 +27,9 @@ class FormpageController extends Controller
             return redirect('/login');
         }
 
-        // check if token is expired        
+        // check if token is expired
         $expiredToken = MagicToken::where('user_id', Auth::id())
-            ->where('created_at', '<=', Carbon::now()->subMinutes(360)) // if token is already 360 minutes (6 hours) old
+            ->where('used_at', '<=', Carbon::now()->subMinutes(360)) // if token is already 360 minutes (6 hours) old
             ->first();
 
         if ($expiredToken) {
@@ -38,6 +39,12 @@ class FormpageController extends Controller
 
             return redirect('/login');
         }
+
+        $token = MagicToken::where('user_id', Auth::id());
+
+        $token->update([
+            'used_at' => Carbon::now()
+        ]);
 
         $prefillData = session('prefill'); // this pulls the uploaded data
 
@@ -124,9 +131,15 @@ class FormpageController extends Controller
         $saln->declarant_house_number = $request->input('declarant_house_number');
         $saln->declarant_house_street = $request->input('declarant_house_street');
         $saln->declarant_house_subdivision = $request->input('declarant_house_subdivision');
-        $saln->declarant_house_barangay = $request->input('declarant_house_barangay');
-        $saln->declarant_house_city = $request->input('declarant_house_city');
-        $saln->declarant_house_region = $request->input('declarant_house_region');
+        $saln->declarant_house_barangay = $request->has('declarant_house_barangay')
+            ? $request->input('declarant_house_barangay')
+            : '';
+        $saln->declarant_house_city = $request->has('declarant_house_barangay')
+            ? $request->input('declarant_house_city')
+            : '';
+        $saln->declarant_house_region = $request->has('declarant_house_region')
+            ? $request->input('declarant_house_region')
+            : '';
         $saln->declarant_house_zip = $request->input('declarant_house_zip');
 
         // Declarant Office
@@ -186,19 +199,21 @@ class FormpageController extends Controller
                 'family_name' => $family_name,
                 'first_name' => $request->spouse_first_name[$i],
                 'mi' => $request->spouse_mi[$i],
+                'same_house_as_declarant' => $request->has("copy_house_address.$i") ? true : false,
+                'same_office_as_declarant' => $request->has("copy_office_address.$i") ? true : false,
                 'house_number' => $request->spouse_house_number[$i],
                 'house_street' => $request->spouse_house_street[$i],
                 'house_subdivision' => $request->spouse_house_subdivision[$i],
-                'house_barangay' => $request->spouse_house_barangay[$i],
-                'house_city' => $request->spouse_house_city[$i],
-                'house_region' => $request->spouse_house_region[$i],
+                'house_barangay' => $request->spouse_house_barangay[$i] ?? '',
+                'house_city' => $request->spouse_house_city[$i] ?? '',
+                'house_region' => $request->spouse_house_region[$i] ?? '',
                 'house_zip' => $request->spouse_house_zip[$i],
                 'position' => $request->spouse_position[$i],
                 'office_name' => $request->spouse_office_name[$i],
                 'office_number' => $request->spouse_office_number[$i],
                 'office_street' => $request->spouse_office_street[$i],
-                'office_city' => $request->spouse_office_city[$i],
-                'office_region' => $request->spouse_office_region[$i],
+                'office_city' => $request->spouse_office_city[$i] ?? '',
+                'office_region' => $request->spouse_office_region[$i] ?? '',
                 'office_zip' => $request->spouse_office_zip[$i],
             ]);
         }
@@ -302,6 +317,7 @@ class FormpageController extends Controller
                     'middleInitial' => $spouse->mi ?? '',
                     'position' => $spouse->position ?? '',
                     'agencyOffice' => $spouse->office_name ?? '',
+                    'hasSameOfficeAsDeclarant' => $spouse->same_office_as_declarant,
                     'officeAddress' => [
                         'officeNo' => $spouse->office_number ?? '',
                         'officeStreet' => $spouse->office_street ?? '',
@@ -309,6 +325,7 @@ class FormpageController extends Controller
                         'officeRegion' => $spouse->office_region ?? '',
                         'officeZipCode' => $spouse->office_zip ?? '',
                     ],
+                    'hasSameHouseAsDeclarant' => $spouse->same_house_as_declarant,
                     'houseAddress' => [
                         'houseNo' => $spouse->house_number ?? '',
                         'houseStreet' => $spouse->house_street ?? '',
@@ -317,6 +334,11 @@ class FormpageController extends Controller
                         'houseCity' => $spouse->house_city ?? '',
                         'houseRegion' => $spouse->house_region ?? '',
                         'houseZipCode' => $spouse->house_zip ?? '',
+                    ],
+                    'governmentIssuedId' => [
+                        'type' => '',
+                        'idNumber' => '',
+                        'dateIssued' => '',
                     ],
                 ];
 
@@ -472,5 +494,19 @@ class FormpageController extends Controller
         return response($json)
             ->header('Content-Type', 'application/json')
             ->header('Content-Disposition', "attachment; filename={$filename}.json");
+    }
+
+    public function getRegions() {
+        $path = 'regions.json';
+    
+        if (!Storage::exists($path)) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+    
+        $jsonFile = Storage::get($path);
+
+        $data = json_decode($jsonFile);
+    
+        return response()->json($data);
     }
 }

@@ -35,6 +35,8 @@ Route::post('/home/import-json', [FormpageController::class, 'importJson'])->nam
 
 Route::get('/home/export-json', [FormpageController::class, 'exportJson'])->name('saln.export');
 
+Route::get('/get-regions', [FormpageController::class, 'getRegions'])->name('regions');
+
 Route::middleware(['prevent-back'])->group(function() {
     Route::get('/home', [FormpageController::class, 'isLoggedIn']);
 });

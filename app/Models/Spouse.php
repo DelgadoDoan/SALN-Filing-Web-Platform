@@ -11,6 +11,8 @@ class Spouse extends Model
         'family_name',
         'first_name',
         'mi',
+        'same_house_as_declarant',
+        'same_office_as_declarant',
         'house_number',
         'house_street',
         'house_subdivision',

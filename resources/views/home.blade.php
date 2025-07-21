@@ -15,22 +15,29 @@
 
         body {
             background: #F9FAFB;
-            padding: 40px;
             color: #222;
         }
 
         .form-container {
             background: #fff;
-            padding: 30px;
-            max-width: 800px;
-            margin: 0 auto;
+            padding: 1rem;
+            max-width: 55rem;
+            margin: 2.5rem auto 0;
             border: 1px solid #ddd;
-            margin-top: 50px;
         }
 
         h2 {
+            font-size:1em;
             text-align: center;
             margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size:0.9rem;
+        }
+
+        h4 {
+            font-size:0.8rem;
         }
 
         .subtitle {
@@ -39,11 +46,11 @@
         }
 
         .form-section {
-            margin-bottom: 20px;
+            padding: 0.5rem 0;
         }
 
         label {
-            font-size: 14px;
+            font-size: 0.6rem;
             display: block;
             margin-bottom: 4px;
         }
@@ -56,7 +63,7 @@
         }
 
         .asof-label {
-            font-size: 14px;
+            font-size: 0.7rem;
             padding-top: 5px;
             white-space: nowrap;
         }
@@ -68,53 +75,46 @@
         }
 
         .date-wrapper input[type="date"] {
-            width: 160px;
+            width: 8rem;
             padding: 4px 6px;
         }
 
         .date-wrapper small {
-            font-size: 12px;
+            font-size: 0.6rem;
             color: #555;
+            margin-top: 0.5rem;
         }
 
         input[type="text"],
-        input[type="date"] {
+        input[type="date"],
+        select {
+            font-size: 0.7rem;
             width: 100%;
             padding: 6px 8px;
-            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
 
-        .row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .rowone {
-            width: 50%;
-        }
-
-        .row>div {
-            flex: 1;
-        }
+        input[type="file"] {
+                font-size: 0.5rem;
+            }
 
         .checkbox-group {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
+            gap: 0.6rem;
+            padding-top: 0.6rem;
         }
 
         .checkbox-group label {
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 14px;
+            font-size: 0.65rem;
         }
 
         .note {
-            font-size: 13px;
+            font-size: 0.65rem;
             margin-bottom: 15px;
             text-align: center;
         }
@@ -124,7 +124,8 @@
         }
 
         .small {
-            font-size: 12px;
+            padding-top: 0.5rem;
+            font-size: 0.65rem;
             color: #555;
             text-align: right;
         }
@@ -145,33 +146,33 @@
             border: 1px solid #999;
             padding: 8px;
             vertical-align: middle;
-            font-weight: normal;
+            font-weight: bold;
         }
 
         .assets-table th {
             background-color: #c7d6ea;
-            font-size: 14px;
+            font-size: 0.6rem;
             text-align: center;
+            min-width: 7rem;
         }
 
         .assets-table input[type="text"] {
             width: 100%;
             border: 1px solid #ccc;
             padding: 4px 6px;
-            font-size: 13px;
+            font-size: 0.7rem;
         }
 
         button {
             background-color: #1F2937;
             color: white;
-            padding: 8px 14px;
+            padding: 0.5rem;
             border: none;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 0.5rem;
             cursor: pointer;
             margin-top: 10px;
-            width: 150px;
-            /* or whatever width looks right */
+            width: 6rem;
             text-align: center;
         }
 
@@ -182,46 +183,38 @@
         .btn-remove {
             background-color: #ED2100;
             color: white;
-            padding: 4px 10px;
+            padding: 0.5em;
             border: none;
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 0.5rem;
             cursor: pointer;
-            width: 60px;
-            margin-top: -50px;
+            width: 4rem;
             display: block;
             margin: 0 auto;
         }
-
 
         .subtotal-row {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             gap: 10px;
-            font-size: 14px;
             margin-top: 10px;
-            width: 32.5%
-        }
-
-        .subtotal-row2 {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            margin-top: 10px;
+            font-size: 0.7rem;
             width: 100%;
             white-space: nowrap;
+            
+        }
+        .subtotal-row input[type="text"] {
+            max-width: 6rem;
         }
 
         .asset-totals {
+            
             display: flex;
             flex-direction: column;
             gap: 8px;
             align-items: flex-end;
             margin-left: auto;
-            margin-top: -52px;
         }
 
         .asset-controls {
@@ -238,7 +231,6 @@
             gap: 8px;
             align-items: flex-end;
             margin-left: auto;
-            margin-top: -42px;
         }
 
         .assets-table td {
@@ -246,24 +238,26 @@
             vertical-align: middle;
         }
 
-        .left-button {
+        .button-wrapper {
             display: flex;
-            align-items: center;
-        }
-
-        .error {
-            font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
-            color: #ed4337;
-            margin-bottom: 1.5rem;
+            justify-content: end;
         }
 
         .success {
             font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.5rem;
             color: #4bb543;
-            margin-top: 1.5rem;
             text-align: right;
+            position: absolute;
+            top: 3rem;
+            right: 1rem;
+            transition: opacity 1s ease;
+            opacity: 1;
+        }
+
+        .success.hide {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .navbar {
@@ -273,30 +267,28 @@
             width: 100%;
             background: rgb(255, 255, 255);
             color: #fff;
-            height: 56px;
+            height: 2.5rem;
             display: flex;
             align-items: center;
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: top 0.3s ease-in-out;
-            /* Add this line */
         }
 
-        /* Container to center content and limit width */
         .navbar-container {
-            max-width: 1200px;
+            max-width: 90rem;
             width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
-            padding: 0 16px;
+            padding: 0 1rem;
             justify-content: space-between;
         }
 
         /* Brand styling */
         .navbar-brand {
             font-weight: bold;
-            font-size: 1.25rem;
+            font-size: 0.8rem;
             color: #1F2937;
         }
 
@@ -304,15 +296,16 @@
         .navbar-links {
             list-style: none;
             display: flex;
-            gap: 24px;
+            gap: 1rem;
         }
 
         /* Link styling */
         .navbar-links a {
+            text-align: center;
             text-decoration: none;
             color: #1F2937;
-            font-size: 1rem;
-            padding: 8px 12px;
+            font-size: 0.7rem;
+            padding: 0.1rem;
             border-radius: 4px;
             transition: background 0.2s;
         }
@@ -327,9 +320,170 @@
             cursor: not-allowed;
         }
 
-        .field-lines {
-            
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
         }
+
+        .rowone {
+            max-width: 50%;
+            padding-right: 0.35rem;
+        }
+
+        .row>div {
+            flex: 1;
+        }
+
+        p {
+            font-size: 0.65rem;
+        }
+
+        @media(min-width: 360px) {
+            .form-container {
+                padding: 1.25rem;
+                margin-top: 3rem;
+            }
+
+            .navbar {
+                height: 3rem;
+            }
+
+            .success {
+                font-size: 0.6rem;
+                top: 3.3rem;
+                right: 1.1rem;
+            }
+
+            .navbar-links {
+                font-size: 0.8rem;
+            }
+
+            .navbar-brand {
+                font-size: 0.9rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            h4 {
+                font-size: 0.9rem;
+            }
+
+            label, .date-wrapper small {
+                font-size: 0.7rem;
+            }
+
+            .checkbox-group label, .note, .small, p {
+                font-size: 0.75rem;
+            }
+
+            input[type="text"],
+            input[type="date"] {
+                font-size: 0.8rem;
+            }
+
+            button {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .form-container {
+                padding: 2.5rem;
+                margin-top: 3rem;
+            }
+
+            .success {
+                font-size: 0.8rem;
+                top: 3.5rem;
+                right: 1.3rem;
+            }
+
+            .navbar {
+                height: 3.1rem;
+            }
+
+            .navbar-links {
+                gap: 2rem;
+            }
+
+            .navbar-links a {
+                font-size: 0.8rem;
+            }
+
+            .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .checkbox-group {
+                gap: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            h4 {
+                font-size: 1.1rem;
+            }
+
+            .row {
+                gap: 1.2rem;
+            }
+
+            label, .date-wrapper small {
+                font-size: 0.8rem;
+            }
+
+            .checkbox-group label, .note, .small, p {
+                font-size: 0.9rem;
+            }
+
+            input[type="text"],
+            input[type="date"],
+            select {
+                font-size: 0.8rem;
+            }
+
+            input[type="file"] {
+                font-size: 0.7rem;
+            }
+
+            button {
+                font-size: 0.7rem;
+                width: 8rem;
+            }
+
+            .btn-remove {
+                font-size: 0.7rem;
+                width: 5rem;
+            }
+
+            .subtotal-row input[type="text"] {
+                max-width: 8rem;
+            }
+
+            .assets-table th {
+                font-size: 0.8rem;
+                min-width: 4rem;
+            }
+
+            .assets-table input[type="text"] {
+                font-size: 0.8rem;
+            }
+        }
+ 
     </style>
 </head>
 
@@ -361,7 +515,7 @@
         @csrf
 
         @if (session('success'))
-            <div class="success">
+            <div id="saved-message" class="success">
                 {{ session('success') }}
             </div>
         @endif
@@ -380,7 +534,6 @@
                 <div class="date-wrapper">
                     <input type="date" id="asof_date" name="asof_date"
                         value="{{ old('asof_date', $prefillData['asOfDate'] ?? optional($saln->asof_date ?? '')->format('Y-m-d')) }}">
-                    <div class="error">{{ $errors->first('asOfDate') }}</div>
                     <small>(Required by R.A. 6713)</small>
                 </div>
             </div>
@@ -424,7 +577,24 @@
                     </div>
                 </div>
                 <!-- DECLARANT HOME ADRESS -->
-                <h3>Home Address</h3>
+                @php
+                    $declarantHouseRegion = old(
+                        'declarant_house_region',
+                        $prefillData['declarant']['houseAddress']['houseRegion'] ??
+                            ($saln->declarant_house_region ?? ''),
+                    );
+                    $declarantHouseCity = old(
+                        'declarant_house_city',
+                        $prefillData['declarant']['houseAddress']['houseCity'] ?? ($saln->declarant_house_city ?? ''),
+                    );
+                    $declarantHouseBarangay = old(
+                        'declarant_house_barangay',
+                        $prefillData['declarant']['houseAddress']['houseBarangay'] ??
+                            ($saln->declarant_house_barangay ?? ''),
+                    );
+                @endphp
+
+                <h4>Home Address</h4>
                 <div class="row">
                     <div>
                         <label for="declarant_house_number">House Number</label>
@@ -445,20 +615,26 @@
                     </div>
                     <div>
                         <label for="declarant_house_barangay">Barangay</label>
-                        <input type="text" id="declarant_house_barangay" name="declarant_house_barangay"
-                            value="{{ old('declarant_house_barangay', $prefillData['declarant']['houseAddress']['houseBarangay'] ?? ($saln->declarant_house_barangay ?? '')) }}">
+                        <select id="declarant_house_barangay" name="declarant_house_barangay"
+                            data-selected="{{ $declarantHouseBarangay }}" disabled>
+                            <option value="" disabled selected>-- Select Barangay --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
                     <div>
                         <label for="declarant_house_city">City/Municipality</label>
-                        <input type="text" id="declarant_house_city" name="declarant_house_city"
-                            value="{{ old('declarant_house_city', $prefillData['declarant']['houseAddress']['houseCity'] ?? ($saln->declarant_house_city ?? '')) }}">
+                        <select id="declarant_house_city" name="declarant_house_city"
+                            data-selected="{{ $declarantHouseCity }}" disabled>
+                            <option value="" disabled selected>-- Select City/Municipality --</option>
+                        </select>
                     </div>
                     <div>
                         <label for="declarant_house_region">Region</label>
-                        <input type="text" id="declarant_house_region" name="declarant_house_region"
-                            value="{{ old('declarant_house_region', $prefillData['declarant']['houseAddress']['houseRegion'] ?? ($saln->declarant_house_region ?? '')) }}">
+                        <select id="declarant_house_region" name="declarant_house_region"
+                            data-selected="{{ $declarantHouseRegion }}">
+                            <option value="" disabled selected>-- Select Region --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="rowone">
@@ -469,7 +645,7 @@
                     </div>
                 </div>
                 <!-- DECLARANT OFFICE -->
-                <h3>Office</h3>
+                <h4>Office</h4>
                 <div class="row">
                     <div>
                         <label for="declarant_position">Position</label>
@@ -483,7 +659,20 @@
                     </div>
                 </div>
                 <!-- DECLARANT OFFICE ADDRESS -->
-                <h3>Office Address</h3>
+                @php
+                    $declarantOfficeRegion = old(
+                        'declarant_office_region',
+                        $prefillData['declarant']['officeAddress']['officeRegion'] ??
+                            ($saln->declarant_office_region ?? ''),
+                    );
+                    $declarantOfficeCity = old(
+                        'declarant_office_city',
+                        $prefillData['declarant']['officeAddress']['officeCity'] ??
+                            ($saln->declarant_office_city ?? ''),
+                    );
+                @endphp
+                
+                <h4>Office Address</h4>
                 <div class="row">
                     <div>
                         <label for="declarant_office_number">Office Number</label>
@@ -499,13 +688,17 @@
                 <div class="row">
                     <div>
                         <label for="declarant_office_city">City/Municipality</label>
-                        <input type="text" id="declarant_office_city" name="declarant_office_city"
-                            value="{{ old('declarant_office_city', $prefillData['declarant']['officeAddress']['officeCity'] ?? ($saln->declarant_office_city ?? '')) }}">
+                        <select id="declarant_office_city" name="declarant_office_city"
+                            data-selected="{{ $declarantOfficeCity }}" disabled>
+                            <option value="" disabled selected>-- Select City/Municipality --</option>
+                        </select>
                     </div>
                     <div>
                         <label for="declarant_office_region">Region</label>
-                        <input type="text" id="declarant_office_region" name="declarant_office_region"
-                            value="{{ old('declarant_office_region', $prefillData['declarant']['officeAddress']['officeRegion'] ?? ($saln->declarant_office_region ?? '')) }}">
+                        <select id="declarant_office_region" name="declarant_office_region"
+                            data-selected="{{ $declarantOfficeRegion }}">
+                            <option value="" disabled selected>-- Select Region --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="rowone">
@@ -519,8 +712,8 @@
 
             <div id="spouseRepeater">
                 @foreach ($prefillData['declarant']['spouses'] ?? ($saln->spouses ?? []) as $index => $spouse)
-                    <div class="spouse-block">
-                        <h4 class="spouse-header">Spouse {{ $index + 1 }} Information</h4>
+                    <div class="spouse-block" data-index="{{ $index + 1 }}">
+                        <h3 class="spouse-header">Spouse {{ $index + 1 }} Information</h3>
 
                         <div class="row">
                             <div>
@@ -539,8 +732,15 @@
                                     value="{{ $spouse['middleInitial'] ?? ($spouse['mi']  ?? '') }}">
                             </div>
                         </div>
-
                         <h4>Home Address</h4>
+                        <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
+                            <label>
+                                <input type="checkbox" name="copy_house_address[]" onclick="copyHouseAddress()"
+                                {{ $spouse['hasSameHouseAsDeclarant'] ?? ($spouse['same_house_as_declarant'] ?? false) ? 'checked' : '' }} />
+                                Same House Address as Declarant
+                            </label> 
+                        </div>
+
                         <div class="row">
                             <div>
                                 <label>House Number</label>
@@ -561,20 +761,26 @@
                             </div>
                             <div>
                                 <label>Barangay</label>
-                                <input type="text" name="spouse_house_barangay[]"
-                                value="{{ $spouse['houseAddress']['houseBarangay'] ?? ($spouse['house_barangay'] ?? '') }}">
+                                <select name="spouse_house_barangay[]" id="spouse_house_barangay{{ $index + 1 }}"
+                                    disabled data-selected="{{ $spouse['houseAddress']['houseBarangay'] ?? ($spouse['house_barangay'] ?? '') }}">
+                                    <option value="" disabled selected>-- Select Barangay --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
                             <div>
                                 <label>City/Municipality</label>
-                                <input type="text" name="spouse_house_city[]"
-                                value="{{ $spouse['houseAddress']['houseCity'] ?? ($spouse['house_city'] ?? '') }}">
+                                <select name="spouse_house_city[]" id="spouse_house_city{{ $index + 1 }}" disabled
+                                    data-selected="{{ $spouse['houseAddress']['houseCity'] ?? ($spouse['house_city'] ?? '') }}">
+                                    <option value="" disabled selected>-- Select City/Municipality --</option>
+                                </select>
                             </div>
                             <div>
                                 <label>Region</label>
-                                <input type="text" name="spouse_house_region[]"
-                                value="{{ $spouse['houseAddress']['houseRegion'] ?? ($spouse['house_region'] ?? '') }}">
+                                <select name="spouse_house_region[]" id="spouse_house_region{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['houseAddress']['houseRegion'] ?? ($spouse['house_region'] ?? '') }}">
+                                    <option value="" disabled selected>-- Select Region --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="rowone">
@@ -600,6 +806,13 @@
                         </div>
 
                         <h4>Office Address</h4>
+                        <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
+                            <label>
+                                <input type="checkbox" name="copy_office_address[]" onclick="copyOfficeAddress()"
+                                {{ $spouse['hasSameOfficeAsDeclarant'] ?? ($spouse['same_office_as_declarant'] ?? false) ? 'checked' : '' }} />
+                                Same Office Address as Declarant
+                            </label> 
+                        </div>
                         <div class="row">
                             <div>
                                 <label>Office Number</label>
@@ -615,13 +828,17 @@
                         <div class="row">
                             <div>
                                 <label>City/Municipality</label>
-                                <input type="text" name="spouse_office_city[]"
-                                    value="{{ $spouse['officeAddress']['officeCity'] ?? ($spouse['office_city'] ?? '') }}">
+                                <select name="spouse_office_city[]" id="spouse_office_city{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['officeAddress']['officeCity'] ?? ($spouse['office_city'] ?? '') }}" disabled>
+                                    <option value="" disabled selected>-- Select City/Municipality --</option>
+                                </select>
                             </div>
                             <div>
                                 <label>Region</label>
-                                <input type="text" name="spouse_office_region[]"
-                                    value="{{ $spouse['officeAddress']['officeRegion'] ?? ($spouse['office_region'] ?? '') }}">
+                                <select name="spouse_office_region[]" id="spouse_office_region{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['officeAddress']['officeRegion'] ?? ($spouse['office_region'] ?? '') }}">
+                                    <option value="" disabled selected>-- Select Region --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="rowone">
@@ -633,8 +850,10 @@
                         </div>
 
                         <div class="spouse-actions">
-                            <button type="button" class="button-remove remove-spouse"
-                                onclick="removeSpouseBlock(this)">Remove Spouse</button>
+                            <div class="button-wrapper"> 
+                                <button type="button" class="button-remove remove-spouse"
+                                    onclick="removeSpouseBlock(this)">Remove Spouse</button>
+                            </div>    
                         </div>
                     </div>
                 @endforeach
@@ -642,7 +861,7 @@
 
 
             <!-- Add Row Button -->
-            <div class="left-button">
+            <div class="button-wrapper">
                 <button type="button" onclick="addSpouseBlock()">Add Spouse</button>
             </div>
 
@@ -668,12 +887,12 @@
                 @endforeach
             </div>
 
-            <div class="left-button">
-                <button type="button" style="font-size: 13px;" onclick="addChildRow()">Add Unmarried Child</button>
+            <div class="button-wrapper">
+                <button type="button" onclick="addChildRow()">Add Child</button>
             </div>
-            <div class="left-button">
-                <button type="button" style="font-size: 13px;" class="button-remove"
-                    onclick="removeLastChildRow()">Remove Unmarried Child</button>
+            <div class="button-wrapper">
+                <button type="button" class="button-remove"
+                    onclick="removeLastChildRow()">Remove Child</button>
             </div>
 
             <!-- Assets Section -->
@@ -747,11 +966,15 @@
 
                         </tbody>
                     </table>
-                    <button type="button" onclick="addRealProperty()">Add Another Entry</button>
-                    <div class="asset-controls2">
-                        <div class="subtotal-row">
-                            <label for="subtotal">Subtotal: </label>
-                            <input type="text" id="subtotalReal" readonly>
+                    <div class="button-wrapper">
+                        <button type="button" onclick="addRealProperty()">Add Another Entry</button>
+                    </div>
+                    <div class="asset-controls"> 
+                        <div class ="asset-totals">
+                            <div class="subtotal-row">
+                                <label for="subtotalReal">Subtotal: </label>
+                                <input type="text" id="subtotalReal" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -799,16 +1022,16 @@
 
                         </tbody>
                     </table>
-                    <div class="left-button">
+                    <div class="button-wrapper">
                         <button type="button" onclick="addPersonalProperty()">Add Another Entry</button>
                     </div>
-                    <div class="asset-controls">
+                    <div class="asset-controls"> 
                         <div class ="asset-totals">
-                            <div class="subtotal-row2">
-                                <label for="subtotal">Subtotal: </label>
+                            <div class="subtotal-row">
+                                <label for="subtotalPersonal">Subtotal: </label>
                                 <input type="text" id="subtotalPersonal" readonly>
                             </div>
-                            <div class="subtotal-row2">
+                            <div class="subtotal-row">
                                 <label for="totalAssets">Total Assets: </label>
                                 <input type="text" id="totalAssets" readonly>
                             </div>
@@ -818,7 +1041,7 @@
                 </div>
             </div>
             <div class="form-section">
-                <h4 style="font-weight:normal;">Liabilities</h4>
+                <h3>Liabilities</h3>
                 <div class="assets-table-wrapper">
                     <table class="assets-table">
                         <thead>
@@ -860,17 +1083,19 @@
 
                         </tbody>
                     </table>
-                    <div class="left-button">
-                        <button type="button" onclick="addLiability()">Add Another Entry</button>
-                    </div>
+
+                    <div class="button-wrapper">
+                                <button type="button" onclick="addLiability()">Add Another Entry</button>
+                            </div>
                     <div class="asset-controls">
                         <div class ="asset-totals">
-                            <div class="subtotal-row2">
-                                <label for="subtotal">Subtotal: </label>
+                            
+                            <div class="subtotal-row">
+                                <label for="subtotalLiabilities">Subtotal: </label>
                                 <input type="text" id="subtotalLiabilities" readonly>
                             </div>
-                            <div class="subtotal-row2">
-                                <label for="totalAssets">Networth: </label>
+                            <div class="subtotal-row">
+                                <label for="netWorth">Networth: </label>
                                 <input type="text" id="netWorth" readonly>
                             </div>
                         </div>
@@ -878,7 +1103,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-section">
                 <h3 style="text-align: center;">Business Interests and Financial Connections</h3>
                 <div class="note">
@@ -954,11 +1178,11 @@
                             @endif
                         </tbody>
                     </table>
-                    <div class="left-button">
+                    <div class="button-wrapper">
                         <button type="button" onclick="addBusiness()" id="addBusinessBtn">Add Another Entry</button>
                     </div>
                 </div>
-
+                
                 <div class="form-section">
                     <h3 style="text-align: center;">Relatives in the Government Service</h3>
                     <div class="note">
@@ -1049,7 +1273,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        <div class="left-button">
+                        <div class="button-wrapper">
                             <button type="button" onclick="addRelative()">Add Another Entry</button>
                         </div>
                     </div>
@@ -1077,10 +1301,18 @@
                         <br>
                         <p>Date: <span style="display: inline-block; border-bottom: 1px solid #000; width: 25%; vertical-align: -0.2em;"></span></p>
                         <br>
-                        <div class="row" style="margin-top: 30px;">
-                            <div style="flex: 1; text-align: center;">
+                        <div class="row" style="margin-top: 30px; justify-content:center; text-align: center;">
+                            <div style="min-width:50%;">    
                                 <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                                <label>Signature of Declarant</label>
+                                <label>Signature of Declarant</label><br />
+                            </div style="min-width:50%;">
+                            <div>
+                                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
+                                <label>Signature of Co-Declarant/Spouse</label>
+                            </div>
+                        </div>
+                        <div class="row" style="align-self:center; justify-content:center;">
+                            <div style="max-width:50%; text-align:center;">
                                 <div>
                                     <label>Government Issued ID</label>
                                     <input type="text" name="govIDDeclarant"
@@ -1098,9 +1330,7 @@
                                 </div>
                             </div>
 
-                            <div style="flex: 1; text-align: center;">
-                                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto 8px;"></div>
-                                <label>Signature of Co-Declarant/Spouse</label>
+                            <div style="max-width:50%; text-align:center;">
                                 <div>
                                     <label>Government Issued ID</label>
                                     <input type="text" name="govIDSpouse"
@@ -1129,11 +1359,10 @@
                         </p>
 
                         <div style="text-align: center; margin-top: 40px;">
-                            <div style="border-top: 1px solid #000; width: 300px; margin: 0 auto 8px;"></div>
+                            <div style="border-top: 1px solid #000; width: 50%; max-width: 15rem; margin: 0 auto 8px;"></div>
                             <label>Person Administering Oath</label>
                         </div>
                     </div>
-
                 </div>
             </div>
             <br />
@@ -1155,7 +1384,6 @@
     <script>
         const form = document.getElementById('saln-form');
         const prefill = @json($prefillData);
-        console.log(prefill);
 
         function serializeForm(form) {
             const formData = new FormData(form);
@@ -1169,7 +1397,6 @@
         };
 
         let formData = serializeForm(form);
-        console.log(formData);
 
         let hasChanged = false;
 
@@ -1177,7 +1404,7 @@
             hasChanged = serializeForm(form) !== initialData;
         });
 
-        window.addEventListener('beforeunload', function (e) {
+        window.addEventListener('beforeunload', function(e) {
             if (hasChanged) {
                 e.preventDefault();
                 e.returnValue = '';
@@ -1188,6 +1415,13 @@
             hasChanged = false;
         });
 
+        setTimeout(function () {
+            const message = document.getElementById('saved-message');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 7000); // 7s
+
         function exportData() {
             if (prefill) {
                 alert('You currently have an unsaved import. Please save before exporting.');
@@ -1197,20 +1431,132 @@
                 window.location.href = "{{ route('saln.export') }}";
             }
         }
-        
+
         function addSpouseBlock() {
             const container = document.getElementById('spouseRepeater');
             const original = container.querySelector('.spouse-block');
             const clone = original.cloneNode(true);
+    
+            const newIndex = container.querySelectorAll('.spouse-block').length + 1;
 
+            // Clear inputs
+            clone.querySelectorAll('input').forEach(input => {
+                if (input.type === 'checkbox') {
+                    input.checked = false; // Uncheck boxes and radios
+                } else {
+                    input.value = ''; // Clear text, number, etc.
+                }
+            });
 
-            clone.querySelectorAll('input').forEach(input => input.value = '');
+            const regionFieldHouse = clone.querySelector('[id^="spouse_house_region"]');
+            const cityFieldHouse = clone.querySelector('[id^="spouse_house_city"]');
+            const barangayFieldHouse = clone.querySelector('[id^="spouse_house_barangay"]');
+
+            
+
+            regionFieldHouse.id = `spouse_house_region${newIndex}`;
+            cityFieldHouse.id = `spouse_house_city${newIndex}`;
+            barangayFieldHouse.id = `spouse_house_barangay${newIndex}`;
+
+            const regionFieldOffice = clone.querySelector('[id^="spouse_office_region"]');
+            const cityFieldOffice = clone.querySelector('[id^="spouse_office_city"]');
+
+            if (regionFieldOffice && cityFieldOffice) {
+                regionFieldOffice.id = `spouse_office_region${newIndex}`;
+                cityFieldOffice.id = `spouse_office_city${newIndex}`;
+                regionFieldOffice.dataset.selected = '';
+                cityFieldOffice.dataset.selected = '';
+            }
 
             container.appendChild(clone);
+            
+            
             container.querySelectorAll('.spouse-header').forEach((el, idx) => {
                 el.textContent = `Spouse ${idx + 1} Information`;
             });
+
+            // Reinitialize selects
+            initializeRegionCityBarangay(regionFieldHouse, cityFieldHouse, barangayFieldHouse, {
+                selectedRegion: '',
+                selectedCity: '',
+                selectedBarangay: '',
+            });
+
+            if (regionFieldOffice && cityFieldOffice) {
+                initializeRegionCityBarangay(regionFieldOffice, cityFieldOffice, null, {
+                    selectedRegion: '',
+                    selectedCity: '',
+                });
+            }
         }
+
+        function copyHouseAddress() {
+            const spouseHouseInputs = document.getElementsByName("spouse_house_number[]");
+            const checkbox = document.getElementsByName("copy_house_address[]");
+
+            Array.from(spouseHouseInputs).forEach((input, i) => {
+                if (checkbox[i].checked) {
+                    // House Address
+                    input.value = document.getElementById("declarant_house_number").value;
+                    document.getElementsByName("spouse_house_street[]")[i].value = document.getElementById("declarant_house_street").value;
+                    document.getElementsByName("spouse_house_subdivision[]")[i].value = document.getElementById("declarant_house_subdivision").value;
+                    initializeRegionCityBarangay(
+                        document.getElementsByName("spouse_house_region[]")[i],
+                        document.getElementsByName("spouse_house_city[]")[i],
+                        document.getElementsByName("spouse_house_barangay[]")[i],
+                        {
+                            selectedRegion: document.getElementById("declarant_house_region").value,
+                            selectedCity: document.getElementById("declarant_house_city").value,
+                            selectedBarangay: document.getElementById("declarant_house_barangay").value,
+                        }
+                    );       
+                    document.getElementsByName("spouse_house_zip[]")[i].value = document.getElementById("declarant_house_zip").value;
+                } else {
+                    // Clear all inputs
+                    input.value = '';
+                    document.getElementsByName("spouse_house_street[]")[i].value = '';
+                    document.getElementsByName("spouse_house_subdivision[]")[i].value = '';
+                    document.getElementsByName("spouse_house_barangay[]")[i].value = '';
+                    document.getElementsByName("spouse_house_barangay[]")[i].disabled = true;
+                    document.getElementsByName("spouse_house_city[]")[i].value = '';
+                    document.getElementsByName("spouse_house_city[]")[i].disabled = true;
+                    document.getElementsByName("spouse_house_region[]")[i].value = '';
+                    document.getElementsByName("spouse_house_zip[]")[i].value = '';
+                }
+            });
+        }
+
+        function copyOfficeAddress() {
+            const spouseOfficeInputs = document.getElementsByName("spouse_office_number[]");
+            const checkbox = document.getElementsByName("copy_office_address[]");
+
+            Array.from(spouseOfficeInputs).forEach((input, i) => {
+                if (checkbox[i].checked) {
+                    // House Address
+                    input.value = document.getElementById("declarant_office_number").value;
+                    document.getElementsByName("spouse_office_street[]")[i].value = document.getElementById("declarant_office_street").value;
+                    initializeRegionCityBarangay(
+                        document.getElementsByName("spouse_office_region[]")[i],
+                        document.getElementsByName("spouse_office_city[]")[i],
+                        null,
+                        {
+                            selectedRegion: document.getElementById("declarant_office_region").value,
+                            selectedCity: document.getElementById("declarant_office_city").value,
+                        }
+                    );
+                    document.getElementsByName("spouse_office_zip[]")[i].value = document.getElementById("declarant_office_zip").value;
+                } else {
+                    // Clear all inputs
+                    document.getElementsByName("spouse_office_number[]")[i].value = '';
+                    document.getElementsByName("spouse_office_street[]")[i].value = '';
+                    document.getElementsByName("spouse_office_city[]")[i].value = '';
+                    document.getElementsByName("spouse_office_city[]")[i].disabled = true;
+                    document.getElementsByName("spouse_office_region[]")[i].value = '';
+                    document.getElementsByName("spouse_office_zip[]")[i].value = '';
+                }
+            });
+        }
+
 
         function removeSpouseBlock(button) {
             const container = document.getElementById('spouseRepeater');
@@ -1666,7 +2012,131 @@
             }
 
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
+        }); 
+        
+       
+
+        async function initializeRegionCityBarangay(regionField, cityField, barangayField=null, {
+            selectedRegion,
+            selectedCity,
+            selectedBarangay='',
+        }) {
+            let regions = {};
+            let cities = {};
+            let barangays = [];   
+            let regionCode;
+            let cityCode;
+
+            async function fetchRegions() {
+                const regionsResponse = await fetch("{{ route('regions') }}");
+                regions = await regionsResponse.json();
+            }
+
+            await fetchRegions();
+
+            async function fetchCities(regionName) {
+                cities = {};
+                const region = Object.values(regions).find(r => r.region_name === regionName);
+                
+                if (region) {
+                    for (const provinceName in region.province_list) {
+                        const province = region.province_list[provinceName];
+
+                        for (const municipalityName in province.municipality_list) {
+                            cities[municipalityName] = province.municipality_list[municipalityName];
+                        }
+                    }
+                }
+            }
+
+            async function fetchBarangays(cityCode) {
+                if (cities[cityCode]) {
+                    barangays = cities[cityCode]['barangay_list'];
+                } 
+            }
+
+            async function populateRegions() {
+                if (selectedRegion === '') {
+                    regionField.value = '';
+                    return;
+                }
+
+                Object.values(regions).forEach(regionObj => {
+                    const regionName = regionObj.region_name;
+                    const selected = regionName === selectedRegion ? 'selected' : '';
+                    regionField.innerHTML += `<option value="${regionName}" ${selected}>${regionName}</option>`;
+                });
+            }
+
+            async function populateCities(region) {          
+                await fetchCities(region);
+
+                // reset the innerhtml of both city and barangay if a different region is selected
+                cityField.innerHTML = '<option value="" disabled selected>-- Select City/Municipality --</option>';
+                cityField.disabled = true;
+                if (barangayField) {
+                    barangayField.innerHTML = '<option value="" disabled selected>-- Select Barangay --</option>';
+                    barangayField.disabled = true;
+                }
+                // check if a region was selected already
+                // and if that city actually exists in the 
+                if (region && Object.values(regions).some(r => r.region_name === region)) {
+                    cityField.disabled = false;
+                    for (const cityName in cities) {
+                        const selected = cityName === selectedCity ? 'selected' : '';
+                        cityField.innerHTML += `<option value="${cityName}" ${selected}>${cityName}</option>`;
+                    }
+                }
+            }
+            
+            
+            async function populateBarangays(region, city) {
+                barangays = [];
+                await fetchBarangays(city);
+
+                // reset barangay innerhtml if a different city is selected 
+                barangayField.innerHTML = '<option value="" disabled selected>-- Select Barangay --</option>';
+                barangayField.disabled = true;
+                if (region && city && city in cities) {
+                    barangayField.disabled = false;
+
+                    for (const barangayName of barangays) {
+                        const selected = barangayName === selectedBarangay ? 'selected' : '';
+                        barangayField.innerHTML += `<option value="${barangayName}" ${selected}>${barangayName}</option>`;
+                    }
+                }
+            }
+
+            regionField.addEventListener('change', async () => {
+                await populateCities(regionField.value);
+            });
+
+            cityField.addEventListener('change', async () => {
+                if (barangayField) {
+                    await populateBarangays(regionField.value, cityField.value);
+                }
+            });
+
+
+            await populateRegions();
+
+            cityField.innerHTML = '<option value="" disabled selected>-- Select City/Municipality --</option>';
+            cityField.disabled = true;
+
+            if (barangayField) {
+                barangayField.innerHTML = '<option value="" disabled selected>-- Select Barangay --</option>';
+                barangayField.disabled = true;
+            }
+
+            if (selectedRegion && selectedCity) {
+                await populateCities(selectedRegion);
+            }
+            
+            if (selectedRegion && selectedCity && selectedBarangay && barangayField) {
+                await populateBarangays(selectedRegion, selectedCity);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('input[name="children_dob[]"]').forEach(input => {
                 if (input.value) {
@@ -1681,9 +2151,47 @@
             toggleRelativesForm();
             toggleBusinessForm();
 
+            initializeRegionCityBarangay(document.getElementById('declarant_house_region'),
+                document.getElementById('declarant_house_city'),
+                document.getElementById('declarant_house_barangay'), {
+                    selectedRegion: document.getElementById('declarant_house_region').dataset.selected,
+                    selectedCity: document.getElementById('declarant_house_city').dataset.selected,
+                    selectedBarangay: document.getElementById('declarant_house_barangay').dataset.selected,
+                });
+
+            initializeRegionCityBarangay(document.getElementById('declarant_office_region'),
+                document.getElementById('declarant_office_city'),
+                null, {
+                    selectedRegion: document.getElementById('declarant_office_region').dataset.selected,
+                    selectedCity: document.getElementById('declarant_office_city').dataset.selected,
+                    selectedBarangay: '',
+                });
+
             document.querySelectorAll('input[name="acquisitionCost[]"]').forEach(input => {
                 input.addEventListener('input', calculatePersonalSubtotal);
             });
+
+            document.querySelectorAll('.spouse-block').forEach((spouseBlock) => {
+                const index = spouseBlock.dataset.index;
+                const regionFieldHouse = spouseBlock.querySelector(`#spouse_house_region${index}`);
+                const cityFieldHouse = spouseBlock.querySelector(`#spouse_house_city${index}`);
+                const barangayFieldHouse = spouseBlock.querySelector(`#spouse_house_barangay${index}`);
+                    
+                initializeRegionCityBarangay(regionFieldHouse, cityFieldHouse, barangayFieldHouse, {
+                    selectedRegion: regionFieldHouse.dataset.selected,
+                    selectedCity: cityFieldHouse.dataset.selected,
+                    selectedBarangay: barangayFieldHouse.dataset.selected,
+                });
+
+                const regionFieldOffice = spouseBlock.querySelector(`#spouse_office_region${index}`);
+                const cityFieldOffice = spouseBlock.querySelector(`#spouse_office_city${index}`);
+
+                initializeRegionCityBarangay(regionFieldOffice, cityFieldOffice, null, {
+                    selectedRegion: regionFieldOffice.dataset.selected,
+                    selectedCity: cityFieldOffice.dataset.selected,
+                    selectedBarangay: '',
+                });
+            })
         });
     </script>
 </body>

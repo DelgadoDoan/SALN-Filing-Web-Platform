@@ -35,18 +35,23 @@ class MagicLinkController extends Controller
     public function signup(SignupRequest $request) {
         $validated = $request->validated();
 
-        $user = User::where('email', $validated['email'])->first();
+        $email = Str::lower($validated['email']);
+
+        $user = User::where('email', $email)->first();
 
         if (empty($user)) {
             $newUser = User::create([
                 'name' => $validated['name'],
-                'email' => $validated['email'],
+                'email' => $email,
             ]);
 
-            $magicToken = MagicToken::create([
-                'user_id' => $newUser->id,
-                'token' => Str::uuid()->toString(),
-            ]);
+            $magicToken = MagicToken::updateOrCreate(
+                ['user_id' => $newUser->id],
+                [
+                    'token' => Str::uuid()->toString(),
+                    'used_at' => null,
+                ],
+            );
 
             $randomStr = Str::random(30);
 
@@ -63,37 +68,44 @@ class MagicLinkController extends Controller
     public function login(LoginRequest $request) {
         $validated = $request->validated();
 
-        $user = User::where('email', $validated['email'])->first();
+        $email = Str::lower($validated['email']);
 
-        if (!empty($user)) {
-            // prevent login spam
-            $recentToken = MagicToken::where('created_at', '>=', Carbon::now()->subMinutes(5))
-                ->where('user_id', '=', $user->id)
-                ->whereNull('used_at')
-                ->first();
-            
-            if (!empty($recentToken)) {
-                return redirect()
-                    ->back()
-                    ->with('error', 'Too many login attempts. Please try again in 5 minutes.')
-                    ->withInput();
-            }
+        $user = User::where('email', $email)->first();
 
-            $magicToken = MagicToken::create([
-                'user_id' => $user->id,
-                'token' => Str::uuid()->toString(),
-            ]);
-
-            $randomStr = Str::random(30);
-
-            Mail::to($user->email)->send(new MagicLinkMail($magicToken, $randomStr));
-
-            $encrypted = Crypt::encryptString($user->email);
+        if (empty($user)) {
+            $encrypted = Crypt::encryptString($email);
 
             return redirect()->route('linksent', ['email' => $encrypted]);
         }
 
-        return redirect()->back();
+        // prevent login spam
+        $recentToken = MagicToken::where('created_at', '>=', Carbon::now()->subMinutes(5))
+            ->where('user_id', '=', $user->id)
+            ->whereNull('used_at')
+            ->first();
+        
+        if (!empty($recentToken)) {
+            return redirect()
+                ->back()
+                ->with('error', 'Too many login attempts. Please try again in 5 minutes.')
+                ->withInput();
+        }
+
+        $magicToken = MagicToken::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'token' => Str::uuid()->toString(),
+                'used_at' => null,
+            ],
+        );
+
+        $randomStr = Str::random(30);
+
+        Mail::to($user->email)->send(new MagicLinkMail($magicToken, $randomStr));
+
+        $encrypted = Crypt::encryptString($user->email);
+
+        return redirect()->route('linksent', ['email' => $encrypted]);
     }
 
     public function onSuccess(string $encryptedEmail) {
