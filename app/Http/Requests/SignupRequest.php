@@ -31,10 +31,10 @@ class SignupRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Username is required.',
+            'name.required' => 'Username is required',
             'name.unique' => 'Username is already taken', 
-            'email.required' => 'Email is required.',
-            'email.email' => 'Invalid email format.',
+            'email.required' => 'Email is required',
+            'email.email' => 'Invalid email format',
         ];
     }
 }

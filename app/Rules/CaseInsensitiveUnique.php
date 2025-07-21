@@ -37,7 +37,7 @@ class CaseInsensitiveUnique implements ValidationRule
         }
 
         if ($query->exists()) {
-            $fail("Email already exists.");
+            $fail("Email already exists");
         }
     }
 }

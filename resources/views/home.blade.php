@@ -1452,13 +1452,11 @@
             const cityFieldHouse = clone.querySelector('[id^="spouse_house_city"]');
             const barangayFieldHouse = clone.querySelector('[id^="spouse_house_barangay"]');
 
+            
+
             regionFieldHouse.id = `spouse_house_region${newIndex}`;
             cityFieldHouse.id = `spouse_house_city${newIndex}`;
             barangayFieldHouse.id = `spouse_house_barangay${newIndex}`;
-
-            regionFieldHouse.dataset.selected = '';
-            cityFieldHouse.dataset.selected = '';
-            barangayFieldHouse.dataset.selected = '';
 
             const regionFieldOffice = clone.querySelector('[id^="spouse_office_region"]');
             const cityFieldOffice = clone.querySelector('[id^="spouse_office_city"]');
@@ -2058,6 +2056,11 @@
             }
 
             async function populateRegions() {
+                if (selectedRegion === '') {
+                    regionField.value = '';
+                    return;
+                }
+
                 Object.values(regions).forEach(regionObj => {
                     const regionName = regionObj.region_name;
                     const selected = regionName === selectedRegion ? 'selected' : '';
