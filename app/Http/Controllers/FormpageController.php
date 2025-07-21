@@ -199,6 +199,8 @@ class FormpageController extends Controller
                 'family_name' => $family_name,
                 'first_name' => $request->spouse_first_name[$i],
                 'mi' => $request->spouse_mi[$i],
+                'same_house_as_declarant' => $request->has("copy_house_address.$i") ? true : false,
+                'same_office_as_declarant' => $request->has("copy_office_address.$i") ? true : false,
                 'house_number' => $request->spouse_house_number[$i],
                 'house_street' => $request->spouse_house_street[$i],
                 'house_subdivision' => $request->spouse_house_subdivision[$i],
@@ -315,6 +317,7 @@ class FormpageController extends Controller
                     'middleInitial' => $spouse->mi ?? '',
                     'position' => $spouse->position ?? '',
                     'agencyOffice' => $spouse->office_name ?? '',
+                    'hasSameOfficeAsDeclarant' => $spouse->same_office_as_declarant,
                     'officeAddress' => [
                         'officeNo' => $spouse->office_number ?? '',
                         'officeStreet' => $spouse->office_street ?? '',
@@ -322,6 +325,7 @@ class FormpageController extends Controller
                         'officeRegion' => $spouse->office_region ?? '',
                         'officeZipCode' => $spouse->office_zip ?? '',
                     ],
+                    'hasSameHouseAsDeclarant' => $spouse->same_house_as_declarant,
                     'houseAddress' => [
                         'houseNo' => $spouse->house_number ?? '',
                         'houseStreet' => $spouse->house_street ?? '',
@@ -330,6 +334,11 @@ class FormpageController extends Controller
                         'houseCity' => $spouse->house_city ?? '',
                         'houseRegion' => $spouse->house_region ?? '',
                         'houseZipCode' => $spouse->house_zip ?? '',
+                    ],
+                    'governmentIssuedId' => [
+                        'type' => '',
+                        'idNumber' => '',
+                        'dateIssued' => '',
                     ],
                 ];
 

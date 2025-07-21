@@ -124,7 +124,7 @@
         }
 
         .small {
-            padding-top: 1rem;
+            padding-top: 0.5rem;
             font-size: 0.65rem;
             color: #555;
             text-align: right;
@@ -245,10 +245,19 @@
 
         .success {
             font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.5rem;
             color: #4bb543;
-            margin-top: 1.5rem;
             text-align: right;
+            position: absolute;
+            top: 3rem;
+            right: 1rem;
+            transition: opacity 1s ease;
+            opacity: 1;
+        }
+
+        .success.hide {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .navbar {
@@ -341,6 +350,12 @@
                 height: 3rem;
             }
 
+            .success {
+                font-size: 0.6rem;
+                top: 3.3rem;
+                right: 1.1rem;
+            }
+
             .navbar-links {
                 font-size: 0.8rem;
             }
@@ -385,8 +400,14 @@
                 margin-top: 3rem;
             }
 
+            .success {
+                font-size: 0.8rem;
+                top: 3.5rem;
+                right: 1.3rem;
+            }
+
             .navbar {
-                height: 3rem;
+                height: 3.1rem;
             }
 
             .navbar-links {
@@ -494,7 +515,7 @@
         @csrf
 
         @if (session('success'))
-            <div class="success">
+            <div id="saved-message" class="success">
                 {{ session('success') }}
             </div>
         @endif
@@ -714,7 +735,8 @@
                         <h4>Home Address</h4>
                         <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
                             <label>
-                                <input type="checkbox" name="copy_house_address[]" onclick="copyHouseAddress()">
+                                <input type="checkbox" name="copy_house_address[]" onclick="copyHouseAddress()"
+                                {{ $spouse['hasSameHouseAsDeclarant'] ?? ($spouse['same_house_as_declarant'] ?? false) ? 'checked' : '' }} />
                                 Same House Address as Declarant
                             </label> 
                         </div>
@@ -786,7 +808,8 @@
                         <h4>Office Address</h4>
                         <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
                             <label>
-                                <input type="checkbox" name="copy_office_address[]" onclick="copyOfficeAddress()">
+                                <input type="checkbox" name="copy_office_address[]" onclick="copyOfficeAddress()"
+                                {{ $spouse['hasSameOfficeAsDeclarant'] ?? ($spouse['same_office_as_declarant'] ?? false) ? 'checked' : '' }} />
                                 Same Office Address as Declarant
                             </label> 
                         </div>
@@ -1391,6 +1414,13 @@
         form.addEventListener('submit', () => {
             hasChanged = false;
         });
+
+        setTimeout(function () {
+            const message = document.getElementById('saved-message');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 7000); // 7s
 
         function exportData() {
             if (prefill) {

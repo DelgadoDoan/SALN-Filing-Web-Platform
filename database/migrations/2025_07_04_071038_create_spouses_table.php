@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('mi')->nullable();
 
+            $table->boolean('same_house_as_declarant')->default(false);
+            $table->boolean('same_office_as_declarant')->default(false);
+
             $table->string('house_number')->nullable();
             $table->string('house_street')->nullable();
             $table->string('house_subdivision')->nullable();
