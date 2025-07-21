@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\CaseInsensitiveUnique;
 
 class SignupRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class SignupRequest extends FormRequest
     {
         return [
             'name' => 'required|string|unique:users',
-            'email' => 'required|string|email|unique:users',
+            'email' => ['required', 'string', 'email', new CaseInsensitiveUnique('users', 'email')],
         ];
     }
 
@@ -34,7 +35,6 @@ class SignupRequest extends FormRequest
             'name.unique' => 'Username is already taken', 
             'email.required' => 'Email is required.',
             'email.email' => 'Invalid email format.',
-            'email.unique' => 'Email already exists.'
         ];
     }
 }
