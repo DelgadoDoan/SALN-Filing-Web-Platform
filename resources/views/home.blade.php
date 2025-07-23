@@ -713,7 +713,7 @@
             <div id="spouseRepeater">
                 @foreach ($prefillData['declarant']['spouses'] ?? ($saln->spouses ?? []) as $index => $spouse)
                     <div class="spouse-block" data-index="{{ $index + 1 }}">
-                        <h3 class="spouse-header">Spouse {{ $index + 1 }} Information</h3>
+                        <h3 class="spouse-header">Spouse Information</h3>
 
                         <div class="row">
                             <div>
@@ -1470,11 +1470,6 @@
 
             container.appendChild(clone);
             
-            
-            container.querySelectorAll('.spouse-header').forEach((el, idx) => {
-                el.textContent = `Spouse ${idx + 1} Information`;
-            });
-
             // Reinitialize selects
             initializeRegionCityBarangay(regionFieldHouse, cityFieldHouse, barangayFieldHouse, {
                 selectedRegion: '',
