@@ -156,7 +156,8 @@
             min-width: 7rem;
         }
 
-        .assets-table input[type="text"] {
+        .assets-table input[type="text"],
+        .assets-table select {
             width: 100%;
             border: 1px solid #ccc;
             padding: 4px 6px;
@@ -479,7 +480,8 @@
                 min-width: 4rem;
             }
 
-            .assets-table input[type="text"] {
+            .assets-table input[type="text"],
+            .assets-table select {
                 font-size: 0.8rem;
             }
         }
@@ -936,8 +938,22 @@
                                             value="{{ $assetReal['assessedValue'] ?? ($assetReal['assessed_value'] ?? '') }}"></td>
                                     <td><input type="text" name="marketValue[]"
                                             value="{{ $assetReal['currentFairMarketValue'] ?? ($assetReal['market_value'] ?? '') }}"></td>
-                                    <td><input type="text" name="acqYear[]"
-                                            value="{{ $assetReal['acquisitionYear'] ?? ($assetReal['acquisition_year'] ?? '') }}"></td>
+                                    <td>
+                                        @php
+                                            $currentYear = now()->subYear()->year;
+                                            $startYear = 1900;
+                                            $selectedYear = old('acqYear', $assetReal['acquisitionYear'] ?? $assetReal['acquisition_year'] ?? '');
+                                        @endphp
+
+                                        <select name="acqYear[]">
+                                        <option value="" hidden></option>
+                                            @for ($year = $currentYear; $year >= $startYear; $year--)
+                                                <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+                                                    {{ $year }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                    </td>
                                     <td><input type="text" name="acqMode[]"
                                             value="{{ $assetReal['acquisitionMode'] ?? ($assetReal['acquisition_mode'] ?? '') }}"></td>
                                     <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"
@@ -997,8 +1013,23 @@
                                 <tr>
                                     <td><input type="text" name="description[]"
                                             value="{{ $assetPersonal['description'] ?? '' }}"></td>
-                                    <td><input type="text" name="yearAcquired[]"
-                                            value="{{ $assetPersonal['yearAcquired'] ?? ($assetPersonal['year_acquired'] ?? '') }}"></td>
+                                    <td>
+                                        @php
+                                            $currentYear = now()->subYear()->year;
+                                            $startYear = 1900;
+                                            $selectedYear = $assetPersonal['yearAcquired'] ?? ($assetPersonal['year_acquired'] ?? '');
+                                        @endphp
+
+                                        <select name="yearAcquired[]">
+                                        <option value="" hidden></option>
+                                            @for ($year = $currentYear; $year >= $startYear; $year--)
+                                                <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+                                                    {{ $year }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                        
+                                        </td>
                                     <td><input type="text" name="acquisitionCost[]"
                                             oninput="calculatePersonalSubtotal()"
                                             value="{{ $assetPersonal['acquisitionCost'] ?? ($assetPersonal['acquisition_cost'] ?? '') }}"></td>
