@@ -2056,16 +2056,15 @@
             }
 
             async function populateRegions() {
-                if (selectedRegion === '') {
-                    regionField.value = '';
-                    return;
-                }
-
                 Object.values(regions).forEach(regionObj => {
                     const regionName = regionObj.region_name;
                     const selected = regionName === selectedRegion ? 'selected' : '';
                     regionField.innerHTML += `<option value="${regionName}" ${selected}>${regionName}</option>`;
                 });
+
+                if (selectedRegion === '') {
+                    regionField.value = '';
+                }
             }
 
             async function populateCities(region) {          
