@@ -738,7 +738,7 @@
                         
                         <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
                             <label>
-                                <input type="checkbox" name="copy_house_address[]" onclick="copyHouseAddress()"
+                                <input type="checkbox" name="copy_house_address[]" onclick="copyHouseAddress(this)"
                                 {{ $spouse['hasSameHouseAsDeclarant'] ?? ($spouse['same_house_as_declarant'] ?? false) ? 'checked' : '' }} />
                                 Same House Address as Declarant
                             </label> 
@@ -808,13 +808,6 @@
                         </div>
 
                         <h4>Office Address</h4>
-                        <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
-                            <label>
-                                <input type="checkbox" name="copy_office_address[]" onclick="copyOfficeAddress()"
-                                {{ $spouse['hasSameOfficeAsDeclarant'] ?? ($spouse['same_office_as_declarant'] ?? false) ? 'checked' : '' }} />
-                                Same Office Address as Declarant
-                            </label> 
-                        </div>
                         <div class="row">
                             <div>
                                 <label>Region</label>
@@ -1516,71 +1509,40 @@
             }
         }
 
-        function copyHouseAddress() {
-            const spouseHouseInputs = document.getElementsByName("spouse_house_number[]");
-            const checkbox = document.getElementsByName("copy_house_address[]");
-
-            Array.from(spouseHouseInputs).forEach((input, i) => {
-                if (checkbox[i].checked) {
-                    // House Address
-                    input.value = document.getElementById("declarant_house_number").value;
-                    document.getElementsByName("spouse_house_street[]")[i].value = document.getElementById("declarant_house_street").value;
-                    document.getElementsByName("spouse_house_subdivision[]")[i].value = document.getElementById("declarant_house_subdivision").value;
-                    initializeRegionCityBarangay(
-                        document.getElementsByName("spouse_house_region[]")[i],
-                        document.getElementsByName("spouse_house_city[]")[i],
-                        document.getElementsByName("spouse_house_barangay[]")[i],
-                        {
-                            selectedRegion: document.getElementById("declarant_house_region").value,
-                            selectedCity: document.getElementById("declarant_house_city").value,
-                            selectedBarangay: document.getElementById("declarant_house_barangay").value,
-                        }
-                    );       
-                    document.getElementsByName("spouse_house_zip[]")[i].value = document.getElementById("declarant_house_zip").value;
-                } else {
-                    // Clear all inputs
-                    input.value = '';
-                    document.getElementsByName("spouse_house_street[]")[i].value = '';
-                    document.getElementsByName("spouse_house_subdivision[]")[i].value = '';
-                    document.getElementsByName("spouse_house_barangay[]")[i].value = '';
-                    document.getElementsByName("spouse_house_barangay[]")[i].disabled = true;
-                    document.getElementsByName("spouse_house_city[]")[i].value = '';
-                    document.getElementsByName("spouse_house_city[]")[i].disabled = true;
-                    document.getElementsByName("spouse_house_region[]")[i].value = '';
-                    document.getElementsByName("spouse_house_zip[]")[i].value = '';
-                }
-            });
-        }
-
-        function copyOfficeAddress() {
-            const spouseOfficeInputs = document.getElementsByName("spouse_office_number[]");
-            const checkbox = document.getElementsByName("copy_office_address[]");
-
-            Array.from(spouseOfficeInputs).forEach((input, i) => {
-                if (checkbox[i].checked) {
-                    // House Address
-                    input.value = document.getElementById("declarant_office_number").value;
-                    document.getElementsByName("spouse_office_street[]")[i].value = document.getElementById("declarant_office_street").value;
-                    initializeRegionCityBarangay(
-                        document.getElementsByName("spouse_office_region[]")[i],
-                        document.getElementsByName("spouse_office_city[]")[i],
-                        null,
-                        {
-                            selectedRegion: document.getElementById("declarant_office_region").value,
-                            selectedCity: document.getElementById("declarant_office_city").value,
-                        }
-                    );
-                    document.getElementsByName("spouse_office_zip[]")[i].value = document.getElementById("declarant_office_zip").value;
-                } else {
-                    // Clear all inputs
-                    document.getElementsByName("spouse_office_number[]")[i].value = '';
-                    document.getElementsByName("spouse_office_street[]")[i].value = '';
-                    document.getElementsByName("spouse_office_city[]")[i].value = '';
-                    document.getElementsByName("spouse_office_city[]")[i].disabled = true;
-                    document.getElementsByName("spouse_office_region[]")[i].value = '';
-                    document.getElementsByName("spouse_office_zip[]")[i].value = '';
-                }
-            });
+        function copyHouseAddress(checkbox) {
+            const spouseBlock = checkbox.closest('.spouse-block');
+            
+            if (checkbox.checked) {
+                spouseBlock.querySelector('input[name^="spouse_house_number"]').value = document.getElementById("declarant_house_number").value;
+                spouseBlock.querySelector('input[name^="spouse_house_street"]').value = document.getElementById("declarant_house_street").value;
+                spouseBlock.querySelector('input[name^="spouse_house_subdivision"]').value = document.getElementById("declarant_house_subdivision").value;
+                initializeRegionCityBarangay(
+                    spouseBlock.querySelector('select[name^="spouse_house_region"]'),
+                    spouseBlock.querySelector('select[name^="spouse_house_city"]'),
+                    spouseBlock.querySelector('select[name^="spouse_house_barangay"]'),
+                    {
+                        selectedRegion: document.getElementById("declarant_house_region").value,
+                        selectedCity: document.getElementById("declarant_house_city").value,
+                        selectedBarangay: document.getElementById("declarant_house_barangay").value,
+                    }
+                );       
+                spouseBlock.querySelector('input[name^="spouse_house_zip"]').value = document.getElementById("declarant_house_subdivision").zip;
+            } else {
+                spouseBlock.querySelector('input[name^="spouse_house_number"]').value = '';
+                spouseBlock.querySelector('input[name^="spouse_house_street"]').value = '';
+                spouseBlock.querySelector('input[name^="spouse_house_subdivision"]').value = '';
+                initializeRegionCityBarangay(
+                    spouseBlock.querySelector('select[name^="spouse_house_region"]'),
+                    spouseBlock.querySelector('select[name^="spouse_house_city"]'),
+                    spouseBlock.querySelector('select[name^="spouse_house_barangay"]'),
+                    {
+                        selectedRegion: '',
+                        selectedCity: '',
+                        selectedBarangay: '',
+                    }
+                );       
+                spouseBlock.querySelector('input[name^="spouse_house_zip"]').value = '';
+            }
         }
 
 
@@ -1591,11 +1553,6 @@
             if (blocks.length > 1) {
                 // Remove the clicked spouse block
                 button.closest('.spouse-block').remove();
-
-                // Renumber the remaining headers
-                container.querySelectorAll('.spouse-header').forEach((el, idx) => {
-                    el.textContent = `Spouse ${idx + 1} Information`;
-                });
             } else {
                 alert("At least one spouse block is required.");
             }
