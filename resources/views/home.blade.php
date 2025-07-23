@@ -599,31 +599,12 @@
                 <h4>Home Address</h4>
                 <div class="row">
                     <div>
-                        <label for="declarant_house_number">House Number</label>
-                        <input type="text" id="declarant_house_number" name="declarant_house_number"
-                            value="{{ old('declarant_house_number', $prefillData['declarant']['houseAddress']['houseNo'] ?? ($saln->declarant_house_number ?? '')) }}">
-                    </div>
-                    <div>
-                        <label for="declarant_house_street">Street</label>
-                        <input type="text" id="declarant_house_street" name="declarant_house_street"
-                            value="{{ old('declarant_house_street', $prefillData['declarant']['houseAddress']['houseStreet'] ?? ($saln->declarant_house_street ?? '')) }}">
-                    </div>
-                </div>
-                <div class="row">
-                    <div>
-                        <label for="declarant_house_subdivision">Subdivision</label>
-                        <input type="text" id="declarant_house_subdivision" name="declarant_house_subdivision"
-                            value="{{ old('declarant_house_subdivision', $prefillData['declarant']['houseAddress']['houseSubdivision'] ?? ($saln->declarant_house_subdivision ?? '')) }}">
-                    </div>
-                    <div>
-                        <label for="declarant_house_barangay">Barangay</label>
-                        <select id="declarant_house_barangay" name="declarant_house_barangay"
-                            data-selected="{{ $declarantHouseBarangay }}" disabled>
-                            <option value="" disabled selected>-- Select Barangay --</option>
+                        <label for="declarant_house_region">Region</label>
+                        <select id="declarant_house_region" name="declarant_house_region"
+                            data-selected="{{ $declarantHouseRegion }}">
+                            <option value="" disabled selected>-- Select Region --</option>
                         </select>
                     </div>
-                </div>
-                <div class="row">
                     <div>
                         <label for="declarant_house_city">City/Municipality</label>
                         <select id="declarant_house_city" name="declarant_house_city"
@@ -631,12 +612,31 @@
                             <option value="" disabled selected>-- Select City/Municipality --</option>
                         </select>
                     </div>
+                </div>
+                <div class="row">
                     <div>
-                        <label for="declarant_house_region">Region</label>
-                        <select id="declarant_house_region" name="declarant_house_region"
-                            data-selected="{{ $declarantHouseRegion }}">
-                            <option value="" disabled selected>-- Select Region --</option>
+                        <label for="declarant_house_barangay">Barangay</label>
+                        <select id="declarant_house_barangay" name="declarant_house_barangay"
+                            data-selected="{{ $declarantHouseBarangay }}" disabled>
+                            <option value="" disabled selected>-- Select Barangay --</option>
                         </select>
+                    </div>
+                    <div>
+                        <label for="declarant_house_subdivision">Subdivision</label>
+                        <input type="text" id="declarant_house_subdivision" name="declarant_house_subdivision"
+                            value="{{ old('declarant_house_subdivision', $prefillData['declarant']['houseAddress']['houseSubdivision'] ?? ($saln->declarant_house_subdivision ?? '')) }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label for="declarant_house_street">Street</label>
+                        <input type="text" id="declarant_house_street" name="declarant_house_street"
+                            value="{{ old('declarant_house_street', $prefillData['declarant']['houseAddress']['houseStreet'] ?? ($saln->declarant_house_street ?? '')) }}">
+                    </div>
+                    <div>
+                        <label for="declarant_house_number">House Number</label>
+                        <input type="text" id="declarant_house_number" name="declarant_house_number"
+                            value="{{ old('declarant_house_number', $prefillData['declarant']['houseAddress']['houseNo'] ?? ($saln->declarant_house_number ?? '')) }}">
                     </div>
                 </div>
                 <div class="rowone">
@@ -677,17 +677,12 @@
                 <h4>Office Address</h4>
                 <div class="row">
                     <div>
-                        <label for="declarant_office_number">Office Number</label>
-                        <input type="text" id="declarant_office_number" name="declarant_office_number"
-                            value="{{ old('declarant_office_number', $prefillData['declarant']['officeAddress']['officeNo'] ?? ($saln->declarant_office_number ?? '')) }}">
+                        <label for="declarant_office_region">Region</label>
+                        <select id="declarant_office_region" name="declarant_office_region"
+                            data-selected="{{ $declarantOfficeRegion }}">
+                            <option value="" disabled selected>-- Select Region --</option>
+                        </select>
                     </div>
-                    <div>
-                        <label for="declarant_office_street">Street</label>
-                        <input type="text" id="declarant_office_street" name="declarant_office_street"
-                            value="{{ old('declarant_office_street', $prefillData['declarant']['officeAddress']['officeStreet'] ?? ($saln->declarant_office_street ?? '')) }}">
-                    </div>
-                </div>
-                <div class="row">
                     <div>
                         <label for="declarant_office_city">City/Municipality</label>
                         <select id="declarant_office_city" name="declarant_office_city"
@@ -695,12 +690,17 @@
                             <option value="" disabled selected>-- Select City/Municipality --</option>
                         </select>
                     </div>
+                </div>
+                <div class="row">
                     <div>
-                        <label for="declarant_office_region">Region</label>
-                        <select id="declarant_office_region" name="declarant_office_region"
-                            data-selected="{{ $declarantOfficeRegion }}">
-                            <option value="" disabled selected>-- Select Region --</option>
-                        </select>
+                        <label for="declarant_office_street">Street</label>
+                        <input type="text" id="declarant_office_street" name="declarant_office_street"
+                            value="{{ old('declarant_office_street', $prefillData['declarant']['officeAddress']['officeStreet'] ?? ($saln->declarant_office_street ?? '')) }}">
+                    </div>
+                    <div>
+                        <label for="declarant_office_number">Office Number</label>
+                        <input type="text" id="declarant_office_number" name="declarant_office_number"
+                            value="{{ old('declarant_office_number', $prefillData['declarant']['officeAddress']['officeNo'] ?? ($saln->declarant_office_number ?? '')) }}">
                     </div>
                 </div>
                 <div class="rowone">
@@ -735,6 +735,7 @@
                             </div>
                         </div>
                         <h4>Home Address</h4>
+                        
                         <div class="checkbox-group" style="padding-top: 0rem; padding-bottom: 0.5rem;">
                             <label>
                                 <input type="checkbox" name="copy_house_address[]" onclick="copyHouseAddress()"
@@ -742,34 +743,14 @@
                                 Same House Address as Declarant
                             </label> 
                         </div>
-
                         <div class="row">
                             <div>
-                                <label>House Number</label>
-                                <input type="text" name="spouse_house_number[]"
-                                value="{{ $spouse['houseAddress']['houseNo'] ?? ($spouse['house_number'] ?? '') }}">
-                            </div>
-                            <div>
-                                <label>Street</label>
-                                <input type="text" name="spouse_house_street[]"
-                                value="{{ $spouse['houseAddress']['houseStreet'] ?? ($spouse['house_street'] ?? '') }}">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>Subdivision</label>
-                                <input type="text" name="spouse_house_subdivision[]"
-                                value="{{ $spouse['houseAddress']['houseSubdivision'] ?? ($spouse['house_subdivision'] ?? '') }}">
-                            </div>
-                            <div>
-                                <label>Barangay</label>
-                                <select name="spouse_house_barangay[]" id="spouse_house_barangay{{ $index + 1 }}"
-                                    disabled data-selected="{{ $spouse['houseAddress']['houseBarangay'] ?? ($spouse['house_barangay'] ?? '') }}">
-                                    <option value="" disabled selected>-- Select Barangay --</option>
+                                <label>Region</label>
+                                <select name="spouse_house_region[]" id="spouse_house_region{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['houseAddress']['houseRegion'] ?? ($spouse['house_region'] ?? '') }}">
+                                    <option value="" disabled selected>-- Select Region --</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row">
                             <div>
                                 <label>City/Municipality</label>
                                 <select name="spouse_house_city[]" id="spouse_house_city{{ $index + 1 }}" disabled
@@ -777,12 +758,31 @@
                                     <option value="" disabled selected>-- Select City/Municipality --</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="row">
                             <div>
-                                <label>Region</label>
-                                <select name="spouse_house_region[]" id="spouse_house_region{{ $index + 1 }}"
-                                    data-selected="{{ $spouse['houseAddress']['houseRegion'] ?? ($spouse['house_region'] ?? '') }}">
-                                    <option value="" disabled selected>-- Select Region --</option>
+                                <label>Barangay</label>
+                                <select name="spouse_house_barangay[]" id="spouse_house_barangay{{ $index + 1 }}"
+                                    disabled data-selected="{{ $spouse['houseAddress']['houseBarangay'] ?? ($spouse['house_barangay'] ?? '') }}">
+                                    <option value="" disabled selected>-- Select Barangay --</option>
                                 </select>
+                            </div>
+                            <div>
+                                <label>Subdivision</label>
+                                <input type="text" name="spouse_house_subdivision[]"
+                                value="{{ $spouse['houseAddress']['houseSubdivision'] ?? ($spouse['house_subdivision'] ?? '') }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <label>Street</label>
+                                <input type="text" name="spouse_house_street[]"
+                                value="{{ $spouse['houseAddress']['houseStreet'] ?? ($spouse['house_street'] ?? '') }}">
+                            </div>
+                            <div>
+                                <label>House Number</label>
+                                <input type="text" name="spouse_house_number[]"
+                                value="{{ $spouse['houseAddress']['houseNo'] ?? ($spouse['house_number'] ?? '') }}">
                             </div>
                         </div>
                         <div class="rowone">
@@ -817,17 +817,12 @@
                         </div>
                         <div class="row">
                             <div>
-                                <label>Office Number</label>
-                                <input type="text" name="spouse_office_number[]"
-                                    value="{{ $spouse['officeAddress']['officeNo'] ?? ($spouse['office_number'] ?? '') }}">
+                                <label>Region</label>
+                                <select name="spouse_office_region[]" id="spouse_office_region{{ $index + 1 }}"
+                                    data-selected="{{ $spouse['officeAddress']['officeRegion'] ?? ($spouse['office_region'] ?? '') }}">
+                                    <option value="" disabled selected>-- Select Region --</option>
+                                </select>
                             </div>
-                            <div>
-                                <label>Street</label>
-                                <input type="text" name="spouse_office_street[]"
-                                    value="{{ $spouse['officeAddress']['officeStreet'] ?? ($spouse['office_street'] ?? '') }}">
-                            </div>
-                        </div>
-                        <div class="row">
                             <div>
                                 <label>City/Municipality</label>
                                 <select name="spouse_office_city[]" id="spouse_office_city{{ $index + 1 }}"
@@ -835,12 +830,17 @@
                                     <option value="" disabled selected>-- Select City/Municipality --</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="row">
                             <div>
-                                <label>Region</label>
-                                <select name="spouse_office_region[]" id="spouse_office_region{{ $index + 1 }}"
-                                    data-selected="{{ $spouse['officeAddress']['officeRegion'] ?? ($spouse['office_region'] ?? '') }}">
-                                    <option value="" disabled selected>-- Select Region --</option>
-                                </select>
+                                <label>Street</label>
+                                <input type="text" name="spouse_office_street[]"
+                                    value="{{ $spouse['officeAddress']['officeStreet'] ?? ($spouse['office_street'] ?? '') }}">
+                            </div>
+                            <div>
+                                <label>Office Number</label>
+                                <input type="text" name="spouse_office_number[]"
+                                    value="{{ $spouse['officeAddress']['officeNo'] ?? ($spouse['office_number'] ?? '') }}">
                             </div>
                         </div>
                         <div class="rowone">
