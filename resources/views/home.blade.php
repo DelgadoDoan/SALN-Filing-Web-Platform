@@ -533,7 +533,7 @@
                 <label class="asof-label" for="date">As of</label>
                 <div class="date-wrapper">
                     <input type="date" id="asof_date" name="asof_date"
-                        value="{{ old('asof_date', $prefillData['asOfDate'] ?? optional($saln->asof_date ?? '')->format('Y-m-d')) }}">
+                        value="{{ old('asof_date', $prefillData['asOfDate'] ?? optional($saln->asof_date ?? now()->subYear()->endOfYear())->format('Y-m-d')) }}">
                     <small>(Required by R.A. 6713)</small>
                 </div>
             </div>
