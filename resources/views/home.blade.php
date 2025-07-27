@@ -173,7 +173,7 @@
             font-size: 0.5rem;
             cursor: pointer;
             margin-top: 10px;
-            width: 6rem;
+            width: 5rem;
             text-align: center;
         }
 
@@ -281,7 +281,7 @@
             margin: 0 auto;
             display: flex;
             align-items: center;
-            padding: 0 1rem;
+            padding: 0 0.5rem;
             justify-content: space-between;
         }
 
@@ -297,11 +297,12 @@
             list-style: none;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .navbar-links button {
-            background-color: #0a66c2;
+            width: 4rem;
+            background: #0a66c2;
             margin-top: 0;
         }
 
@@ -314,7 +315,7 @@
             text-align: center;
             text-decoration: none;
             color: #1F2937;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             padding: 0.1rem;
             border-radius: 4px;
             transition: background 0.2s;
@@ -322,6 +323,63 @@
 
         .navbar-links a:hover {
             background: rgba(255, 255, 255, 0.15);
+        }
+
+        .dropbtn {
+            background: #fff;
+            font-size: 0.5rem;
+            border: none;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            height: 2.5rem;
+            align-content: center;
+        }
+
+        .dropdown a {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            text-align: left;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {background-color: #f1f1f1;}
+
+        .dropdown:hover .dropdown-content {display: block;}
+
+        .dropdown:hover .dropbtn {background-color: #004eaa;}
+
+        .username {
+            display: inline;
+            white-space: nowrap;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .email {
+            display: inline;
+            white-space: nowrap;
+            font-size: 0.5rem;
+            color: #6c757d;
         }
 
         .disabled-wrapper {
@@ -360,6 +418,10 @@
                 height: 3rem;
             }
 
+            .navbar-container {
+                padding: 0 0.6rem;
+            }
+
             .success {
                 font-size: 0.6rem;
                 top: 3.3rem;
@@ -368,6 +430,7 @@
 
             .navbar-links {
                 font-size: 0.8rem;
+                gap: 0.6rem;
             }
 
             .navbar-brand {
@@ -401,6 +464,11 @@
 
             button {
                 font-size: 0.6rem;
+                width: 6rem;
+            }
+
+            .navbar-links button {
+                width: 5rem;
             }
         }
 
@@ -420,8 +488,12 @@
                 height: 3.1rem;
             }
 
+            .navbar-container {
+                padding: 0 0.9rem;
+            }
+
             .navbar-links {
-                gap: 2rem;
+                gap: 1.2rem;
             }
 
             .navbar-links a {
@@ -434,6 +506,16 @@
 
             .checkbox-group {
                 gap: 2.5rem;
+            }
+
+            .username {
+                font-size: 0.9rem;
+                font-weight: bold;
+            }
+
+            .email {
+                font-size: 0.7rem;
+                color: #6c757d;
             }
 
             h2 {
@@ -475,6 +557,14 @@
                 width: 8rem;
             }
 
+            .navbar-links button {
+                width: 6rem;
+            }
+
+            .dropdown-content {
+                min-width: 160px;
+            }
+
             .btn-remove {
                 font-size: 0.7rem;
                 width: 5rem;
@@ -504,22 +594,27 @@
             <div class="navbar-brand">SALN Portal</div>
             <ul class="navbar-links">
                 <li>
-                    <a href="/home/logout">
-                        Logout
-                    </a>
-                </li>
-                <li>
-                    <a href="/home/delete-account"
-                        onclick="return confirm('Are you sure you want to delete your account? \n\nThe account with email <{{ Auth::user()->email }}> will be permanently deleted along with all saved form data associated with it.')">
-                        Delete Account
-                    </a>
-                </li>
-                <li>
-                    <a>{{ Auth::user()->name }}</a>
-                </li>
-                <li>
                     <button onclick=exportPDF()>Export PDF</button>
                 </li>
+                <li>
+                    <div class="dropdown" style="float: right;">
+                        <a id="account-actions" href=#>Account</a>
+                        <div id="dropdown-content" class="dropdown-content">
+                            <a style="pointer-events: none;">
+                                <span class="username">{{ Auth::user()->name }}</span><br />
+                                <span class="email">{{ Auth::user()->email }}</span>
+                            </a>
+                            <a href="/home/logout"
+                                onclick="return confirm('Are you sure you want to logout?')">
+                                Logout
+                            </a>
+                            <a href="/home/delete-account"
+                                onclick="return confirm('Are you sure you want to delete your account? \n\nThe account with email <{{ Auth::user()->email }}> will be permanently deleted along with all saved form data associated with it.')">
+                                Delete Account
+                            </a>
+                        </div>
+                    </div>
+                </li>  
             </ul>
         </div>
     </nav>
