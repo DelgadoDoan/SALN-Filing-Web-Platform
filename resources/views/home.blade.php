@@ -1079,18 +1079,17 @@
                                     </td>
                                 </tr>
                             @endforelse
-
                         </tbody>
                     </table>
-                    <div class="button-wrapper">
-                        <button type="button" onclick="addRealProperty()">Add Another Entry</button>
-                    </div>
-                    <div class="asset-controls"> 
-                        <div class ="asset-totals">
-                            <div class="subtotal-row">
-                                <label for="subtotalReal">Subtotal: </label>
-                                <input type="text" id="subtotalReal" readonly>
-                            </div>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addRealProperty()">Add Another Entry</button>
+                </div>
+                <div class="asset-controls"> 
+                    <div class ="asset-totals">
+                        <div class="subtotal-row">
+                            <label for="subtotalReal">Subtotal: </label>
+                            <input type="text" id="subtotalReal" readonly>
                         </div>
                     </div>
                 </div>
@@ -1153,21 +1152,20 @@
 
                         </tbody>
                     </table>
-                    <div class="button-wrapper">
-                        <button type="button" onclick="addPersonalProperty()">Add Another Entry</button>
-                    </div>
-                    <div class="asset-controls"> 
-                        <div class ="asset-totals">
-                            <div class="subtotal-row">
-                                <label for="subtotalPersonal">Subtotal: </label>
-                                <input type="text" id="subtotalPersonal" readonly>
-                            </div>
-                            <div class="subtotal-row">
-                                <label for="totalAssets">Total Assets: </label>
-                                <input type="text" id="totalAssets" readonly>
-                            </div>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addPersonalProperty()">Add Another Entry</button>
+                </div>
+                <div class="asset-controls"> 
+                    <div class ="asset-totals">
+                        <div class="subtotal-row">
+                            <label for="subtotalPersonal">Subtotal: </label>
+                            <input type="text" id="subtotalPersonal" readonly>
                         </div>
-
+                        <div class="subtotal-row">
+                            <label for="totalAssets">Total Assets: </label>
+                            <input type="text" id="totalAssets" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1211,26 +1209,23 @@
                                     </td>
                                 </tr>
                             @endforelse
-
                         </tbody>
                     </table>
-
-                    <div class="button-wrapper">
-                                <button type="button" onclick="addLiability()">Add Another Entry</button>
-                            </div>
-                    <div class="asset-controls">
-                        <div class ="asset-totals">
-                            
-                            <div class="subtotal-row">
-                                <label for="subtotalLiabilities">Subtotal: </label>
-                                <input type="text" id="subtotalLiabilities" readonly>
-                            </div>
-                            <div class="subtotal-row">
-                                <label for="netWorth">Networth: </label>
-                                <input type="text" id="netWorth" readonly>
-                            </div>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addLiability()">Add Another Entry</button>
+                </div>
+                <div class="asset-controls">
+                    <div class ="asset-totals">
+                        
+                        <div class="subtotal-row">
+                            <label for="subtotalLiabilities">Subtotal: </label>
+                            <input type="text" id="subtotalLiabilities" readonly>
                         </div>
-
+                        <div class="subtotal-row">
+                            <label for="netWorth">Networth: </label>
+                            <input type="text" id="netWorth" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1309,9 +1304,9 @@
                             @endif
                         </tbody>
                     </table>
-                    <div class="button-wrapper">
-                        <button type="button" onclick="addBusiness()" id="addBusinessBtn">Add Another Entry</button>
-                    </div>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addBusiness()" id="addBusinessBtn">Add Another Entry</button>
                 </div>
                 
                 <div class="form-section">
@@ -1404,9 +1399,9 @@
                                 @endif
                             </tbody>
                         </table>
-                        <div class="button-wrapper">
-                            <button type="button" onclick="addRelative()">Add Another Entry</button>
-                        </div>
+                    </div>
+                    <div class="button-wrapper">
+                        <button type="button" onclick="addRelative()">Add Another Entry</button>
                     </div>
                     <div class="form-section">
                         <p style="text-align: justify;">
