@@ -277,7 +277,6 @@
         }
 
         .navbar-container {
-            max-width: 90rem;
             width: 100%;
             margin: 0 auto;
             display: flex;
@@ -297,7 +296,17 @@
         .navbar-links {
             list-style: none;
             display: flex;
+            align-items: center;
             gap: 1rem;
+        }
+
+        .navbar-links button {
+            background-color: #0a66c2;
+            margin-top: 0;
+        }
+
+        .navbar-links button:hover {
+            background-color: #004eaa;
         }
 
         /* Link styling */
@@ -507,6 +516,9 @@
                 </li>
                 <li>
                     <a>{{ Auth::user()->name }}</a>
+                </li>
+                <li>
+                    <button onclick=exportPDF()>Export PDF</button>
                 </li>
             </ul>
         </div>
@@ -1453,6 +1465,16 @@
                 alert('You have unsaved changes. Please save before exporting.');
             } else {
                 window.location.href = "{{ route('saln.export') }}";
+            }
+        }
+
+        function exportPDF() {
+            if (prefill) {
+                alert('You currently have an unsaved import. Please save before exporting.');
+            } else if (hasChanged) {
+                alert('You have unsaved changes. Please save before exporting.');
+            } else {
+                window.location.href = "{{ route('saln.pdf') }}";
             }
         }
 

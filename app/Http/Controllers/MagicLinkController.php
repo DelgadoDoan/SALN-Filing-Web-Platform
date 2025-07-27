@@ -50,6 +50,7 @@ class MagicLinkController extends Controller
                 [
                     'token' => Str::uuid()->toString(),
                     'used_at' => null,
+                    'created_at' => Carbon::now(),
                 ],
             );
 
@@ -96,6 +97,7 @@ class MagicLinkController extends Controller
             [
                 'token' => Str::uuid()->toString(),
                 'used_at' => null,
+                'created_at' => Carbon::now(),
             ],
         );
 

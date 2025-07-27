@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MagicLinkController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FormpageController;
+use App\Http\Controllers\PDFController;
 
 use Illuminate\Support\Facades\Cookie;
 
@@ -36,6 +37,8 @@ Route::post('/home/import-json', [FormpageController::class, 'importJson'])->nam
 Route::get('/home/export-json', [FormpageController::class, 'exportJson'])->name('saln.export');
 
 Route::get('/get-regions', [FormpageController::class, 'getRegions'])->name('regions');
+
+Route::get('/home/generate-pdf', [PDFController::class, 'generatePDF'])->name('saln.pdf');
 
 Route::middleware(['prevent-back'])->group(function() {
     Route::get('/home', [FormpageController::class, 'isLoggedIn']);
