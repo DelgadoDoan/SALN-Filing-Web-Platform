@@ -1687,13 +1687,36 @@
 
             inputNames.forEach(name => {
                 const td = document.createElement('td');
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = name;
-                if (name === 'acqCost[]') {
-                    input.addEventListener('input', calculateRealSubtotal);
+
+                if (name === 'acqYear[]') {
+                    const select = document.createElement('select');
+                    select.name = name;
+
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '';
+                    defaultOption.selected = true;
+                    defaultOption.hidden = true; // Optional: prevent user from selecting it again
+                    select.appendChild(defaultOption);
+
+                    const prevYear = new Date().getFullYear() - 1;
+                    for (let year = prevYear; year >= 1900; year--) {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        select.appendChild(option);
+                    }
+
+                    td.appendChild(select);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = name;
+                    if (name === 'acqCost[]') {
+                        input.addEventListener('input', calculateRealSubtotal);
+                    }
+                    td.appendChild(input);
                 }
-                td.appendChild(input);
                 tr.appendChild(td);
             });
             tbody.appendChild(tr);
@@ -1759,13 +1782,35 @@
 
             inputNames.forEach(name => {
                 const td = document.createElement('td');
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = name;
-                if (name === 'acquisitionCost[]') {
-                    input.addEventListener('input', calculatePersonalSubtotal);
+                
+                if (name === 'yearAcquired[]') {
+                    const select = document.createElement('select');
+                    select.name = name;
+
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '';
+                    defaultOption.selected = true;
+                    defaultOption.hidden = true; // Optional: prevent user from selecting it again
+                    select.appendChild(defaultOption);
+
+                    const prevYear = new Date().getFullYear() - 1;
+                    for (let year = prevYear; year >= 1900; year--) {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        select.appendChild(option);
+                    }
+                    td.appendChild(select);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = name;
+                    if (name === 'acquisitionCost[]') {
+                        input.addEventListener('input', calculatePersonalSubtotal);
+                    }
+                    td.appendChild(input);
                 }
-                td.appendChild(input);
                 tr.appendChild(td);
             })
             tbody.appendChild(tr);
