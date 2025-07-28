@@ -24,6 +24,9 @@
     }
 
     .header-note {
+        position: fixed;
+        top: -36px;
+        right: -36px;
         width: 100%;
     }
 
@@ -35,6 +38,7 @@
     h2 {
         font-size: 0.875rem;
         text-align: center;
+        margin-top: 1rem;
         margin-bottom: 0.1rem;
     }
 
@@ -59,7 +63,7 @@
         flex-direction: row;
         justify-content: center;
         text-align: center;
-        margin: 0.5rem auto 1rem;
+        margin: 0.25rem auto 0.75rem;
     }
 
     .checkbox-group label {
@@ -105,8 +109,8 @@
     }
 
     .bordered td {
+        font-size: 10px;
         text-align: center;
-        padding: 0.05rem;
     }
 
     td {
@@ -144,16 +148,6 @@
         page-break-before: always;
     }
 
-    .page-number {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 10px;
-        font-style: italic;
-        text-align: center;
-    }
-
     </style>
 </head>
 
@@ -181,8 +175,8 @@
         <table>
             <tbody>
                 <tr>
-                    <td style="width: 33%"></td>
-                    <td style="text-align: center; width: 6%">As of</td>
+                    <td style="width: 33%;"></td>
+                    <td style="text-align: center; width: 6%;">As of</td>
                     <td class="underline" style="width: 27%;">{{ $asOfDate }}</td>
                     <td></td>
                 </tr>
@@ -345,7 +339,7 @@
                 </tr>
             </tbody>
         </table>
-        <hr />
+        <hr style="margin-bottom: 0;"/>
         <table>
             <tr>
                 <td colspan="6">
@@ -467,8 +461,8 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th rowspan="1">DESCRIPTION</th>
-                    <th rowspan="1">YEAR ACQUIRED</th>
+                    <th rowspan="1" style="width: 56%;">DESCRIPTION</th>
+                    <th rowspan="1" style="width: 13.25%;">YEAR ACQUIRED</th>
                     <th rowspan="1">ACQUISITION COST/AMOUNT</th>
                 </tr>
             </thead>
@@ -509,8 +503,8 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th rowspan="1">NATURE</th>
-                    <th rowspan="1">NAME OF CREDITORS</th>
+                    <th rowspan="1" style="width: 42.5%;">NATURE</th>
+                    <th rowspan="1" style="width: 37.5%;">NAME OF CREDITORS</th>
                     <th rowspan="1">OUTSTANDING BALANCE</th>
                 </tr>
             </thead>
@@ -559,9 +553,9 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th rowspan="1">NAME OF ENTITY/BUSINESS ENTERPRISE</th>
-                    <th rowspan="1">BUSINESS ADDRESS</th>
-                    <th rowspan="1" style="font-size: 9px;">NATURE OF BUSINESS INTEREST & / OR FINANCIAL CONNECTION</th>
+                    <th rowspan="1" style="width: 27.5%;">NAME OF ENTITY/BUSINESS ENTERPRISE</th>
+                    <th rowspan="1" style="width: 32.5%;">BUSINESS ADDRESS</th>
+                    <th rowspan="1" style="font-size: 9px; width: 20%;">NATURE OF BUSINESS INTEREST & / OR FINANCIAL CONNECTION</th>
                     <th rowspan="1">DATE OF ACQUISITION OF INTEREST OR CONNECTION</th>
                 </tr>
             </thead>
@@ -593,9 +587,9 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th rowspan="1">NAME OF RELATIVE</th>
-                    <th rowspan="1">RELATIONSHIP</th>
-                    <th rowspan="1">POSITION</th>
+                    <th rowspan="1" style="width: 27.5%;">NAME OF RELATIVE</th>
+                    <th rowspan="1" style="width: 20%;">RELATIONSHIP</th>
+                    <th rowspan="1" style="width: 17.5%;">POSITION</th>
                     <th rowspan="1">NAME OF AGENCY/OFFICE AND ADDRESS</th>
                 </tr>
             </thead>
@@ -664,25 +658,25 @@
                     <td colspan="5"></td>
                 </tr>
                 <tr>
-                    <td style="width: 20%;">Government Issued ID:</td>
-                    <td class="underline" style="width: 25%;">{{ $declarant['governmentIssuedId']['type'] }}</td>
+                    <td style="font-size: 10px; width: 20%;">Government Issued ID:</td>
+                    <td class="underline" style="font-size: 10px; width: 25%;">{{ $declarant['governmentIssuedId']['type'] }}</td>
                     <td style="width: 10%;"></td>
-                    <td style="width: 20%;">Government Issued ID:</td>
-                    <td class="underline" style="width: 25%;">{{ $declarant['spouses'][0]['governmentIssuedId']['type'] }}</td>
+                    <td style="font-size: 10px; width: 20%;">Government Issued ID:</td>
+                    <td class="underline" style="font-size: 10px; width: 25%;">{{ $declarant['spouses'][0]['governmentIssuedId']['type'] }}</td>
                 </tr>
                 <tr>
-                    <td style="width: 20%;">ID No:</td>
-                    <td class="underline" style="width: 25%;">{{ $declarant['governmentIssuedId']['idNumber'] }}</td>
+                    <td style="font-size: 10px; width: 20%;">ID No:</td>
+                    <td class="underline" style="font-size: 10px; width: 25%;">{{ $declarant['governmentIssuedId']['idNumber'] }}</td>
                     <td style="width: 10%;"></td>
-                    <td style="width: 20%;">ID No:</td>
-                    <td class="underline" style="width: 25%;">{{ $declarant['spouses'][0]['governmentIssuedId']['idNumber'] }}</td>
+                    <td style="font-size: 10px; width: 20%;">ID No:</td>
+                    <td class="underline" style="font-size: 10px; width: 25%;">{{ $declarant['spouses'][0]['governmentIssuedId']['idNumber'] }}</td>
                 </tr>
                 <tr>
-                    <td style="width: 20%;">Date Issued:</td>
-                    <td class="underline" style="width: 25%;">{{ $declarant['governmentIssuedId']['dateIssued'] }}</td>
+                    <td style="font-size: 10px; width: 20%;">Date Issued:</td>
+                    <td class="underline" style="font-size: 10px; width: 25%;">{{ $declarant['governmentIssuedId']['dateIssued'] }}</td>
                     <td style="width: 10%;"></td>
-                    <td style="width: 20%;">Date Issued:</td>
-                    <td class="underline" style="width: 25%;">{{ $declarant['spouses'][0]['governmentIssuedId']['dateIssued'] }}</td>
+                    <td style="font-size: 10px; width: 20%;">Date Issued:</td>
+                    <td class="underline" style="font-size: 10px; width: 25%;">{{ $declarant['spouses'][0]['governmentIssuedId']['dateIssued'] }}</td>
                 </tr>
                 <tr>
                     <td colspan="5"></td>
@@ -694,7 +688,7 @@
         </table>
         
         <div style="font-size: 10px;">
-            <strong>SUBSCRIBED AND SWORN</strong> to before me this _______ day of ____________________ , 
+            <strong>SUBSCRIBED AND SWORN</strong> to before me this _____ day of ____________ , 
             affiant exhibiting to me the above-stated government issued identification card.
         </div>
 
@@ -707,15 +701,12 @@
                     <td colspan="2"></td>
                 </tr>
                 <tr>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
                     <td></td>
                     <td class="underline" style="width: 35%;"></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="text-align: center">(Person Administering Oath)</td>
+                    <td style="text-align: center; font-size: 10px;">(Person Administering Oath)</td>
                 </tr>
             </tbody>
         </table>
@@ -776,8 +767,8 @@
             <table>
                 <tbody>
                     <tr>
-                        <td style="width: 33%"></td>
-                        <td style="text-align: center; width: 6%">As of</td>
+                        <td style="width: 33%;"></td>
+                        <td style="text-align: center; width: 6%;">As of</td>
                         <td class="underline" style="width: 27%;">{{ $asOfDate }}</td>
                         <td></td>
                     </tr>
@@ -794,7 +785,7 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>DECLARANT:</td>
+                        <td>NAME:</td>
                         <td class="underline" style="width: 12%;">{{ $declarant['familyName'] }}</td>
                         <td class="underline" style="width: 12%;">{{ $declarant['firstName'] }}</td>
                         <td class="underline" style="width: 12%;">{{ $declarant['middleInitial'] }}</td>
@@ -874,8 +865,8 @@
             <table class="bordered">
                 <thead>
                     <tr>
-                        <th rowspan="1">DESCRIPTION</th>
-                        <th rowspan="1">YEAR ACQUIRED</th>
+                        <th rowspan="1" style="width: 56%;">DESCRIPTION</th>
+                        <th rowspan="1" style="width: 13.25%;">YEAR ACQUIRED</th>
                         <th rowspan="1">ACQUISITION COST/AMOUNT</th>
                     </tr>
                 </thead>
@@ -914,8 +905,8 @@
             <table class="bordered">
                 <thead>
                     <tr>
-                        <th rowspan="1">NATURE</th>
-                        <th rowspan="1">NAME OF CREDITORS</th>
+                        <th rowspan="1" style="width: 42.5%;">NATURE</th>
+                        <th rowspan="1" style="width: 37.5%;">NAME OF CREDITORS</th>
                         <th rowspan="1">OUTSTANDING BALANCE</th>
                     </tr>
                 </thead>
@@ -950,9 +941,9 @@
             <table class="bordered">
             <thead>
                 <tr>
-                    <th rowspan="1">NAME OF ENTITY/BUSINESS ENTERPRISE</th>
-                    <th rowspan="1">BUSINESS ADDRESS</th>
-                    <th rowspan="1" style="font-size: 9px;">NATURE OF BUSINESS INTEREST & / OR FINANCIAL CONNECTION</th>
+                    <th rowspan="1" style="width: 27.5%;">NAME OF ENTITY/BUSINESS ENTERPRISE</th>
+                    <th rowspan="1" style="width: 32.5%;">BUSINESS ADDRESS</th>
+                    <th rowspan="1" style="font-size: 9px; width: 20%;">NATURE OF BUSINESS INTEREST & / OR FINANCIAL CONNECTION</th>
                     <th rowspan="1">DATE OF ACQUISITION OF INTEREST OR CONNECTION</th>
                 </tr>
             </thead>
@@ -995,8 +986,8 @@
         <table>
             <tbody>
                 <tr>
-                    <td style="width: 33%"></td>
-                    <td style="text-align: center; width: 6%">As of</td>
+                    <td style="width: 33%;"></td>
+                    <td style="text-align: center; width: 6%;">As of</td>
                     <td class="underline" style="width: 27%;">{{ $asOfDate }}</td>
                     <td></td>
                 </tr>
@@ -1018,13 +1009,13 @@
         <table>
             <tbody>
                 <tr>
-                    <td>DECLARANT:</td>
-                    <td class="underline" style="width: 12%;">{{ $declarant['familyName'] }}</td>
-                    <td class="underline" style="width: 12%;">{{ $declarant['firstName'] }}</td>
-                    <td class="underline" style="width: 12%;">{{ $declarant['middleInitial'] }}</td>
+                    <td>NAME:</td>
+                    <td class="underline" style="width: 12%;"></td>
+                    <td class="underline" style="width: 12%;"></td>
+                    <td class="underline" style="width: 12%;"></td>
                     <td style="width: 12%;"></td>
                     <td>POSITION:</td>
-                    <td class="underline" style="width: 30%;">{{ $declarant['position'] }}</td>
+                    <td class="underline" style="width: 30%;"></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -1033,7 +1024,7 @@
                     <td style="font-size: 10px; text-align: center;">(M.I.)</td>
                     <td></td>
                     <td>AGENCY/OFFICE:</td>
-                    <td class="underline">{{ $declarant['agencyOffice'] }}</td>
+                    <td class="underline"></td>
                 </tr>
             </tbody>
         </table>
@@ -1066,19 +1057,14 @@
             <tbody>
                 @for ($i=0; $i < 4; $i++)
                     <tr>
-                        <td>{{ $declarant['assets']['realProperties'][$i]['description'] ?? '' }}</td>
-                        <td>{{ $declarant['assets']['realProperties'][$i]['kind'] ?? '' }}</td>
-                        <td>{{ $declarant['assets']['realProperties'][$i]['exactLocation'] ?? '' }}</td>
-                        <td>{{ $declarant['assets']['realProperties'][$i]['assessedValue'] ?? '' }}</td>
-                        <td>{{ $declarant['assets']['realProperties'][$i]['currentFairMarketValue'] ?? '' }}</td>
-                        <td>{{ $declarant['assets']['realProperties'][$i]['acquisitionYear'] ?? '' }}</td>
-                        <td>{{ $declarant['assets']['realProperties'][$i]['acquisitionMode'] ?? '' }}</td>
-                        <td>
-                            {{ isset($declarant['assets']['realProperties'][$i]['acquisitionCost']) && $declarant['assets']['realProperties'][$i]['acquisitionCost'] !== ''
-                                ? 'PHP ' . number_format((float)$declarant['assets']['realProperties'][$i]['acquisitionCost'], 2)
-                                : ''
-                            }}
-                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 @endfor
             </tbody>
@@ -1088,22 +1074,17 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th rowspan="1">DESCRIPTION</th>
-                    <th rowspan="1">YEAR ACQUIRED</th>
+                    <th rowspan="1" style="width: 56%;">DESCRIPTION</th>
+                    <th rowspan="1" style="width: 13.25%;">YEAR ACQUIRED</th>
                     <th rowspan="1">ACQUISITION COST/AMOUNT</th>
                 </tr>
             </thead>
             <tbody>
                 @for ($i=0; $i < 4; $i++)
                     <tr>
-                        <td>{{ $declarant['assets']['personalProperties'][$i]['description'] ?? '' }}</td>
-                        <td>{{ $declarant['assets']['personalProperties'][$i]['yearAcquired'] ?? '' }}</td>
-                        <td>
-                            {{ isset($declarant['assets']['personalProperties'][$i]['acquisitionCost']) && $declarant['assets']['personalProperties'][$i]['acquisitionCost'] !== ''
-                                ? 'PHP ' . number_format((float)$declarant['assets']['personalProperties'][$i]['acquisitionCost'], 2)
-                                : ''
-                            }}
-                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 @endfor
             </tbody>
@@ -1113,22 +1094,17 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th rowspan="1">NATURE</th>
-                    <th rowspan="1">NAME OF CREDITORS</th>
+                    <th rowspan="1" style="width: 42.5%;">NATURE</th>
+                    <th rowspan="1" style="width: 37.5%;">NAME OF CREDITORS</th>
                     <th rowspan="1">OUTSTANDING BALANCE</th>
                 </tr>
             </thead>
             <tbody>
                 @for ($i=0; $i < 4; $i++)
                     <tr>
-                        <td>{{ $declarant['liabilities'][$i]['nature'] ?? '' }}</td>
-                        <td>{{ $declarant['liabilities'][$i]['nameOfCreditor'] ?? '' }}</td>
-                        <td>
-                            {{ isset($declarant['liabilities'][$i]['outstandingBalance']) && $declarant['liabilities'][$i]['outstandingBalance'] !== ''
-                                ? 'PHP ' . number_format((float)$declarant['liabilities'][$i]['outstandingBalance'], 2)
-                                : ''
-                            }}
-                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 @endfor 
             </tbody>
@@ -1140,19 +1116,19 @@
         <table class="bordered">
         <thead>
             <tr>
-                <th rowspan="1">NAME OF ENTITY/BUSINESS ENTERPRISE</th>
-                <th rowspan="1">BUSINESS ADDRESS</th>
-                <th rowspan="1" style="font-size: 9px;">NATURE OF BUSINESS INTEREST & / OR FINANCIAL CONNECTION</th>
+                <th rowspan="1" style="width: 27.5%;">NAME OF ENTITY/BUSINESS ENTERPRISE</th>
+                <th rowspan="1" style="width: 32.5%;">BUSINESS ADDRESS</th>
+                <th rowspan="1" style="font-size: 9px; width: 20%;">NATURE OF BUSINESS INTEREST & / OR FINANCIAL CONNECTION</th>
                 <th rowspan="1">DATE OF ACQUISITION OF INTEREST OR CONNECTION</th>
             </tr>
         </thead>
             <tbody>
                 @for ($i=0; $i < 6; $i++)
                     <tr>
-                        <td>{{ $declarant['businessInterestsAndFinancialConnections'][$i]['nameOfEntity'] ?? '' }}</td>
-                        <td>{{ $declarant['businessInterestsAndFinancialConnections'][$i]['businessAddress'] ?? '' }}</td>
-                        <td>{{ $declarant['businessInterestsAndFinancialConnections'][$i]['natureOfInterestOrConnection'] ?? '' }}</td>
-                        <td>{{ $declarant['businessInterestsAndFinancialConnections'][$i]['dateOfAcquisition'] ?? '' }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 @endfor
         </tbody>
@@ -1173,7 +1149,7 @@
                 $textWidth = $fontMetrics->getTextWidth($text, $font, $size);
  
                 $x = ($pdf->get_width() - $textWidth) / 2;
-                $y = $pdf->get_height() - 48;
+                $y = $pdf->get_height() - 36;
  
                 $pdf->text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
             ');
