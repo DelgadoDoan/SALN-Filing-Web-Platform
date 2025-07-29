@@ -31,13 +31,13 @@ class FormpageController extends Controller
             return redirect('/login');
         }
 
-        // check if token is expired
-        $expiredToken = MagicToken::where('user_id', Auth::id())
-            ->where('used_at', '<=', Carbon::now()->subMinutes(360)) // if token is already 360 minutes (6 hours) old
+        // Get latest token
+        $latestToken = MagicToken::where('user_id', Auth::id())
+            ->latest('created_at')
             ->first();
 
-        if ($expiredToken) {
-            $expiredToken->delete();
+        if ($latestToken && $latestToken->used_at <= Carbon::now()->subHours(6)) { // If token is unsed for 6hours
+            $token = MagicToken::where('user_id', Auth::id())->delete();
 
             Auth::logout();
 
@@ -102,9 +102,7 @@ class FormpageController extends Controller
     }
 
     public function logout() {
-        $token = MagicToken::where('user_id', Auth::id())
-            ->first()
-            ->delete();
+        $token = MagicToken::where('user_id', Auth::id())->delete();
 
         Auth::logout();
 
@@ -114,9 +112,7 @@ class FormpageController extends Controller
     public function deleteAccount () {
         $userId = Auth::id();
 
-        $token = MagicToken::where('user_id', $userId)
-            ->first()
-            ->delete();
+        $token = MagicToken::where('user_id', $userId)->delete();
 
         foreach (SALN::where('user_id', $userId)->get() as $saln) {
             $saln->delete();

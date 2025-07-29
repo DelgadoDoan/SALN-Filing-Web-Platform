@@ -45,14 +45,10 @@ class MagicLinkController extends Controller
                 'email' => $email,
             ]);
 
-            $magicToken = MagicToken::updateOrCreate(
-                ['user_id' => $newUser->id],
-                [
-                    'token' => Str::uuid()->toString(),
-                    'used_at' => null,
-                    'created_at' => Carbon::now(),
-                ],
-            );
+            $magicToken = MagicToken::create([
+                'user_id' => $newUser->id,
+                'token' => Str::uuid()->toString(),
+            ]);
 
             $randomStr = Str::random(30);
 
@@ -80,26 +76,23 @@ class MagicLinkController extends Controller
         }
 
         // prevent login spam
-        $recentToken = MagicToken::where('created_at', '>=', Carbon::now()->subMinutes(5))
-            ->where('user_id', '=', $user->id)
+        $recentAttempts = MagicToken::where('created_at', '>=', Carbon::now()->subMinutes(5))
+            ->where('user_id', $user->id)
             ->whereNull('used_at')
-            ->first();
-        
-        if (!empty($recentToken)) {
+            ->count();
+
+        if ($recentAttempts >= 3) {
             return redirect()
                 ->back()
                 ->with('error', 'Too many login attempts. Please try again in 5 minutes.')
                 ->withInput();
         }
 
-        $magicToken = MagicToken::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'token' => Str::uuid()->toString(),
-                'used_at' => null,
-                'created_at' => Carbon::now(),
-            ],
-        );
+        $magicToken = MagicToken::create([
+            'user_id' => $user->id,
+            'token' => Str::uuid()->toString(),
+        ]);
+
 
         $randomStr = Str::random(30);
 
