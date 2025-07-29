@@ -10,9 +10,13 @@ use App\Http\Requests\FormDataRequest;
 use App\Models\MagicToken;
 use App\Models\User;
 use App\Models\BusinessInterest;
+use App\Models\SpouseChildBusinessInterest;
 use App\Models\Liability;
+use App\Models\SpouseChildLiability;
 use App\Models\PersonalProperty;
+use App\Models\SpouseChildPersonalProperty;
 use App\Models\RealProperty;
+use App\Models\SpouseChildRealProperty;
 use App\Models\RelativeInGovernment;
 use App\Models\SALN;
 use App\Models\Spouse;
@@ -62,15 +66,31 @@ class FormpageController extends Controller
             ['saln_id' => $saln->id],
         );
 
+        $spouseChildRealProperties = SpouseChildRealProperty::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
         $personalProperties = PersonalProperty::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $spouseChildPersonalProperties = SpouseChildPersonalProperty::updateOrCreate(
             ['saln_id' => $saln->id],
         );
 
         $liabilities = Liability::updateOrCreate(
             ['saln_id' => $saln->id],
         );
+
+        $spouseChildLiabilities = SpouseChildLiability::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
         
         $businessInterests = BusinessInterest::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $spouseChildBusinessInterests = SpouseChildBusinessInterest::updateOrCreate(
             ['saln_id' => $saln->id],
         );
         
@@ -180,9 +200,13 @@ class FormpageController extends Controller
         unmarriedChild::where('saln_id', $saln->id)->delete();
         Spouse::where('saln_id', $saln->id)->delete();
         RealProperty::where('saln_id', $saln->id)->delete();
+        SpouseChildRealProperty::where('saln_id', $saln->id)->delete();
         PersonalProperty::where('saln_id', $saln->id)->delete();
+        SpouseChildPersonalProperty::where('saln_id', $saln->id)->delete();
         Liability::where('saln_id', $saln->id)->delete();
+        SpouseChildLiability::where('saln_id', $saln->id)->delete();
         BusinessInterest::where('saln_id', $saln->id)->delete();
+        SpouseChildBusinessInterest::where('saln_id', $saln->id)->delete();
         RelativeInGovernment::where('saln_id', $saln->id)->delete();
 
         foreach ($request->input('children_name',[]) as $index => $name) {
@@ -231,12 +255,35 @@ class FormpageController extends Controller
             ]);
         }
 
+        foreach ($request->spouseChildDesc as $i => $spouseChildDesc) {
+            SpouseChildRealProperty::create([
+                'saln_id' => $saln->id,
+                'description' => $spouseChildDesc,
+                'kind' => $request->spouseChildKind[$i] ?? null,
+                'location' => $request->spouseChildLocation[$i] ?? null,
+                'assessed_value' => $request->spouseChildAssessed[$i] ?? null,
+                'market_value' => $request->spouseChildMarketValue[$i] ?? null,
+                'acquisition_year' => $request->spouseChildAcqYear[$i] ?? null,
+                'acquisition_mode' => $request->spouseChildAcqMode[$i] ?? null,
+                'acquisition_cost' => $request->spouseChildAcqCost[$i] ?? null,
+            ]);
+        }
+
         foreach ($request->description as $index => $desc) {
             PersonalProperty::create([
                 'saln_id' => $saln->id,
                 'description' => $desc,
                 'year_acquired' => $request->yearAcquired[$index] ?? null,
                 'acquisition_cost' => $request->acquisitionCost[$index] ?? null,
+            ]);
+        }
+
+        foreach ($request->spouseChildDescription as $index => $spouseChildDesc) {
+            SpouseChildPersonalProperty::create([
+                'saln_id' => $saln->id,
+                'description' => $spouseChildDesc,
+                'year_acquired' => $request->spouseChildYearAcquired[$index] ?? null,
+                'acquisition_cost' => $request->spouseChildAcquisitionCost[$index] ?? null,
             ]);
         }
 
@@ -249,6 +296,15 @@ class FormpageController extends Controller
             ]);
         }
 
+        foreach ($request->spouseChildNature as $index => $spouseChildNature) {
+            SpouseChildLiability::create([
+                'saln_id' => $saln->id,
+                'nature' => $spouseChildNature,
+                'name_creditor' => $request->spouseChildNameCreditor[$index] ?? null,
+                'outstanding_balance' => $request->spouseChildOutstandingBalance[$index] ?? null,
+            ]);
+        }
+
         foreach ($request->input('nameBusiness',[]) as $index => $name) {
             BusinessInterest::create([
                 'saln_id' => $saln->id,
@@ -256,6 +312,16 @@ class FormpageController extends Controller
                 'address_business' => $request->addressBusiness[$index] ?? null,
                 'nature_business' => $request->natureBusiness[$index] ?? null,
                 'date_interest' => $request->dateInterest[$index] ?? null,
+            ]);
+        }
+
+        foreach ($request->input('spouseChildNameBusiness',[]) as $index => $spouseChildName) {
+            SpouseChildBusinessInterest::create([
+                'saln_id' => $saln->id,
+                'name_business' => $spouseChildName,
+                'address_business' => $request->spouseChildAddressBusiness[$index] ?? null,
+                'nature_business' => $request->spouseChildNatureBusiness[$index] ?? null,
+                'date_interest' => $request->spouseChildDateInterest[$index] ?? null,
             ]);
         }
 
@@ -301,9 +367,13 @@ class FormpageController extends Controller
         $spouses = array();
         $unmarried_children = array();
         $real_properties = array();
+        $spouse_child_real_properties = array();
         $personal_properties = array();
+        $spouse_child_personal_properties = array();
         $liabilities = array();
+        $spouse_child_liabilities = array();
         $business_interests = array();
+        $spouse_child_business_interests = array();
         $relatives_in_government = array();
 
         $first_spouse = true;
@@ -403,8 +473,29 @@ class FormpageController extends Controller
             ];
         };
 
+        foreach ($saln->spouseChildRealProperties ?? [] as $real_property) {
+            $spouse_child_real_properties[] = [
+                'description' => $real_property->description ?? '',
+                'kind' => $real_property->kind ?? '',
+                'exactLocation' => $real_property->location ?? '',
+                'assessedValue' => $real_property->assessed_value ?? '',
+                'currentFairMarketValue' => $real_property->market_value ?? '',
+                'acquisitionYear' => $real_property->acquisition_year ?? '',
+                'acquisitionMode' => $real_property->acquisition_mode ?? '',
+                'acquisitionCost' => $real_property->acquisition_cost ?? '',
+            ];
+        };
+
         foreach ($saln->personalProperties ?? [] as $personal_property) {
             $personal_properties[] = [
+                'description' => $personal_property->description ?? '',
+                'yearAcquired' => $personal_property->year_acquired ?? '',
+                'acquisitionCost' => $personal_property->acquisition_cost ?? '',
+            ];
+        };
+
+        foreach ($saln->spouseChildPersonalProperties ?? [] as $personal_property) {
+            $spouse_child_personal_properties[] = [
                 'description' => $personal_property->description ?? '',
                 'yearAcquired' => $personal_property->year_acquired ?? '',
                 'acquisitionCost' => $personal_property->acquisition_cost ?? '',
@@ -418,17 +509,32 @@ class FormpageController extends Controller
                 'outstandingBalance' => $liability->outstanding_balance ?? '',
             ];
         };
+        
+        foreach ($saln->spouseChildLiabilities ?? [] as $liability) {
+            $spouse_child_liabilities[] = [
+                'nature' => $liability->nature ?? '',
+                'nameOfCreditor' => $liability->name_creditor ?? '',
+                'outstandingBalance' => $liability->outstanding_balance ?? '',
+            ];
+        };
 
-        if ($saln->businessInterests) {
-            foreach ($saln->businessInterests ?? [] as $business_interest) {
-                $business_interests[] = [
-                    'nameOfEntity' => $business_interest->name_business ?? '',
-                    'businessAddress' => $business_interest->address_business ?? '',
-                    'natureOfInterestOrConnection' => $business_interest->nature_business ?? '',
-                    'dateOfAcquisition' => $business_interest->date_interest ?? '',
-                ];
-            };    
-        }
+        foreach ($saln->businessInterests ?? [] as $business_interest) {
+            $business_interests[] = [
+                'nameOfEntity' => $business_interest->name_business ?? '',
+                'businessAddress' => $business_interest->address_business ?? '',
+                'natureOfInterestOrConnection' => $business_interest->nature_business ?? '',
+                'dateOfAcquisition' => $business_interest->date_interest ?? '',
+            ];
+        };    
+
+        foreach ($saln->spouseChildBusinessInterests ?? [] as $business_interest) {
+            $spouse_child_business_interests[] = [
+                'nameOfEntity' => $business_interest->name_business ?? '',
+                'businessAddress' => $business_interest->address_business ?? '',
+                'natureOfInterestOrConnection' => $business_interest->nature_business ?? '',
+                'dateOfAcquisition' => $business_interest->date_interest ?? '',
+            ];
+        };  
 
         foreach ($saln->relativesInGovernment ?? [] as $relative) {
             $relatives_in_government[] = [
@@ -475,11 +581,15 @@ class FormpageController extends Controller
                 'unmarriedChildren' => $unmarried_children,
                 'assets' => [
                     'realProperties' => $real_properties,
+                    'spouseChildRealProperties' => $spouse_child_real_properties,
                     'personalProperties' => $personal_properties,
+                    'spouseChildPersonalProperties' => $spouse_child_personal_properties,
                 ],
                 'liabilities' => $liabilities,
+                'spouseChildLiabilities' => $spouse_child_liabilities,
                 'hasNoBusinessInterests' => $saln->no_business_interest,
                 'businessInterestsAndFinancialConnections' => $saln->no_business_interest ? [] : $business_interests,
+                'spouseChildBusinessInterestsAndFinancialConnections' => $saln->no_business_interest ? [] : $spouse_child_business_interests,
                 'hasNoRelativesInGovermentService' => $saln->no_relatives_in_government,
                 'relativesInGovernmentService' => $saln->no_relatives_in_government ? [] : $relatives_in_government,
             ],

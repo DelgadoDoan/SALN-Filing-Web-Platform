@@ -342,6 +342,7 @@
             display: flex;
             align-items: center;
             height: 100%;
+            cursor: pointer;
         }
 
         .dropdown-content {
@@ -362,11 +363,17 @@
             display: block;
         }
 
-        .dropdown-content a:hover {background-color: #f1f1f1;}
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
 
-        .dropdown:hover .dropdown-content {display: block;}
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
-        .dropdown:hover .dropbtn {background-color: #004eaa;}
+        .dropdown:hover .dropbtn {
+            background-color: #004eaa;
+        }
 
         .username {
             display: inline;
@@ -598,7 +605,7 @@
                 </li>
                 <li>
                     <div class="dropdown" style="float: right;">
-                        <a id="account-actions" href=#>Account</a>
+                        <a id="account-actions">Account</a>
                         <div id="dropdown-content" class="dropdown-content">
                             <a style="pointer-events: none;">
                                 <span class="username">{{ Auth::user()->name }}</span><br />
@@ -1095,6 +1102,76 @@
                 </div>
             </div>
 
+            <h4 style="font-weight:normal;">For Spouses and Unmarried Children</h4>
+                <div class="assets-table-wrapper">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th colspan="1">Description</th>
+                                <th colspan="1">Kind</th>
+                                <th rowspan="2">Exact Location</th>
+                                <th colspan="1">Assessed Value</th>
+                                <th colspan="1">Current Fair Market Value</th>
+                                <th colspan="2">Acquisition</th>
+                                <th rowspan="2">Acquisition Cost</th>
+                                <th rowspan="2"></th>
+                            </tr>
+                            <tr>
+                                <th><small>(e.g. lot, house and lot, condominium, and improvements)</small></th>
+                                <th><small>(e.g., residential, commercial, industrial, agricultural and mixed
+                                        used)</small></th>
+                                <th colspan="2"><small>(As found in the Tax Declaration of Real Property)</small>
+                                </th>
+                                <th>Year</th>
+                                <th>Mode</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spouseChildAssetsReal">
+                            @foreach ($prefillData['declarant']['assets']['spouseChildRealProperties'] ?? ($saln->spouseChildRealProperties ?? []) as $assetReal)
+                                <tr>
+                                    <td><input type="text" name="spouseChildDesc[]"
+                                            value="{{ $assetReal['description'] ?? '' }}"></td>
+                                    <td><input type="text" name="spouseChildKind[]" value="{{ $assetReal['kind'] ?? '' }}">
+                                    </td>
+                                    <td><input type="text" name="spouseChildLocation[]"
+                                            value="{{ $assetReal['exactLocation'] ?? ($assetReal['location'] ?? '') }}"></td>
+                                    <td><input type="text" name="spouseChildAssessed[]"
+                                            value="{{ $assetReal['assessedValue'] ?? ($assetReal['assessed_value'] ?? '') }}"></td>
+                                    <td><input type="text" name="spouseChildMarketValue[]"
+                                            value="{{ $assetReal['currentFairMarketValue'] ?? ($assetReal['market_value'] ?? '') }}"></td>
+                                    <td>
+                                        @php
+                                            $currentYear = now()->subYear()->year;
+                                            $startYear = 1900;
+                                            $selectedYear = old('acqYear', $assetReal['acquisitionYear'] ?? $assetReal['acquisition_year'] ?? '');
+                                        @endphp
+
+                                        <select name="spouseChildAcqYear[]">
+                                        <option value="" hidden></option>
+                                            @for ($year = $currentYear; $year >= $startYear; $year--)
+                                                <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+                                                    {{ $year }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                    </td>
+                                    <td><input type="text" name="spouseChildAcqMode[]"
+                                            value="{{ $assetReal['acquisitionMode'] ?? ($assetReal['acquisition_mode'] ?? '') }}"></td>
+                                    <td><input type="text" name="spouseChildAcqCost[]"
+                                            value="{{ $assetReal['acquisitionCost'] ?? ($assetReal['acquisition_cost'] ?? '') }}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeSpouseChildRealPropertyRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addSpouseChildRealProperty()">Add Another Entry</button>
+                </div>
+
             <div class="form-section">
                 <h4 style="font-weight:normal;">Personal Properties</h4>
                 <div class="assets-table-wrapper">
@@ -1108,7 +1185,7 @@
                             </tr>
                         </thead>
                         <tbody id="assetsPersonal">
-                            @forelse ($prefillData['declarant']['assets']['personalProperties'] ?? ($saln->personalProperties ?? []) as $assetPersonal)
+                            @foreach ($prefillData['declarant']['assets']['personalProperties'] ?? ($saln->personalProperties ?? []) as $assetPersonal)
                                 <tr>
                                     <td><input type="text" name="description[]"
                                             value="{{ $assetPersonal['description'] ?? '' }}"></td>
@@ -1137,19 +1214,7 @@
                                             onclick="removePersonalPropertyRow(this)">Delete</button>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td><input type="text" name="description[]"></td>
-                                    <td><input type="text" name="yearAcquired[]"></td>
-                                    <td><input type="text" name="acquisitionCost[]"
-                                            oninput="calculatePersonalSubtotal()"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-remove"
-                                            onclick="removePersonalPropertyRow(this)">Delete</button>
-                                    </td>
-                                </tr>
-                            @endforelse
-
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -1168,6 +1233,54 @@
                         </div>
                     </div>
                 </div>
+                
+                <h4 style="font-weight:normal;">For Spouses and Unmarried Children</h4>
+                <div class="assets-table-wrapper">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="1">Description</th>
+                                <th rowspan="1">Year Acquired</th>
+                                <th rowspan="1">Acquisition Cost/Amount</th>
+                                <th rowspan="1"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="spouseChildAssetsPersonal">
+                            @foreach ($prefillData['declarant']['assets']['spouseChildPersonalProperties'] ?? ($saln->spouseChildPersonalProperties ?? []) as $assetPersonal)
+                                <tr>
+                                    <td><input type="text" name="spouseChildDescription[]"
+                                            value="{{ $assetPersonal['description'] ?? '' }}"></td>
+                                    <td>
+                                        @php
+                                            $currentYear = now()->subYear()->year;
+                                            $startYear = 1900;
+                                            $selectedYear = $assetPersonal['yearAcquired'] ?? ($assetPersonal['year_acquired'] ?? '');
+                                        @endphp
+
+                                        <select name="spouseChildYearAcquired[]">
+                                        <option value="" hidden></option>
+                                            @for ($year = $currentYear; $year >= $startYear; $year--)
+                                                <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+                                                    {{ $year }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                        
+                                        </td>
+                                    <td><input type="text" name="spouseChildAcquisitionCost[]"
+                                            value="{{ $assetPersonal['acquisitionCost'] ?? ($assetPersonal['acquisition_cost'] ?? '') }}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeSpouseChildPersonalPropertyRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addSpouseChildPersonalProperty()">Add Another Entry</button>
+                </div>
             </div>
             <div class="form-section">
                 <h3>Liabilities</h3>
@@ -1183,7 +1296,7 @@
                             </tr>
                         </thead>
                         <tbody id="liabilitiesBody">
-                            @forelse ($prefillData['declarant']['liabilities'] ?? ($saln->liabilities ?? []) as $liability)
+                            @foreach ($prefillData['declarant']['liabilities'] ?? ($saln->liabilities ?? []) as $liability)
                                 <tr>
                                     <td><input type="text" name="nature[]"
                                             value="{{ $liability['nature'] ?? '' }}"></td>
@@ -1197,18 +1310,7 @@
                                             onclick="removeLiabilitiesRow(this)">Delete</button>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td><input type="text" name="nature[]"></td>
-                                    <td><input type="text" name="nameCreditor[]"></td>
-                                    <td><input type="text" name="OutstandingBalance[]"
-                                            oninput="calculateLiabilitiesSubtotal()"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-remove"
-                                            onclick="removeLiabilitiesRow(this)">Delete</button>
-                                    </td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -1227,6 +1329,40 @@
                             <input type="text" id="netWorth" readonly>
                         </div>
                     </div>
+                </div>
+
+                <h4 style="font-weight: normal;">For Spouses and Unmarried Children</h4>
+                <div class="assets-table-wrapper">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="1">Nature</th>
+                                <th rowspan="1">Name of Creditors</th>
+                                <th rowspan="1">Outstanding Balance</th>
+                                <th rowspan="1"></th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="spouseChildLiabilitiesBody">
+                            @foreach ($prefillData['declarant']['spouseChildLiabilities'] ?? ($saln->spouseChildLiabilities ?? []) as $liability)
+                                <tr>
+                                    <td><input type="text" name="spouseChildNature[]"
+                                            value="{{ $liability['nature'] ?? '' }}"></td>
+                                    <td><input type="text" name="spouseChildNameCreditor[]"
+                                            value="{{ $liability['nameOfCreditor'] ?? ($liability['name_creditor'] ?? '') }}"></td>
+                                    <td><input type="text" name="spouseChildOutstandingBalance[]"
+                                            value="{{ $liability['outstandingBalance'] ?? ($liability['outstanding_balance'] ?? '') }}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeSpouseChildLiabilitiesRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addSpouseChildLiability()">Add Another Entry</button>
                 </div>
             </div>
             <div class="form-section">
@@ -1274,7 +1410,7 @@
                                 </tr>
                                 @endforeach
                             @else
-                                @forelse ($saln->businessInterests ?? [] as $business)
+                                @foreach ($saln->businessInterests ?? [] as $business)
                                     <tr>
                                         <td><input type="text" name="nameBusiness[]" class="business-input"
                                             value="{{ $business['name_business'] ?? '' }}"></td>
@@ -1289,24 +1425,68 @@
                                                 onclick="removeBusinessRow(this)">Delete</button>
                                         </td>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td><input type="text" name="nameBusiness[]" class="business-input"></td>
-                                        <td><input type="text" name="addressBusiness[]" class="business-input"></td>
-                                        <td><input type="text" name="natureBusiness[]" class="business-input"></td>
-                                        <td><input type="date" name="dateInterest[]" class="business-input"></td>
-                                        <td>
-                                            <button type="button" class="btn btn-remove"
-                                                onclick="removeBusinessRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                             @endif
                         </tbody>
                     </table>
                 </div>
                 <div class="button-wrapper">
                     <button type="button" onclick="addBusiness()" id="addBusinessBtn">Add Another Entry</button>
+                </div>
+                
+                <h4 style="text-align: center; font-weight:normal;">For Spouses and Unmarried Children</h4>
+                <div class="assets-table-wrapper" id="spouse-child-business-form">
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="1">Name of Entity/Business Enterprise</th>
+                                <th rowspan="1">Business Address</th>
+                                <th rowspan="1">Nature of Business Interest and/or Financial Connection</th>
+                                <th rowspan="1">Date of Acquisition of Interest or Connection</th>
+                                <th rowspan="1"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="spouseChildBusinessBody">
+                             @if (!($prefillData['declarant']['hasNoBusinessInterests'] ?? false)&& !empty($prefillData['declarant']['spouseChildBusinessInterestsAndFinancialConnections'] ?? []))
+                                @foreach ($prefillData['declarant']['spouseChildBusinessInterestsAndFinancialConnections'] ?? [] as $business)
+                                <tr>
+                                    <td><input type="text" name="spouseChildNameBusiness[]" class="business-input"
+                                        value="{{$business['nameOfEntity'] ?? '' }}"></td>
+                                    <td><input type="text" name="spouseChildAddressBusiness[]" class="business-input"
+                                        value="{{$business['businessAddress'] ?? ''}}"></td>
+                                    <td><input type="text" name="spouseChildNatureBusiness[]" class="business-input"
+                                        value="{{$business['natureOfInterestOrConnection'] ?? ''}}"></td>
+                                    <td><input type="date" name="spouseChildDateInterest[]" class="business-input"
+                                        value="{{$business['dateOfAcquisition'] ?? ''}}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-remove"
+                                            onclick="removeSpouseChildBusinessRow(this)">Delete</button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @else
+                                @foreach ($saln->spouseChildBusinessInterests ?? [] as $business)
+                                    <tr>
+                                        <td><input type="text" name="spouseChildNameBusiness[]" class="business-input"
+                                            value="{{ $business['name_business'] ?? '' }}"></td>
+                                        <td><input type="text" name="spouseChildAddressBusiness[]" class="business-input"
+                                            value="{{ $business['address_business'] ?? '' }}"></td>
+                                        <td><input type="text" name="spouseChildNatureBusiness[]" class="business-input"
+                                            value="{{ $business['nature_business'] ?? '' }}"></td>
+                                        <td><input type="date" name="spouseChildDateInterest[]" class="business-input"
+                                            value="{{ $business['date_interest'] ?? '' }}"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-remove"
+                                                onclick="removeSpouseChildBusinessRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <div class="button-wrapper">
+                    <button type="button" onclick="addSpouseChildBusiness()" id="addSpouseChildBusinessBtn">Add Another Entry</button>
                 </div>
                 
                 <div class="form-section">
@@ -1363,7 +1543,7 @@
                                         </tr>
                                     @endforeach
                                 @else
-                                    @forelse ($saln->relativesInGovernment ?? [] as $relative)
+                                    @foreach ($saln->relativesInGovernment ?? [] as $relative)
                                         <tr>
                                             <td><input type="text" name="relativeFamilyName[]"
                                                 value="{{ $relative['relative_family_name'] ?? '' }}"></td>
@@ -1382,26 +1562,13 @@
                                                     onclick="removeRelativeRow(this)">Delete</button>
                                             </td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td><input type="text" name="relativeFamilyName[]"></td>
-                                            <td><input type="text" name="relativeFirstName[]"></td>
-                                            <td><input type="text" name="relativeMi[]"></td>
-                                            <td><input type="text" name="relationship[]"></td>
-                                            <td><input type="text" name="position[]"></td>
-                                            <td><input type="text" name="nameAgency[]"></td>
-                                            <td>
-                                                <button type="button" class="btn btn-remove"
-                                                    onclick="removeRelativeRow(this)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 @endif
                             </tbody>
                         </table>
                     </div>
                     <div class="button-wrapper">
-                        <button type="button" onclick="addRelative()">Add Another Entry</button>
+                        <button type="button" onclick="addRelative()" id="addRelativeBtn">Add Another Entry</button>
                     </div>
                     <div class="form-section">
                         <p style="text-align: justify;">
@@ -1484,8 +1651,8 @@
                             above-stated government issued identification card.
                         </p>
 
-                        <div style="text-align: center; margin-top: 40px;">
-                            <div style="border-top: 1px solid #000; width: 50%; max-width: 15rem; margin: 0 auto 8px;"></div>
+                        <div style="text-align: center; width: 50%; max-width: 17rem;  margin: 70px 0 8px auto;">
+                            <div style="border-top: 1px solid #000;"></div>
                             <label>Person Administering Oath</label>
                         </div>
                     </div>
@@ -1770,6 +1937,85 @@
             calculateTotalAssets();
         }
 
+        function addSpouseChildRealProperty() {
+            const tbody = document.querySelector('#spouseChildAssetsReal');
+
+            const tr = document.createElement('tr');
+            const inputNames = [
+                'spouseChildDesc[]',
+                'spouseChildKind[]',
+                'spouseChildLocation[]',
+                'spouseChildAssessed[]',
+                'spouseChildMarketValue[]',
+                'spouseChildAcqYear[]',
+                'spouseChildAcqMode[]',
+                'spouseChildAcqCost[]'
+            ];
+
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+
+                if (name === 'spouseChildAcqYear[]') {
+                    const select = document.createElement('select');
+                    select.name = name;
+
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '';
+                    defaultOption.selected = true;
+                    defaultOption.hidden = true; // Optional: prevent user from selecting it again
+                    select.appendChild(defaultOption);
+
+                    const prevYear = new Date().getFullYear() - 1;
+                    for (let year = prevYear; year >= 1900; year--) {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        select.appendChild(option);
+                    }
+
+                    td.appendChild(select);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = name;
+                    td.appendChild(input);
+                }
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+
+
+            // Add delete button
+            const tdDelete = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'btn btn-remove'; // Add your styles here
+            deleteBtn.onclick = function() {
+                const totalRows = tbody.querySelectorAll('tr').length;
+                if (totalRows > 1) {
+                    tr.remove();
+                } else {
+                    alert("At least one row is required.");
+                }
+            };
+            tdDelete.appendChild(deleteBtn);
+            tr.appendChild(tdDelete);
+        }
+
+        function removeSpouseChildRealPropertyRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('spouseChildAssetsReal');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
+        }
+
         function addPersonalProperty() {
             const tbody = document.querySelector("#assetsPersonal");
             const tr = document.createElement('tr');
@@ -1843,6 +2089,77 @@
                 alert("At least one row is required.");
             }
             calculatePersonalSubtotal();
+        }
+
+        function addSpouseChildPersonalProperty() {
+            const tbody = document.querySelector("#spouseChildAssetsPersonal");
+            const tr = document.createElement('tr');
+
+            const inputNames = [
+                'spouseChildDescription[]',
+                'spouseChildYearAcquired[]',
+                'spouseChildAcquisitionCost[]'
+            ]
+
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                
+                if (name === 'spouseChildYearAcquired[]') {
+                    const select = document.createElement('select');
+                    select.name = name;
+
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '';
+                    defaultOption.selected = true;
+                    defaultOption.hidden = true; // Optional: prevent user from selecting it again
+                    select.appendChild(defaultOption);
+
+                    const prevYear = new Date().getFullYear() - 1;
+                    for (let year = prevYear; year >= 1900; year--) {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        select.appendChild(option);
+                    }
+                    td.appendChild(select);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = name;
+                    td.appendChild(input);
+                }
+                tr.appendChild(td);
+            })
+            tbody.appendChild(tr);
+            // Add delete button
+            const tdDelete = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'btn btn-remove'; // Add your styles here
+            deleteBtn.onclick = function() {
+                const totalRows = tbody.querySelectorAll('tr').length;
+                if (totalRows > 1) {
+                    tr.remove();
+                } else {
+                    alert("At least one row is required.");
+                }
+            };
+            tdDelete.appendChild(deleteBtn);
+            tr.appendChild(tdDelete);
+        }
+
+        function removeSpouseChildPersonalPropertyRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('spouseChildAssetsPersonal');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
         }
 
         function calculatePersonalSubtotal() {
@@ -1928,6 +2245,53 @@
             calculateLiabilitiesSubtotal();
         }
 
+        function addSpouseChildLiability() {
+            const tbody = document.querySelector("#spouseChildLiabilitiesBody");
+            const tr = document.createElement('tr');
+            const inputNames = [
+                'spouseChildNature[]',
+                'spouseChildNameCreditor[]',
+                'spouseChildOutstandingBalance[]'
+            ]
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = name;
+                td.appendChild(input);
+                tr.appendChild(td);
+            })
+            tbody.appendChild(tr);
+            // Add delete button
+            const tdDelete = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'btn btn-remove'; // Add your styles here
+            deleteBtn.onclick = function() {
+                const totalRows = tbody.querySelectorAll('tr').length;
+                if (totalRows > 1) {
+                    tr.remove();
+                } else {
+                    alert("At least one row is required.");
+                }
+            };
+            tdDelete.appendChild(deleteBtn);
+            tr.appendChild(tdDelete);
+        }
+
+        function removeSpouseChildLiabilitiesRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('spouseChildLiabilitiesBody');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
+        }
+
         function calculateLiabilitiesSubtotal() {
             let total = 0;
             const inputs = document.querySelectorAll('input[name="OutstandingBalance[]"]');
@@ -1996,6 +2360,54 @@
         function removeBusinessRow(button) {
             const row = button.closest('tr');
             const tbody = document.getElementById('businessBody');
+            const totalRows = tbody.querySelectorAll('tr').length;
+
+            if (totalRows > 1) {
+                row.remove();
+            } else {
+                alert("At least one row is required.");
+            }
+        }
+
+        function addSpouseChildBusiness() {
+            const tbody = document.querySelector('#spouseChildBusinessBody');
+            const tr = document.createElement('tr');
+            const inputNames = [
+                'spouseChildNameBusiness[]',
+                'spouseChildAddressBusiness[]',
+                'spouseChildNatureBusiness[]',
+                'spouseChildDateInterest[]'
+            ]
+            inputNames.forEach(name => {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.name = name;
+                input.type = (name === 'spouseChildDateInterest[]') ? 'date' : 'text';;
+                td.appendChild(input);
+                tr.appendChild(td);
+            })
+            tbody.append(tr);
+            // Add delete button
+            const tdDelete = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'btn btn-remove'; // Add your styles here
+            deleteBtn.onclick = function() {
+                const totalRows = tbody.querySelectorAll('tr').length;
+                if (totalRows > 1) {
+                    tr.remove();
+                } else {
+                    alert("At least one row is required.");
+                }
+            };
+            tdDelete.appendChild(deleteBtn);
+            tr.appendChild(tdDelete);
+        }
+
+        function removeSpouseChildBusinessRow(button) {
+            const row = button.closest('tr');
+            const tbody = document.getElementById('spouseChildBusinessBody');
             const totalRows = tbody.querySelectorAll('tr').length;
 
             if (totalRows > 1) {
@@ -2107,24 +2519,44 @@
         function toggleBusinessForm() {
             const checkbox = document.querySelector("#noBusinessInterests");
             const businessForm = document.querySelector("#business-form");
+            const spouseChildBusinessForm = document.querySelector("#spouse-child-business-form");
             const isDisabled = checkbox.checked;
+            const addBusinessBtn = document.querySelector("#addBusinessBtn");
+            const addSpouseChildBusinessBtn = document.querySelector("#addSpouseChildBusinessBtn");
 
+            addBusinessBtn.disabled = isDisabled;
+            addSpouseChildBusinessBtn.disabled = isDisabled;
+            
             const elements = businessForm.querySelectorAll('input, button')
             elements.forEach(elem => {
                 elem.disabled = isDisabled;
             })
 
+            const spouseChildElements = spouseChildBusinessForm.querySelectorAll('input, button')
+            spouseChildElements.forEach(elem => {
+                elem.disabled = isDisabled;
+            })
+
             if (isDisabled) {
                 businessForm.classList.add('disabled-wrapper');
+                spouseChildBusinessForm.classList.add('disabled-wrapper');
+                addBusinessBtn.classList.add('disabled-wrapper');
+                addSpouseChildBusinessBtn.classList.add('disabled-wrapper');
             } else {
                 businessForm.classList.remove('disabled-wrapper');
+                spouseChildBusinessForm.classList.remove('disabled-wrapper');
+                addBusinessBtn.classList.remove('disabled-wrapper');
+                addSpouseChildBusinessBtn.classList.remove('disabled-wrapper');
             }
         }
 
         function toggleRelativesForm() {
             const checkbox = document.querySelector("#noRelativesInGovernment");
             const relativesGovernmentForm = document.querySelector("#relatives-government-form");
+            const addRelativeBtn = document.querySelector("#addRelativeBtn");
             const isDisabled = checkbox.checked;
+
+            addRelativeBtn.disabled = isDisabled;
 
             const elements = relativesGovernmentForm.querySelectorAll('input, button')
             elements.forEach(elem => {
@@ -2133,8 +2565,10 @@
 
             if (isDisabled) {
                 relativesGovernmentForm.classList.add('disabled-wrapper');
+                addRelativeBtn.classList.add('disabled-wrapper');
             } else {
                 relativesGovernmentForm.classList.remove('disabled-wrapper');
+                addRelativeBtn.classList.remove('disabled-wrapper');
             }
         }
 
