@@ -20,9 +20,9 @@
 
         .form-container {
             background: #fff;
-            padding: 1rem;
-            max-width: 55rem;
-            margin: 2.5rem auto 0;
+            padding: 2.5rem 1rem 1rem;
+            max-width: 60rem;
+            margin: 0 auto;
             border: 1px solid #ddd;
         }
 
@@ -86,6 +86,7 @@
         }
 
         input[type="text"],
+        input[type="number"],
         input[type="date"],
         select {
             font-size: 0.7rem;
@@ -153,15 +154,20 @@
             background-color: #c7d6ea;
             font-size: 0.6rem;
             text-align: center;
-            min-width: 7rem;
+            min-width: 5.5rem;
         }
 
         .assets-table input[type="text"],
+        .assets-table input[type="number"],
         .assets-table select {
             width: 100%;
             border: 1px solid #ccc;
             padding: 4px 6px;
             font-size: 0.7rem;
+        }
+
+        .delete-cell {
+            width: 5.5rem;
         }
 
         button {
@@ -177,8 +183,16 @@
             text-align: center;
         }
 
+        button:hover {
+            background-color: #374151;
+        }
+
         .button-remove {
-            background-color: red;
+            background-color: #ED2100;
+        }
+
+        .button-remove:hover {
+            background-color: #C31C00;
         }
 
         .btn-remove {
@@ -187,11 +201,15 @@
             padding: 0.5em;
             border: none;
             border-radius: 4px;
-            font-size: 0.5rem;
+            font-size: 0.6rem;
             cursor: pointer;
-            width: 4rem;
+            width: 4.5rem;
             display: block;
             margin: 0 auto;
+        }
+
+        .btn-remove:hover {
+            background-color: #C31C00;
         }
 
         .subtotal-row {
@@ -297,6 +315,7 @@
             list-style: none;
             display: flex;
             align-items: center;
+            padding-right: 0.5rem;
             gap: 0.5rem;
         }
 
@@ -319,10 +338,11 @@
             padding: 0.1rem;
             border-radius: 4px;
             transition: background 0.2s;
+            transition: text-shadow 0.2s ease;
         }
 
         .navbar-links a:hover {
-            background: rgba(255, 255, 255, 0.15);
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* subtle dark glow */
         }
 
         .dropbtn {
@@ -417,8 +437,7 @@
 
         @media(min-width: 360px) {
             .form-container {
-                padding: 1.25rem;
-                margin-top: 3rem;
+                padding: 3rem 1.25rem 1.25rem;
             }
 
             .navbar {
@@ -465,7 +484,9 @@
             }
 
             input[type="text"],
-            input[type="date"] {
+            input[type="number"],
+            input[type="date"],
+            select {
                 font-size: 0.8rem;
             }
 
@@ -481,8 +502,7 @@
 
         @media(min-width: 768px) {
             .form-container {
-                padding: 2.5rem;
-                margin-top: 3rem;
+                padding: 3rem 2.5rem 2.5rem;
             }
 
             .success {
@@ -496,11 +516,11 @@
             }
 
             .navbar-container {
-                padding: 0 0.9rem;
+                padding: 0 1.2rem;
             }
 
             .navbar-links {
-                gap: 1.2rem;
+                gap: 2rem;
             }
 
             .navbar-links a {
@@ -542,16 +562,10 @@
             }
 
             label, .date-wrapper small {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
 
             .checkbox-group label, .note, .small, p {
-                font-size: 0.9rem;
-            }
-
-            input[type="text"],
-            input[type="date"],
-            select {
                 font-size: 0.8rem;
             }
 
@@ -583,12 +597,11 @@
 
             .assets-table th {
                 font-size: 0.8rem;
-                min-width: 4rem;
+                min-width: 6rem;
             }
 
-            .assets-table input[type="text"],
-            .assets-table select {
-                font-size: 0.8rem;
+            .delete-cell {
+                width: 6rem;
             }
         }
  
@@ -1033,7 +1046,7 @@
                             </tr>
                         </thead>
                         <tbody id="assetsReal">
-                            @forelse ($prefillData['declarant']['assets']['realProperties'] ?? ($saln->realProperties ?? []) as $assetReal)
+                            @foreach ($prefillData['declarant']['assets']['realProperties'] ?? ($saln->realProperties ?? []) as $assetReal)
                                 <tr>
                                     <td><input type="text" name="desc[]"
                                             value="{{ $assetReal['description'] ?? '' }}"></td>
@@ -1041,9 +1054,9 @@
                                     </td>
                                     <td><input type="text" name="location[]"
                                             value="{{ $assetReal['exactLocation'] ?? ($assetReal['location'] ?? '') }}"></td>
-                                    <td><input type="text" name="assessed[]"
+                                    <td><input type="number" min="0" name="assessed[]"
                                             value="{{ $assetReal['assessedValue'] ?? ($assetReal['assessed_value'] ?? '') }}"></td>
-                                    <td><input type="text" name="marketValue[]"
+                                    <td><input type="number" min="0" name="marketValue[]"
                                             value="{{ $assetReal['currentFairMarketValue'] ?? ($assetReal['market_value'] ?? '') }}"></td>
                                     <td>
                                         @php
@@ -1063,29 +1076,14 @@
                                     </td>
                                     <td><input type="text" name="acqMode[]"
                                             value="{{ $assetReal['acquisitionMode'] ?? ($assetReal['acquisition_mode'] ?? '') }}"></td>
-                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"
+                                    <td><input type="number" min="0" name="acqCost[]" oninput="calculateRealSubtotal()"
                                             value="{{ $assetReal['acquisitionCost'] ?? ($assetReal['acquisition_cost'] ?? '') }}"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeRealPropertyRow(this)">Delete</button>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td><input type="text" name="desc[]"></td>
-                                    <td><input type="text" name="kind[]"></td>
-                                    <td><input type="text" name="location[]"></td>
-                                    <td><input type="text" name="assessed[]"></td>
-                                    <td><input type="text" name="marketValue[]"></td>
-                                    <td><input type="text" name="acqYear[]"></td>
-                                    <td><input type="text" name="acqMode[]"></td>
-                                    <td><input type="text" name="acqCost[]" oninput="calculateRealSubtotal()"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-remove"
-                                            onclick="removeRealPropertyRow(this)">Delete</button>
-                                    </td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -1135,9 +1133,9 @@
                                     </td>
                                     <td><input type="text" name="spouseChildLocation[]"
                                             value="{{ $assetReal['exactLocation'] ?? ($assetReal['location'] ?? '') }}"></td>
-                                    <td><input type="text" name="spouseChildAssessed[]"
+                                    <td><input type="number" min="0" name="spouseChildAssessed[]"
                                             value="{{ $assetReal['assessedValue'] ?? ($assetReal['assessed_value'] ?? '') }}"></td>
-                                    <td><input type="text" name="spouseChildMarketValue[]"
+                                    <td><input type="number" min="0" name="spouseChildMarketValue[]"
                                             value="{{ $assetReal['currentFairMarketValue'] ?? ($assetReal['market_value'] ?? '') }}"></td>
                                     <td>
                                         @php
@@ -1157,9 +1155,9 @@
                                     </td>
                                     <td><input type="text" name="spouseChildAcqMode[]"
                                             value="{{ $assetReal['acquisitionMode'] ?? ($assetReal['acquisition_mode'] ?? '') }}"></td>
-                                    <td><input type="text" name="spouseChildAcqCost[]"
+                                    <td><input type="number" min="0" name="spouseChildAcqCost[]"
                                             value="{{ $assetReal['acquisitionCost'] ?? ($assetReal['acquisition_cost'] ?? '') }}"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeSpouseChildRealPropertyRow(this)">Delete</button>
                                     </td>
@@ -1206,10 +1204,10 @@
                                         </select>
                                         
                                         </td>
-                                    <td><input type="text" name="acquisitionCost[]"
+                                    <td><input type="number" min="0" name="acquisitionCost[]"
                                             oninput="calculatePersonalSubtotal()"
                                             value="{{ $assetPersonal['acquisitionCost'] ?? ($assetPersonal['acquisition_cost'] ?? '') }}"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removePersonalPropertyRow(this)">Delete</button>
                                     </td>
@@ -1267,9 +1265,9 @@
                                         </select>
                                         
                                         </td>
-                                    <td><input type="text" name="spouseChildAcquisitionCost[]"
+                                    <td><input type="number" min="0" name="spouseChildAcquisitionCost[]"
                                             value="{{ $assetPersonal['acquisitionCost'] ?? ($assetPersonal['acquisition_cost'] ?? '') }}"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeSpouseChildPersonalPropertyRow(this)">Delete</button>
                                     </td>
@@ -1302,10 +1300,10 @@
                                             value="{{ $liability['nature'] ?? '' }}"></td>
                                     <td><input type="text" name="nameCreditor[]"
                                             value="{{ $liability['nameOfCreditor'] ?? ($liability['name_creditor'] ?? '') }}"></td>
-                                    <td><input type="text" name="OutstandingBalance[]"
+                                    <td><input type="number" min="0" name="OutstandingBalance[]"
                                             value="{{ $liability['outstandingBalance'] ?? ($liability['outstanding_balance'] ?? '') }}"
                                             oninput="calculateLiabilitiesSubtotal()"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeLiabilitiesRow(this)">Delete</button>
                                     </td>
@@ -1350,9 +1348,9 @@
                                             value="{{ $liability['nature'] ?? '' }}"></td>
                                     <td><input type="text" name="spouseChildNameCreditor[]"
                                             value="{{ $liability['nameOfCreditor'] ?? ($liability['name_creditor'] ?? '') }}"></td>
-                                    <td><input type="text" name="spouseChildOutstandingBalance[]"
+                                    <td><input type="number" min="0" name="spouseChildOutstandingBalance[]"
                                             value="{{ $liability['outstandingBalance'] ?? ($liability['outstanding_balance'] ?? '') }}"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeSpouseChildLiabilitiesRow(this)">Delete</button>
                                     </td>
@@ -1403,7 +1401,7 @@
                                         value="{{$business['natureOfInterestOrConnection'] ?? ''}}"></td>
                                     <td><input type="date" name="dateInterest[]" class="business-input"
                                         value="{{$business['dateOfAcquisition'] ?? ''}}"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeBusinessRow(this)">Delete</button>
                                     </td>
@@ -1420,7 +1418,7 @@
                                             value="{{ $business['nature_business'] ?? '' }}"></td>
                                         <td><input type="date" name="dateInterest[]" class="business-input"
                                             value="{{ $business['date_interest'] ?? '' }}"></td>
-                                        <td>
+                                        <td class="delete-cell">
                                             <button type="button" class="btn btn-remove"
                                                 onclick="removeBusinessRow(this)">Delete</button>
                                         </td>
@@ -1458,7 +1456,7 @@
                                         value="{{$business['natureOfInterestOrConnection'] ?? ''}}"></td>
                                     <td><input type="date" name="spouseChildDateInterest[]" class="business-input"
                                         value="{{$business['dateOfAcquisition'] ?? ''}}"></td>
-                                    <td>
+                                    <td class="delete-cell">
                                         <button type="button" class="btn btn-remove"
                                             onclick="removeSpouseChildBusinessRow(this)">Delete</button>
                                     </td>
@@ -1475,7 +1473,7 @@
                                             value="{{ $business['nature_business'] ?? '' }}"></td>
                                         <td><input type="date" name="spouseChildDateInterest[]" class="business-input"
                                             value="{{ $business['date_interest'] ?? '' }}"></td>
-                                        <td>
+                                        <td class="delete-cell">
                                             <button type="button" class="btn btn-remove"
                                                 onclick="removeSpouseChildBusinessRow(this)">Delete</button>
                                         </td>
@@ -1536,7 +1534,7 @@
                                                     value="{{ $relative['position'] ?? '' }}"></td>
                                             <td><input type="text" name="nameAgency[]"
                                                     value="{{ $relative['agencyOfficeAndAddress'] ?? '' }}"></td>
-                                            <td>
+                                            <td class="delete-cell">
                                                 <button type="button" class="btn btn-remove"
                                                     onclick="removeRelativeRow(this)">Delete</button>
                                             </td>
@@ -1557,7 +1555,7 @@
                                                     value="{{ $relative['position'] ?? '' }}"></td>
                                             <td><input type="text" name="nameAgency[]"
                                                     value="{{ $relative['name_agency'] ?? '' }}"></td>
-                                            <td>
+                                            <td class="delete-cell">
                                                 <button type="button" class="btn btn-remove"
                                                     onclick="removeRelativeRow(this)">Delete</button>
                                             </td>
@@ -1877,7 +1875,11 @@
                     td.appendChild(select);
                 } else {
                     const input = document.createElement('input');
-                    input.type = 'text';
+                    input.type = (
+                        name === 'assessed[]' ||
+                        name === 'marketValue[]' ||
+                        name === 'acqCost[]'
+                    ) ? 'number' : 'text';
                     input.name = name;
                     if (name === 'acqCost[]') {
                         input.addEventListener('input', calculateRealSubtotal);
@@ -1977,7 +1979,11 @@
                     td.appendChild(select);
                 } else {
                     const input = document.createElement('input');
-                    input.type = 'text';
+                    input.type = (
+                        name === 'spouseChildAssessed[]' ||
+                        name === 'spouseChildMarketValue[]' ||
+                        name === 'spouseChildAcqCost[]'
+                    ) ? 'number' : 'text';
                     input.name = name;
                     td.appendChild(input);
                 }
@@ -2050,7 +2056,7 @@
                     td.appendChild(select);
                 } else {
                     const input = document.createElement('input');
-                    input.type = 'text';
+                    input.type = (name === 'acquisitionCost[]') ? 'number' : 'text';
                     input.name = name;
                     if (name === 'acquisitionCost[]') {
                         input.addEventListener('input', calculatePersonalSubtotal);
@@ -2125,7 +2131,7 @@
                     td.appendChild(select);
                 } else {
                     const input = document.createElement('input');
-                    input.type = 'text';
+                    input.type = (name === 'spouseChildAcquisitionCost[]') ? 'number' : 'text';
                     input.name = name;
                     td.appendChild(input);
                 }
@@ -2205,7 +2211,7 @@
             inputNames.forEach(name => {
                 const td = document.createElement('td');
                 const input = document.createElement('input');
-                input.type = 'text';
+                input.type = (name === 'OutstandingBalance[]') ? 'number' : 'text';
                 input.name = name;
                 if (name === 'OutstandingBalance[]') {
                     input.addEventListener('input', calculateLiabilitiesSubtotal);
@@ -2256,7 +2262,7 @@
             inputNames.forEach(name => {
                 const td = document.createElement('td');
                 const input = document.createElement('input');
-                input.type = 'text';
+                input.type = (name === 'spouseChildOutstandingBalance[]') ? 'number' : 'text';
                 input.name = name;
                 td.appendChild(input);
                 tr.appendChild(td);
@@ -2334,7 +2340,7 @@
                 const td = document.createElement('td');
                 const input = document.createElement('input');
                 input.name = name;
-                input.type = (name === 'dateInterest[]') ? 'date' : 'text';;
+                input.type = (name === 'dateInterest[]') ? 'date' : 'text';
                 td.appendChild(input);
                 tr.appendChild(td);
             })
@@ -2382,7 +2388,7 @@
                 const td = document.createElement('td');
                 const input = document.createElement('input');
                 input.name = name;
-                input.type = (name === 'spouseChildDateInterest[]') ? 'date' : 'text';;
+                input.type = (name === 'spouseChildDateInterest[]') ? 'date' : 'text';
                 td.appendChild(input);
                 tr.appendChild(td);
             })
