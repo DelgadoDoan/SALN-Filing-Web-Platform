@@ -435,6 +435,19 @@
             font-size: 0.65rem;
         }
 
+        /* Hide arrow inputs */
+        /* Chrome, Safari, Edge, Opera */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
         @media(min-width: 360px) {
             .form-container {
                 padding: 3rem 1.25rem 1.25rem;
@@ -675,13 +688,13 @@
 
             <div class="checkbox-group">
                 <label><input type="radio" name="filing_type" value="joint filing"
-                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'joint filing' ? 'checked' : '' }}> Joint
+                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? 'not applicable')) === 'joint filing' ? 'checked' : '' }}> Joint
                     Filing</label>
                 <label><input type="radio" name="filing_type" value="separate filing"
-                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'separate filing' ? 'checked' : '' }}>
+                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? 'not applicable')) === 'separate filing' ? 'checked' : '' }}>
                     Separate Filing</label>
                 <label><input type="radio" name="filing_type" value="not applicable"
-                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? '')) === 'not applicable' ? 'checked' : '' }}> Not
+                        {{ old('filing_type', $prefillData['filingType'] ?? ($saln->filing_type ?? 'not applicable')) === 'not applicable' ? 'checked' : '' }}> Not
                     Applicable</label>
             </div>
 
@@ -1803,7 +1816,7 @@
                         selectedBarangay: document.getElementById("declarant_house_barangay").value,
                     }
                 );       
-                spouseBlock.querySelector('input[name^="spouse_house_zip"]').value = document.getElementById("declarant_house_subdivision").zip;
+                spouseBlock.querySelector('input[name^="spouse_house_zip"]').value = document.getElementById("declarant_house_zip").value;
             } else {
                 spouseBlock.querySelector('input[name^="spouse_house_number"]').value = '';
                 spouseBlock.querySelector('input[name^="spouse_house_street"]').value = '';
