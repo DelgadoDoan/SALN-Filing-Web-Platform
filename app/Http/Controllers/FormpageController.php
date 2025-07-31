@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Carbon;
 use App\Http\Requests\FormDataRequest;
+use App\Models\MagicToken;
 use App\Models\User;
 use App\Models\BusinessInterest;
 use App\Models\Liability;
@@ -21,26 +23,66 @@ class FormpageController extends Controller
 {
     public function isLoggedIn(Request $request) {
         // check if user is logged in
-        if (!Auth::check()) {
-            Cookie::expire('user');
-            
+        if (!Auth::check()) {            
             return redirect('/login');
         }
 
-        // check if cookie exists        
-        $cookie = $request->cookie('user');
-        
-        if (!$cookie) {
+        // Get latest token
+        $latestToken = MagicToken::where('user_id', Auth::id())
+            ->latest('created_at')
+            ->first();
+
+        if ($latestToken && $latestToken->used_at <= Carbon::now()->subHours(6)) { // If token is unsed for 6hours
+            $token = MagicToken::where('user_id', Auth::id())->delete();
+
             Auth::logout();
 
             return redirect('/login');
         }
 
-        return view('home');
+        $token = MagicToken::where('user_id', Auth::id());
+
+        $token->update([
+            'used_at' => Carbon::now()
+        ]);
+
+        $prefillData = session('prefill'); // this pulls the uploaded data
+
+        // create or update form
+        $saln = SALN::updateOrCreate(
+            ['user_id' => Auth::id()],
+        );
+
+        // initial form fields
+        $spouse = Spouse::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $realProperties = RealProperty::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $personalProperties = PersonalProperty::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $liabilities = Liability::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+        
+        $businessInterests = BusinessInterest::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        $relatives = RelativeInGovernment::updateOrCreate(
+            ['saln_id' => $saln->id],
+        );
+
+        return view('home', compact('prefillData', 'saln'));
     }
 
     public function logout() {
-        Cookie::expire('user');
+        $token = MagicToken::where('user_id', Auth::id())->delete();
 
         Auth::logout();
 
@@ -48,11 +90,17 @@ class FormpageController extends Controller
     }
 
     public function deleteAccount () {
+        $userId = Auth::id();
+
+        $token = MagicToken::where('user_id', $userId)->delete();
+
+        foreach (SALN::where('user_id', $userId)->get() as $saln) {
+            $saln->delete();
+        }
+
         $user = Auth::user();
 
         $user = User::where('email', $user->email)->delete();
-
-        Cookie::expire('user');
 
         Auth::logout();
 
@@ -62,7 +110,9 @@ class FormpageController extends Controller
     public function saveToDatabase(Request $request) {
         // $validated = $request->validated();
 
-        $saln = new SALN();
+        // $saln = new SALN();
+        // $saln->user_id = Auth::id();
+        $saln = SALN::where('user_id', Auth::id())->first();
 
                 // --- Metadata ---
         $saln->asof_date = $request->input('asof_date');
@@ -77,13 +127,23 @@ class FormpageController extends Controller
         $saln->declarant_house_number = $request->input('declarant_house_number');
         $saln->declarant_house_street = $request->input('declarant_house_street');
         $saln->declarant_house_subdivision = $request->input('declarant_house_subdivision');
-        $saln->declarant_house_barangay = $request->input('declarant_house_barangay');
-        $saln->declarant_house_city = $request->input('declarant_house_city');
-        $saln->declarant_house_region = $request->input('declarant_house_region');
+        $saln->declarant_house_barangay = $request->has('declarant_house_barangay')
+            ? $request->input('declarant_house_barangay')
+            : '';
+        $saln->declarant_house_city = $request->has('declarant_house_barangay')
+            ? $request->input('declarant_house_city')
+            : '';
+        $saln->declarant_house_region = $request->has('declarant_house_region')
+            ? $request->input('declarant_house_region')
+            : '';
         $saln->declarant_house_zip = $request->input('declarant_house_zip');
 
-        // Declarant Office Address
+        // Declarant Office
+        $saln->declarant_position = $request->input('declarant_position');
         $saln->declarant_office_name = $request->input('declarant_office_name');
+        
+        // Declarant Office Address
+        $saln->declarant_office_number = $request->input('declarant_office_number');
         $saln->declarant_office_street = $request->input('declarant_office_street');
         $saln->declarant_office_city = $request->input('declarant_office_city');
         $saln->declarant_office_region = $request->input('declarant_office_region');
@@ -106,53 +166,67 @@ class FormpageController extends Controller
         $saln->id_date_spouse = $request->input('idDateSpouse');
 
         // --- Flags ---
-        $saln->no_business_interest = $request->has('noBusinessInterest') ? true : false;
-        $saln->no_relatives_in_government = $request->has('noRelatives') ? true : false;
+        $saln->no_business_interest = $request->has('noBusinessInterests') ? true : false;
+        $saln->no_relatives_in_government = $request->has('noRelativesInGovernment') ? true : false;
 
         // --- Save to DB ---
         $saln->save();
-        foreach ($request->children_name as $index => $name) {
+
+        // -- Refresh tables --
+        unmarriedChild::where('saln_id', $saln->id)->delete();
+        Spouse::where('saln_id', $saln->id)->delete();
+        RealProperty::where('saln_id', $saln->id)->delete();
+        PersonalProperty::where('saln_id', $saln->id)->delete();
+        Liability::where('saln_id', $saln->id)->delete();
+        BusinessInterest::where('saln_id', $saln->id)->delete();
+        RelativeInGovernment::where('saln_id', $saln->id)->delete();
+
+        foreach ($request->input('children_name',[]) as $index => $name) {
             UnmarriedChild::create([
                 'saln_id' => $saln->id,
                 'name' => $name,
                 'date_of_birth' => $request->children_dob[$index],
             ]);
         }
-        foreach ($request->spouse_family_name as $i => $family_name) {
+        
+        foreach ($request->input('spouse_family_name',[]) as $i => $family_name) {
             Spouse::create([
                 'saln_id' => $saln->id,
                 'family_name' => $family_name,
                 'first_name' => $request->spouse_first_name[$i],
                 'mi' => $request->spouse_mi[$i],
+                'same_house_as_declarant' => $request->has("copy_house_address.$i") ? true : false,
                 'house_number' => $request->spouse_house_number[$i],
                 'house_street' => $request->spouse_house_street[$i],
                 'house_subdivision' => $request->spouse_house_subdivision[$i],
-                'house_barangay' => $request->spouse_house_barangay[$i],
-                'house_city' => $request->spouse_house_city[$i],
-                'house_region' => $request->spouse_house_region[$i],
+                'house_barangay' => $request->spouse_house_barangay[$i] ?? '',
+                'house_city' => $request->spouse_house_city[$i] ?? '',
+                'house_region' => $request->spouse_house_region[$i] ?? '',
                 'house_zip' => $request->spouse_house_zip[$i],
+                'position' => $request->spouse_position[$i],
                 'office_name' => $request->spouse_office_name[$i],
+                'office_number' => $request->spouse_office_number[$i],
                 'office_street' => $request->spouse_office_street[$i],
-                'office_city' => $request->spouse_office_city[$i],
-                'office_region' => $request->spouse_office_region[$i],
+                'office_city' => $request->spouse_office_city[$i] ?? '',
+                'office_region' => $request->spouse_office_region[$i] ?? '',
                 'office_zip' => $request->spouse_office_zip[$i],
             ]);
         }
-        if ($request->has('desc')) {
-            foreach ($request->desc as $i => $desc) {
-                RealProperty::create([
-                    'saln_id' => $saln->id,
-                    'description' => $desc,
-                    'kind' => $request->kind[$i] ?? null,
-                    'location' => $request->location[$i] ?? null,
-                    'assessed_value' => $request->assessed[$i] ?? null,
-                    'market_value' => $request->marketValue[$i] ?? null,
-                    'acquisition_year' => $request->acqYear[$i] ?? null,
-                    'acquisition_mode' => $request->acqMode[$i] ?? null,
-                    'acquisition_cost' => $request->acqCost[$i] ?? null,
-                ]);
-            }
+
+        foreach ($request->desc as $i => $desc) {
+            RealProperty::create([
+                'saln_id' => $saln->id,
+                'description' => $desc,
+                'kind' => $request->kind[$i] ?? null,
+                'location' => $request->location[$i] ?? null,
+                'assessed_value' => $request->assessed[$i] ?? null,
+                'market_value' => $request->marketValue[$i] ?? null,
+                'acquisition_year' => $request->acqYear[$i] ?? null,
+                'acquisition_mode' => $request->acqMode[$i] ?? null,
+                'acquisition_cost' => $request->acqCost[$i] ?? null,
+            ]);
         }
+
         foreach ($request->description as $index => $desc) {
             PersonalProperty::create([
                 'saln_id' => $saln->id,
@@ -161,6 +235,7 @@ class FormpageController extends Controller
                 'acquisition_cost' => $request->acquisitionCost[$index] ?? null,
             ]);
         }
+
         foreach ($request->nature as $index => $nature) {
             Liability::create([
                 'saln_id' => $saln->id,
@@ -169,7 +244,8 @@ class FormpageController extends Controller
                 'outstanding_balance' => $request->OutstandingBalance[$index] ?? null,
             ]);
         }
-        foreach ($request->nameBusiness as $index => $name) {
+
+        foreach ($request->input('nameBusiness',[]) as $index => $name) {
             BusinessInterest::create([
                 'saln_id' => $saln->id,
                 'name_business' => $name,
@@ -178,17 +254,255 @@ class FormpageController extends Controller
                 'date_interest' => $request->dateInterest[$index] ?? null,
             ]);
         }
-        foreach ($request->nameRelative as $index => $name) {
+
+        foreach ($request->input('relativeFamilyName',[]) as $index => $relativeFamilyName) {
             RelativeInGovernment::create([
                 'saln_id' => $saln->id,
-                'name_relative' => $name,
+                'relative_family_name' => $relativeFamilyName,
+                'relative_first_name' => $request->relativeFirstName[$index] ?? null,
+                'relative_mi' => $request->relativeMi[$index] ?? null,
                 'relationship' => $request->relationship[$index] ?? null,
                 'position' => $request->position[$index] ?? null,
                 'name_agency' => $request->nameAgency[$index] ?? null,
             ]);
         }
 
+        return redirect()->back()->with('success', 'SALN Form saved successfully!');
+    }
+    
+    public function importJson(Request $request) {
+        $request->validate([
+            'json_file' => 'required|file|mimes:json',
+        ]);
 
-        return redirect()->back()->with('success', 'SALN Form submitted successfully!');
+        $path = $request->file('json_file')->store('uploads');
+        $fullPath = storage_path("app/private/{$path}");
+
+        if (!file_exists($fullPath)) {
+            dd("File not found at: $fullPath");
+        }
+
+        $json = file_get_contents($fullPath);
+        $data = json_decode($json, true);
+
+        return redirect('/home')
+            ->with('prefill', $data)
+            ->with('success', 'Form data imported.');
+    }
+
+    public function exportJson() {
+        $saln = SALN::where('user_id', Auth::id())
+            ->first();
+
+        $spouses = array();
+        $unmarried_children = array();
+        $real_properties = array();
+        $spouse_child_real_properties = array();
+        $personal_properties = array();
+        $spouse_child_personal_properties = array();
+        $liabilities = array();
+        $spouse_child_liabilities = array();
+        $business_interests = array();
+        $spouse_child_business_interests = array();
+        $relatives_in_government = array();
+
+        $first_spouse = true;
+
+        if ($saln->spouses->isNotEmpty()) {
+            foreach ($saln->spouses as $spouse) {
+                $spouse_info = [
+                    'familyName' => $spouse->family_name ?? '',
+                    'firstName' => $spouse->first_name ?? '',
+                    'middleInitial' => $spouse->mi ?? '',
+                    'position' => $spouse->position ?? '',
+                    'agencyOffice' => $spouse->office_name ?? '',
+                    'officeAddress' => [
+                        'officeNo' => $spouse->office_number ?? '',
+                        'officeStreet' => $spouse->office_street ?? '',
+                        'officeCity' => $spouse->office_city ?? '',
+                        'officeRegion' => $spouse->office_region ?? '',
+                        'officeZipCode' => $spouse->office_zip ?? '',
+                    ],
+                    'hasSameHouseAsDeclarant' =>(bool) $spouse->same_house_as_declarant ? true : false,
+                    'houseAddress' => [
+                        'houseNo' => $spouse->house_number ?? '',
+                        'houseStreet' => $spouse->house_street ?? '',
+                        'houseSubdivision' => $spouse->house_subdivision ?? '',
+                        'houseBarangay' => $spouse->house_barangay ?? '',
+                        'houseCity' => $spouse->house_city ?? '',
+                        'houseRegion' => $spouse->house_region ?? '',
+                        'houseZipCode' => $spouse->house_zip ?? '',
+                    ],
+                    'governmentIssuedId' => [
+                        'type' => '',
+                        'idNumber' => '',
+                        'dateIssued' => '',
+                    ],
+                ];
+
+                if ($first_spouse) {
+                    $spouse_info['governmentIssuedId'] = [
+                        'type' => $saln->gov_id_spouse ?? '',
+                        'idNumber' => $saln->id_no_spouse ?? '',
+                        'dateIssued' => $saln->id_date_spouse ? $saln->id_date_spouse->format('Y-m-d') : '',
+                    ];
+                    
+                    $first_spouse = false;
+                }
+
+                $spouses[] = $spouse_info;
+            };
+        } else {
+            $spouses[] = [
+                'familyName' => '',
+                'firstName' => '',
+                'middleInitial' => '',
+                'position' => '',
+                'agencyOffice' => '',
+                'officeAddress' => [
+                    'officeNo' => '',
+                    'officeStreet' => '',
+                    'officeCity' => '',
+                    'officeRegion' => '',
+                    'officeZipCode' => '',
+                ],
+                'houseAddress' => [
+                    'houseNo' => '',
+                    'houseStreet' => '',
+                    'houseSubdivision' => '',
+                    'houseBarangay' => '',
+                    'houseCity' => '',
+                    'houseRegion' => '',
+                    'houseZipCode' => '',
+                ],
+                'governmentIssuedId' => [
+                    'type' => '',
+                    'idNumber' => '',
+                    'dateIssued' => '',
+                ],
+            ];
+        }
+
+        foreach ($saln->unmarriedChildren ?? [] as $child) {
+            $unmarried_children[] = [
+                'name' => $child->name ?? '',
+                'dateOfBirth' => $child->date_of_birth ?? '',
+            ];
+        };
+
+        foreach ($saln->realProperties ?? [] as $real_property) {
+            $real_properties[] = [
+                'description' => $real_property->description ?? '',
+                'kind' => $real_property->kind ?? '',
+                'exactLocation' => $real_property->location ?? '',
+                'assessedValue' => $real_property->assessed_value ?? '',
+                'currentFairMarketValue' => $real_property->market_value ?? '',
+                'acquisitionYear' => $real_property->acquisition_year ?? '',
+                'acquisitionMode' => $real_property->acquisition_mode ?? '',
+                'acquisitionCost' => $real_property->acquisition_cost ?? '',
+            ];
+        };
+
+        foreach ($saln->personalProperties ?? [] as $personal_property) {
+            $personal_properties[] = [
+                'description' => $personal_property->description ?? '',
+                'yearAcquired' => $personal_property->year_acquired ?? '',
+                'acquisitionCost' => $personal_property->acquisition_cost ?? '',
+            ];
+        };
+
+        foreach ($saln->liabilities ?? [] as $liability) {
+            $liabilities[] = [
+                'nature' => $liability->nature ?? '',
+                'nameOfCreditor' => $liability->name_creditor ?? '',
+                'outstandingBalance' => $liability->outstanding_balance ?? '',
+            ];
+        };
+
+        foreach ($saln->businessInterests ?? [] as $business_interest) {
+            $business_interests[] = [
+                'nameOfEntity' => $business_interest->name_business ?? '',
+                'businessAddress' => $business_interest->address_business ?? '',
+                'natureOfInterestOrConnection' => $business_interest->nature_business ?? '',
+                'dateOfAcquisition' => $business_interest->date_interest ?? '',
+            ];
+        };
+
+        foreach ($saln->relativesInGovernment ?? [] as $relative) {
+            $relatives_in_government[] = [
+                'familyName' => $relative->relative_family_name ?? '',
+                'firstName' => $relative->relative_first_name ?? '',
+                'middleInitial' => $relative->relative_mi ?? '',
+                'relationship' => $relative->relationship ?? '',
+                'position' => $relative->position ?? '',
+                'agencyOfficeAndAddress' => $relative->name_agency ?? '',
+            ];
+        };
+
+        $data = [
+            'filingType' => $saln->filing_type ?? '',
+            'asOfDate' => $saln->asof_date ? $saln->asof_date->format('Y-m-d') : '',
+            'declarant' => [
+                'familyName' => $saln->declarant_family_name ?? '',
+                'firstName' => $saln->declarant_first_name ?? '',
+                'middleInitial' => $saln->declarant_mi ?? '',
+                'position' => $saln->declarant_position ?? '',
+                'agencyOffice' => $saln->declarant_office_name ?? '',
+                'officeAddress' => [
+                    'officeNo' => $saln->declarant_office_number ?? '',
+                    'officeStreet' => $saln->declarant_office_street ?? '',
+                    'officeCity' => $saln->declarant_office_city ?? '',
+                    'officeRegion' => $saln->declarant_office_region ?? '',
+                    'officeZipCode' => $saln->declarant_office_zip ?? '',
+                ],
+                'houseAddress' => [
+                    'houseNo' => $saln->declarant_house_number ?? '',
+                    'houseStreet' => $saln->declarant_house_street ?? '',
+                    'houseSubdivision' => $saln->declarant_house_subdivision ?? '',
+                    'houseBarangay' => $saln->declarant_house_barangay ?? '',
+                    'houseCity' => $saln->declarant_house_city ?? '',
+                    'houseRegion' => $saln->declarant_house_region ?? '',
+                    'houseZipCode' => $saln->declarant_house_zip ?? '',
+                ],
+                'governmentIssuedId' => [
+                    'type' => $saln->gov_id_declarant ?? '',
+                    'idNumber' => $saln->id_no_declarant ?? '',
+                    'dateIssued' => $saln->id_date_declarant ? $saln->id_date_declarant->format('Y-m-d') : '',
+                ],
+                'spouses' => $spouses,
+                'unmarriedChildren' => $unmarried_children,
+                'assets' => [
+                    'realProperties' => $real_properties,
+                    'personalProperties' => $personal_properties,
+                ],
+                'liabilities' => $liabilities,
+                'hasNoBusinessInterests' => $saln->no_business_interest,
+                'businessInterestsAndFinancialConnections' => $saln->no_business_interest ? [] : $business_interests,
+                'hasNoRelativesInGovermentService' => $saln->no_relatives_in_government,
+                'relativesInGovernmentService' => $saln->no_relatives_in_government ? [] : $relatives_in_government,
+            ],
+        ];
+
+        $json = json_encode($data, JSON_PRETTY_PRINT);
+        
+        $filename = Auth::user()->name . '-' . 'SALN-data';
+
+        return response($json)
+            ->header('Content-Type', 'application/json')
+            ->header('Content-Disposition', "attachment; filename={$filename}.json");
+    }
+
+    public function getRegions() {
+        $path = 'regions.json';
+    
+        if (!Storage::exists($path)) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+    
+        $jsonFile = Storage::get($path);
+
+        $data = json_decode($jsonFile);
+    
+        return response()->json($data);
     }
 }

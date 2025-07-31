@@ -4,7 +4,7 @@
 <p>
 Click on the button below or follow this 
 <a href="{{ route('magic-link.authenticate', ['magicToken' => $magicToken, 'randomStr' => $randomStr]) }}">link</a> 
-to complete your login: 
+to complete your login.
 </p>
 
 <br>

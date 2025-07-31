@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
@@ -17,15 +16,33 @@ use Illuminate\Support\Facades\Crypt;
 
 class MagicLinkController extends Controller
 {
+    public function showSignup() {
+        if (Auth::check()) {
+            return redirect('/home');
+        }
+
+        return view('signup');
+    }
+
+    public function showLogin() {
+        if (Auth::check()) {
+            return redirect('/home');
+        }
+
+        return view('login');
+    }
+
     public function signup(SignupRequest $request) {
         $validated = $request->validated();
 
-        $user = User::where('email', $validated['email'])->first();
+        $email = Str::lower($validated['email']);
+
+        $user = User::where('email', $email)->first();
 
         if (empty($user)) {
             $newUser = User::create([
                 'name' => $validated['name'],
-                'email' => $validated['email'],
+                'email' => $email,
             ]);
 
             $magicToken = MagicToken::create([
@@ -48,37 +65,42 @@ class MagicLinkController extends Controller
     public function login(LoginRequest $request) {
         $validated = $request->validated();
 
-        $user = User::where('email', $validated['email'])->first();
+        $email = Str::lower($validated['email']);
 
-        if (!empty($user)) {
-            // prevent login spam
-            $recentToken = MagicToken::where('created_at', '>=', Carbon::now()->subMinutes(5))
-                ->where('user_id', '=', $user->id)
-                ->whereNull('used_at')
-                ->first();
-            
-            if (!empty($recentToken)) {
-                return redirect()
-                    ->back()
-                    ->with('error', 'Too many login attempts. Please try again in 5 minutes.')
-                    ->withInput();
-            }
+        $user = User::where('email', $email)->first();
 
-            $magicToken = MagicToken::create([
-                'user_id' => $user->id,
-                'token' => Str::uuid()->toString(),
-            ]);
-
-            $randomStr = Str::random(30);
-
-            Mail::to($user->email)->send(new MagicLinkMail($magicToken, $randomStr));
-
-            $encrypted = Crypt::encryptString($user->email);
+        if (empty($user)) {
+            $encrypted = Crypt::encryptString($email);
 
             return redirect()->route('linksent', ['email' => $encrypted]);
         }
 
-        return redirect()->back();
+        // prevent login spam
+        $recentAttempts = MagicToken::where('created_at', '>=', Carbon::now()->subMinutes(5))
+            ->where('user_id', $user->id)
+            ->whereNull('used_at')
+            ->count();
+
+        if ($recentAttempts >= 3) {
+            return redirect()
+                ->back()
+                ->with('error', 'Too many login attempts. Please try again in 5 minutes.')
+                ->withInput();
+        }
+
+        $magicToken = MagicToken::create([
+            'user_id' => $user->id,
+            'token' => Str::uuid()->toString(),
+        ]);
+
+
+        $randomStr = Str::random(30);
+
+        Mail::to($user->email)->send(new MagicLinkMail($magicToken, $randomStr));
+
+        $encrypted = Crypt::encryptString($user->email);
+
+        return redirect()->route('linksent', ['email' => $encrypted]);
     }
 
     public function onSuccess(string $encryptedEmail) {
@@ -87,7 +109,7 @@ class MagicLinkController extends Controller
         return view('linksent', ['email' => $decrypted]);
     }
 
-    public function authenticate(MagicToken $magicToken) {
+    public function authenticate(MagicToken $magicToken, string $randomStr) {
         // if link is not clicked within 30 min or already used
         if ($magicToken->created_at <= Carbon::now()->subMinutes(30) || !is_null($magicToken->used_at))
             abort(403);
@@ -97,8 +119,6 @@ class MagicLinkController extends Controller
         ]);
 
         Auth::login($magicToken->user);
-
-        Cookie::queue('user', $magicToken->user, 120); // cookie lifetime set to 120 minutes
 
         return redirect('/home');
     }

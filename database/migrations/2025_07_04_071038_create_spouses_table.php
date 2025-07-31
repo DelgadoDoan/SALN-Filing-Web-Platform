@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('mi')->nullable();
 
+            $table->boolean('same_house_as_declarant')->default(false);
+
             $table->string('house_number')->nullable();
             $table->string('house_street')->nullable();
             $table->string('house_subdivision')->nullable();
@@ -25,8 +27,11 @@ return new class extends Migration
             $table->string('house_city')->nullable();
             $table->string('house_region')->nullable();
             $table->string('house_zip')->nullable();
-
+            
+            $table->string('position')->nullable();
             $table->string('office_name')->nullable();
+
+            $table->string('office_number')->nullable();
             $table->string('office_street')->nullable();
             $table->string('office_city')->nullable();
             $table->string('office_region')->nullable();

@@ -8,7 +8,9 @@ class RelativeInGovernment extends Model
 {
     protected $fillable = [
         'saln_id',
-        'name_relative',
+        'relative_family_name',
+        'relative_first_name',
+        'relative_mi',
         'relationship',
         'position',
         'name_agency',
