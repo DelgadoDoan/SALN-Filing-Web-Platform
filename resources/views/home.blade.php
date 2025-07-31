@@ -2141,25 +2141,26 @@
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         }); 
         
-       
+        let regionsPromise = null;
+
+        function fetchRegions() {
+            if (!regionsPromise) {
+                regionsPromise = fetch("{{ route('regions') }}").then(res => res.json());
+            }
+            return regionsPromise;
+        }
 
         async function initializeRegionCityBarangay(regionField, cityField, barangayField=null, {
             selectedRegion,
             selectedCity,
             selectedBarangay='',
         }) {
-            let regions = {};
             let cities = {};
             let barangays = [];   
             let regionCode;
             let cityCode;
 
-            async function fetchRegions() {
-                const regionsResponse = await fetch("{{ route('regions') }}");
-                regions = await regionsResponse.json();
-            }
-
-            await fetchRegions();
+            const regions = await fetchRegions();
 
             async function fetchCities(regionName) {
                 cities = {};
