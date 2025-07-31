@@ -1469,12 +1469,12 @@
             </div>
     </form>
     
-    <form action="{{ route('saln.import') }}" method="POST" enctype="multipart/form-data">
+    <form id="importForm" action="{{ route('saln.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="file" name="json_file" accept=".json" required>
+        <input type="file" name="json_file" id="json_file" accept=".json" style="display: none;" required>
         <br />
         <div style="display: flex; justify-content: space-between;">
-            <button type="submit">Import JSON</button>
+            <button type="button" onclick="triggerFileImport()">Import JSON</button>
             <button type="button" onclick="exportData()">Export as JSON</button>
         </div>
     </form>
@@ -2317,6 +2317,16 @@
                     selectedBarangay: '',
                 });
             })
+        });
+
+        function triggerFileImport() {
+            document.getElementById('json_file').click();
+        }
+
+        document.getElementById('json_file').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                document.getElementById('importForm').submit();
+            }
         });
     </script>
 </body>
