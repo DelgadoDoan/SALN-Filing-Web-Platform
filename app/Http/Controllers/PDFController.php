@@ -122,19 +122,6 @@ class PDFController extends Controller
             ];
         };
 
-        foreach ($saln->spouseChildRealProperties ?? [] as $real_property) {
-            $spouse_child_real_properties[] = [
-                'description' => $real_property->description ?? '',
-                'kind' => $real_property->kind ?? '',
-                'exactLocation' => $real_property->location ?? '',
-                'assessedValue' => $real_property->assessed_value ?? '',
-                'currentFairMarketValue' => $real_property->market_value ?? '',
-                'acquisitionYear' => $real_property->acquisition_year ?? '',
-                'acquisitionMode' => $real_property->acquisition_mode ?? '',
-                'acquisitionCost' => $real_property->acquisition_cost ?? '',
-            ];
-        };
-
         foreach ($saln->personalProperties ?? [] as $personal_property) {
             $personal_properties[] = [
                 'description' => $personal_property->description ?? '',
@@ -143,24 +130,8 @@ class PDFController extends Controller
             ];
         };
 
-        foreach ($saln->spouseChildPersonalProperties ?? [] as $personal_property) {
-            $spouse_child_personal_properties[] = [
-                'description' => $personal_property->description ?? '',
-                'yearAcquired' => $personal_property->year_acquired ?? '',
-                'acquisitionCost' => $personal_property->acquisition_cost ?? '',
-            ];
-        };
-
         foreach ($saln->liabilities ?? [] as $liability) {
             $liabilities[] = [
-                'nature' => $liability->nature ?? '',
-                'nameOfCreditor' => $liability->name_creditor ?? '',
-                'outstandingBalance' => $liability->outstanding_balance ?? '',
-            ];
-        };
-        
-        foreach ($saln->spouseChildLiabilities ?? [] as $liability) {
-            $spouse_child_liabilities[] = [
                 'nature' => $liability->nature ?? '',
                 'nameOfCreditor' => $liability->name_creditor ?? '',
                 'outstandingBalance' => $liability->outstanding_balance ?? '',
@@ -175,15 +146,6 @@ class PDFController extends Controller
                 'dateOfAcquisition' => $business_interest->date_interest ?? '',
             ];
         };    
-
-        foreach ($saln->spouseChildBusinessInterests ?? [] as $business_interest) {
-            $spouse_child_business_interests[] = [
-                'nameOfEntity' => $business_interest->name_business ?? '',
-                'businessAddress' => $business_interest->address_business ?? '',
-                'natureOfInterestOrConnection' => $business_interest->nature_business ?? '',
-                'dateOfAcquisition' => $business_interest->date_interest ?? '',
-            ];
-        };  
 
         foreach ($saln->relativesInGovernment ?? [] as $relative) {
             $relatives_in_government[] = [
@@ -230,15 +192,11 @@ class PDFController extends Controller
                 'unmarriedChildren' => $unmarried_children,
                 'assets' => [
                     'realProperties' => $real_properties,
-                    'spouseChildRealProperties' => $spouse_child_real_properties,
                     'personalProperties' => $personal_properties,
-                    'spouseChildPersonalProperties' => $spouse_child_personal_properties,
                 ],
                 'liabilities' => $liabilities,
-                'spouseChildLiabilities' => $spouse_child_liabilities,
                 'hasNoBusinessInterests' => $saln->no_business_interest,
                 'businessInterestsAndFinancialConnections' => $saln->no_business_interest ? [] : $business_interests,
-                'spouseChildBusinessInterestsAndFinancialConnections' => $saln->no_business_interest ? [] : $spouse_child_business_interests,
                 'hasNoRelativesInGovermentService' => $saln->no_relatives_in_government,
                 'relativesInGovernmentService' => $saln->no_relatives_in_government ? [] : $relatives_in_government,
             ],
@@ -246,7 +204,7 @@ class PDFController extends Controller
 
         return $data;
     }
-    public function generatePDF() {              
+    public function generatePDF() {
         
         $data = $this->fetchData();
 
@@ -254,6 +212,6 @@ class PDFController extends Controller
         $pdf->setPaper('A4', 'portrait');
 
         
-        return $pdf->stream();
+        return $pdf->stream(Auth::user()->name.'-SALN.pdf');
     }
 }

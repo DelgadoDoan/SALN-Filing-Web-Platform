@@ -97,33 +97,17 @@ class SALN extends Model
     {
         return $this->hasMany(RealProperty::class, 'saln_id');
     }
-    public function spouseChildRealProperties()
-    {
-        return $this->hasMany(SpouseChildRealProperty::class, 'saln_id');
-    }
     public function personalProperties()
     {
         return $this->hasMany(PersonalProperty::class, 'saln_id');
-    }
-    public function spouseChildPersonalProperties()
-    {
-        return $this->hasMany(SpouseChildPersonalProperty::class, 'saln_id');
     }
     public function liabilities()
     {
         return $this->hasMany(Liability::class, 'saln_id');
     }
-    public function spouseChildLiabilities()
-    {
-        return $this->hasMany(SpouseChildLiability::class, 'saln_id');
-    }
     public function businessInterests()
     {
         return $this->hasMany(BusinessInterest::class, 'saln_id');
-    }
-    public function spouseChildBusinessInterests()
-    {
-        return $this->hasMany(SpouseChildBusinessInterest::class, 'saln_id');
     }
     public function relativesInGovernment()
     {
