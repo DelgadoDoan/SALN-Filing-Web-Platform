@@ -119,3 +119,4 @@ php artisan serve
 - [Render.com](https://render.com) for free web service hosting.
 - [Magic Link Authentication with Laravel](https://tuts.codingo.me/magic-link-login-laravel)
 - [Laravel containerization with Docker](https://youtu.be/uYhowDSkwyk?feature=shared)
+- [List of Philippine Regions](https://github.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays.git)
