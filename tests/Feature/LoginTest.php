@@ -47,4 +47,21 @@ class LoginTest extends TestCase
 
         $response->assertRedirect('/home');
     }
+
+    public function test_login_if_no_account_exists(): void {
+        $email = 'nonexistent@email.com';
+
+        $response = $this->post('/login/magic-link', ['email' => $email]);
+    
+        $response->assertRedirectContains('/link-sent/');
+    }
+
+    public function test_authenticated_is_redirected_to_home_on_login(): void {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->get('/login');
+
+        $response->assertRedirect('/home');
+    }
 }

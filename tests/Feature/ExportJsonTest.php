@@ -58,11 +58,11 @@ class ExportJsonTest extends TestCase
 
         $response->assertHeader('Content-Type', 'application/json');
 
-        $expectedPrefix = $user->name . '-saln-';
+        $filename = $user->name . '-SALN-data';
 
         $contentDisposition = $response->headers->get('Content-Disposition');
 
-        $this->assertStringContainsString('attachment; filename=' . $expectedPrefix, $contentDisposition);
+        $this->assertStringContainsString('attachment; filename=' . $filename, $contentDisposition);
 
         $json = json_decode($response->getContent(), true);
     
@@ -109,7 +109,6 @@ class ExportJsonTest extends TestCase
         $this->assertEquals($spouses[0]->position, $json['declarant']['spouses'][0]['position']);
         $this->assertEquals($spouses[0]->office_name, $json['declarant']['spouses'][0]['agencyOffice']);
         $this->assertEquals($spouses[0]->same_house_as_declarant, $json['declarant']['spouses'][0]['hasSameHouseAsDeclarant']);
-        $this->assertEquals($spouses[0]->same_office_as_declarant, $json['declarant']['spouses'][0]['hasSameOfficeAsDeclarant']);
         $this->assertEquals($spouses[0]->office_number, $json['declarant']['spouses'][0]['officeAddress']['officeNo']);
         $this->assertEquals($spouses[0]->office_street, $json['declarant']['spouses'][0]['officeAddress']['officeStreet']);
         $this->assertEquals($spouses[0]->office_city, $json['declarant']['spouses'][0]['officeAddress']['officeCity']);

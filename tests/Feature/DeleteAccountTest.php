@@ -28,5 +28,19 @@ class DeleteAccountTest extends TestCase
         $response = $this->get('/home/delete-account');
 
         $response->assertRedirect('/login');
+
+        $this->assertDatabaseMissing('users', [
+            'id' => $user->id,
+        ]);
+
+        $this->assertDatabaseMissing('magic_tokens', [
+            'id' => $magicToken->id,
+        ]);
+
+        $this->assertDatabaseMissing('salns', [
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertGuest();
     }
 }

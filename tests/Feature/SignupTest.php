@@ -48,4 +48,41 @@ class SignupTest extends TestCase
 
         $response->assertRedirect('/home');
     }
+
+    public function test_email_exists(): void {
+        User::factory()->create([
+            'email' => 'test@example.com',
+        ]);
+
+        $response = $this->post('/signup/magic-link', [
+            'name' => 'example name',
+            'email' => 'test@example.com',
+        ]);
+        $response->assertSessionHasErrors('email');
+
+        $this->assertGuest();
+    }
+
+    public function test_username_exists(): void {
+        User::factory()->create([
+            'name' => 'example name',
+        ]);
+
+        $response = $this->post('/signup/magic-link', [
+            'name' => 'example name',
+            'email' => 'test@example.com',
+        ]);
+        $response->assertSessionHasErrors('name');
+
+        $this->assertGuest();
+    }
+
+    public function test_authenticated_is_redirected_to_home_on_signup(): void {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->get('/signup');
+
+        $response->assertRedirect('/home');
+    }
 }
